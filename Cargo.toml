@@ -1,0 +1,13 @@
+[package]
+name = "lab-vision-burn"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+image = "0.25"
+
+burn = { version = "0.18", features = ["wgpu", "vision", "train"] }
+burn-wgpu = "0.18"
+burn-dataset = "0.18"
