@@ -6,7 +6,7 @@
 	"scripts": {
 		"model:train": "cd model && cargo run --release -- train",
 		"model:eval": "cd model && cargo run --release -- eval",
-		"model:wasm": "cd model && wasm-pack build --out-dir pkg --release --target web --no-typescript --no-default-features",
+		"model:wasm": "cd model && wasm-pack build --out-dir pkg --release --target web --no-default-features",
 		"web": "cd web && pnpm dev --open"
 	}
 }

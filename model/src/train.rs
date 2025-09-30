@@ -10,7 +10,7 @@ use burn::{
     nn::loss::CrossEntropyLossConfig,
     optim::{AdamConfig, GradientsParams, Optimizer},
     prelude::*,
-    record::CompactRecorder,
+    record::{BinBytesRecorder, CompactRecorder, FullPrecisionSettings, Recorder},
 };
 use burn_wgpu::WgpuDevice;
 type B = burn_wgpu::Wgpu;
@@ -80,9 +80,18 @@ pub fn train(cfg: TrainConfig) -> Result<()> {
     std::fs::create_dir_all("artifacts")?;
     let base_model: LeNet<B> = model.clone().valid();
     base_model
+        .clone()
         .save_file("artifacts/model.burn", &CompactRecorder::new())
         .expect("save");
     println!("Saved: artifacts/model.burn");
+
+    // 追加: BinBytesRecorder で bytes 化し artifacts/model.bin として保存 (WASM 埋め込み用)
+    let record = base_model.clone().into_record();
+    let bytes: Vec<u8> = BinBytesRecorder::<FullPrecisionSettings, Vec<u8>>::default()
+        .record(record, ())
+        .expect("serialize bin bytes");
+    std::fs::write("artifacts/model.bin", &bytes).expect("write model.bin");
+    println!("Saved: artifacts/model.bin ({} bytes)", bytes.len());
     Ok(())
 }
 

@@ -2,22 +2,18 @@
 
 #![allow(clippy::new_without_default)]
 
-use alloc::{string::String, vec, vec::Vec, format};
+use alloc::string::String;
 use js_sys::Array;
 
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::*;
 
 use crate::model::LeNet;
-use burn::record::CompactRecorder;
-use burn::module::Module;   // load_record
+use crate::state::build_and_load_model;
+// (record loading temporarily disabled until proper deserialization path implemented)
 type Backend = burn_wgpu::Wgpu;
 
-async fn build_and_load_model() -> LeNet<Backend> {
-    // TODO: 学習済み重みを埋め込むか fetch で取得してロードする処理を追加
-    let device = burn_wgpu::WgpuDevice::default();
-    LeNet::new(&device)
-}
+// use state::build_and_load_model instead
 
 use burn::tensor::Tensor;
 
@@ -30,7 +26,9 @@ pub fn start() {
 /// Mnist structure that corresponds to JavaScript class.
 /// See:[exporting-rust-struct](https://rustwasm.github.io/wasm-bindgen/contributing/design/exporting-rust-struct.html)
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub struct Mnist { model: Option<LeNet<Backend>> }
+pub struct Mnist {
+    model: Option<LeNet<Backend>>,
+}
 
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 impl Mnist {
@@ -55,7 +53,9 @@ impl Mnist {
     /// * [boxed-number-slices](https://rustwasm.github.io/wasm-bindgen/reference/types/boxed-number-slices.html)
     ///
     pub async fn inference(&mut self, input: &[f32]) -> Result<Array, String> {
-        if self.model.is_none() { self.load().await?; }
+        if self.model.is_none() {
+            self.load().await?;
+        }
 
         let model = self.model.as_ref().unwrap();
 
@@ -91,20 +91,25 @@ impl Mnist {
     /// 明示的に学習済みモデルをロード (二度目以降は何もしない)
     #[cfg_attr(target_family = "wasm", wasm_bindgen)]
     pub async fn load(&mut self) -> Result<(), String> {
-        if self.model.is_some() { return Ok(()); }
-        // 埋め込まれたモデル (ビルド前に build スクリプトで artifacts/model.burn -> OUT_DIR/model.burn にコピーし include_bytes! する運用を想定)
-        // 現在は未埋め込みなのでエラーを返す。
-        return Err("embedded model bytes not found (embed step not implemented)".into());
+        if self.model.is_some() {
+            return Ok(());
+        }
+        self.model = Some(build_and_load_model().await);
+        Ok(())
     }
 
     /// モデルがロード済みか
     #[cfg_attr(target_family = "wasm", wasm_bindgen(js_name = "isLoaded"))]
-    pub fn is_loaded(&self) -> bool { self.model.is_some() }
+    pub fn is_loaded(&self) -> bool {
+        self.model.is_some()
+    }
 
     /// Top-1 クラス (0-9) を返す簡易推論 API
     #[cfg_attr(target_family = "wasm", wasm_bindgen(js_name = "inferenceTop1"))]
     pub async fn inference_top1(&mut self, input: &[f32]) -> Result<u32, String> {
-        if self.model.is_none() { self.load().await?; }
+        if self.model.is_none() {
+            self.load().await?;
+        }
         let model = self.model.as_ref().ok_or("model not loaded")?;
         let device = Default::default();
         let input = Tensor::<Backend, 1>::from_floats(input, &device)
@@ -114,7 +119,9 @@ impl Mnist {
         let output: Tensor<Backend, 2> = model.forward(input);
         let pred = output.argmax(1).into_data_async().await;
         let mut class_id: u32 = 0;
-        if let Some(v) = pred.iter::<i32>().next() { class_id = v as u32; }
+        if let Some(v) = pred.iter::<i32>().next() {
+            class_id = v as u32;
+        }
         Ok(class_id)
     }
 }

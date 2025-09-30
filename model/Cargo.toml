@@ -10,6 +10,9 @@ crate-type = ["cdylib", "rlib"]
 anyhow = "1"
 clap = { version = "4", features = ["derive"] }
 image = "0.25"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rmp-serde = "1"
 
 # Base (shared) features for all targets (wasm-safe subset).
 burn = { version = "0.18", features = ["wgpu"] }

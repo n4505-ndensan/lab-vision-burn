@@ -2,7 +2,13 @@
 	import { Anvil } from '$lib/anvil';
 	import { onMount } from 'svelte';
 
-	let { width = 28, height = 28 } = $props();
+	interface Props {
+		width?: number;
+		height?: number;
+		onUpdate?: (image: ImageData) => void;
+	}
+
+	let { width = 28, height = 28, onUpdate = (i) => {} }: Props = $props();
 
 	const scale = 10;
 
@@ -19,10 +25,12 @@
 	let drawing = $state(false);
 
 	const updateCanvas = () => {
+		const imageData = new ImageData(anvil.getBufferData().slice(), width, height);
+		onUpdate(imageData);
 		if (canvas) {
 			const ctx = canvas.getContext('2d');
 			if (ctx) {
-				ctx.putImageData(new ImageData(anvil.getBufferData().slice(), width, height), 0, 0);
+				ctx.putImageData(imageData, 0, 0);
 			}
 		}
 	};
@@ -54,6 +62,10 @@
 		canvas = document.getElementById('canvas') as HTMLCanvasElement;
 		if (!canvas) return;
 
+		// initial reset
+		anvil.fillAll([255, 255, 255, 255]);
+		updateCanvas();
+
 		canvas.addEventListener(
 			'pointerdown',
 			(e) => {
@@ -75,18 +87,17 @@
 			{ passive: false }
 		);
 
-		canvas.addEventListener(
+		window.addEventListener(
 			'pointerup',
 			(e) => {
 				e.preventDefault();
-				rawX = e.offsetX;
-				rawY = e.offsetY;
 				lastPxX = undefined;
 				lastPxY = undefined;
 				drawing = false;
 			},
 			{ passive: false }
 		);
+
 		canvas.addEventListener(
 			'pointerout',
 			(e) => {
@@ -127,7 +138,7 @@
 >
 
 <div id="info-container">
-	<p>raw: {rawX}, {rawY}</p>
+	<!-- <p>raw: {rawX}, {rawY}</p> -->
 	<p>pixel: {pxX}, {pxY}</p>
 	<p>{drawing ? 'drawing' : 'not drawing'}</p>
 </div>
@@ -146,5 +157,7 @@
 		flex-direction: column;
 		gap: 0.5em;
 		margin-top: 1em;
+
+		font-size: 12px;
 	}
 </style>
