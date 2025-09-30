@@ -18,7 +18,7 @@
 		onStart = () => {}
 	}: Props = $props();
 
-	const scale = 10;
+	const scale = 12;
 
 	let canvas: HTMLCanvasElement;
 
@@ -143,6 +143,7 @@
 </div>
 
 <button
+	style="align-self: end;"
 	onclick={() => {
 		anvil.fillAll([255, 255, 255, 255]);
 		updateCanvas();
@@ -158,6 +159,7 @@
 <style>
 	#canvas-container {
 		border: 1px solid black;
+		margin-bottom: 12px;
 	}
 
 	#canvas {
@@ -170,6 +172,8 @@
 		gap: 0.5em;
 		margin-top: 1em;
 
-		font-size: 12px;
+		font-size: 8px;
+
+		opacity: 0.5;
 	}
 </style>

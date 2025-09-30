@@ -40,7 +40,6 @@
 	}
 	.chart_item_label {
 		font-size: 16px;
-		font-weight: bold;
 		margin-bottom: 12px;
 	}
 	.chart_item_bar_container {
@@ -49,14 +48,14 @@
 		justify-content: end;
 		width: 24px;
 		flex-grow: 1;
-		background-color: #00000010;
+		background-color: #ffffff10;
 	}
 	.chart_item_bar {
 		width: 100%;
 		background-color: blue;
 	}
 	.chart_item_value {
-		font-size: 12px;
+		font-size: 8px;
 		margin-top: 4px;
 	}
 </style>

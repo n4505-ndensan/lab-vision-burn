@@ -85,74 +85,96 @@
 	});
 </script>
 
-<div class="root">
-	<h1>LAB-VISION-BURN</h1>
-	<p>WASM: {ready ? 'ready' : 'loading...'}</p>
-	<div class="content">
-		<div class="left">
-			<DrawCanvas
-				width={28}
-				height={28}
-				onStart={() => {
-					// 途中で再描画開始 → 推論キャンセル
-					if (inferTimer) clearTimeout(inferTimer);
-				}}
-				onUpdate={(i) => {
-					// ライブで表示更新のみ
-					image = i;
-				}}
-				onCommit={(i) => {
-					image = i;
-					scheduleInference();
-				}}
-			/>
-		</div>
-		<div class="right">
-			<!-- <p>result: {JSON.stringify(result)}</p> -->
+{#if !ready}
+	<div class="loading_root">
+		<h1>LOADING...</h1>
+	</div>
+{:else}
+	<div class="root">
+		<h1>Lab-Vision-Burn</h1>
 
-			{#if guess !== undefined}
-				<p>I guess it's {guess}!</p>
-			{:else}
-				<p>Write your favorite number!</p>
-			{/if}
+		<p>WASM: {ready ? 'ready' : 'loading...'}</p>
 
-			<ResultChart result={result?.length ? result : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]} />
+		<div class="content">
+			<div class="left">
+				<DrawCanvas
+					width={28}
+					height={28}
+					onStart={() => {
+						// 途中で再描画開始 → 推論キャンセル
+						if (inferTimer) clearTimeout(inferTimer);
+					}}
+					onUpdate={(i) => {
+						// ライブで表示更新のみ
+						image = i;
+					}}
+					onCommit={(i) => {
+						image = i;
+						scheduleInference();
+					}}
+				/>
+			</div>
+			<div class="right">
+				<!-- <p>result: {JSON.stringify(result)}</p> -->
 
-			<div>
-				<p style="font-size: 12px">process</p>
-				<div class="process_canvas_container">
-					<canvas bind:this={originalImageCanvas} class="process_canvas" width={28} height={28}
-					></canvas>
+				<ResultChart result={result?.length ? result : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]} />
 
-					<p>→</p>
+				{#if guess !== undefined}
+					<p>
+						<span style="text-transform: none;">x</span> I guess it's
+						<span style="color: #FF00FF;">{guess}</span>!
+					</p>
+				{:else}
+					<p>Write your favorite number!</p>
+				{/if}
 
-					<canvas bind:this={processedImageCanvas} class="process_canvas" width={28} height={28}
-					></canvas>
+				<div style="margin-top: 36px;">
+					<p style="font-size: 8px">process</p>
+					<div class="process_canvas_container">
+						<canvas bind:this={originalImageCanvas} class="process_canvas" width={28} height={28}
+						></canvas>
+
+						<p>→</p>
+
+						<canvas bind:this={processedImageCanvas} class="process_canvas" width={28} height={28}
+						></canvas>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+{/if}
 
 <style>
+	.loading_root {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+
+		width: 100%;
+		height: 100vh;
+	}
+
 	.root {
 		display: flex;
 		flex-direction: column;
-		width: 100%;
+		padding: 36px 64px;
+		width: fit-content;
+		justify-self: center;
 		height: 100%;
-		margin: 36px 48px;
+		background-color: #202020;
 	}
 	.content {
 		display: flex;
 		flex-direction: row;
 		width: 100%;
-		gap: 12px;
-		margin-top: 36px;
+		gap: 56px;
+		margin-top: 24px;
 	}
 	.left {
 		display: flex;
 		flex-direction: column;
-		min-width: 400px;
 	}
 	.right {
 		display: flex;
