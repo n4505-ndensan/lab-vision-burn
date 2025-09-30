@@ -44,27 +44,46 @@
 	};
 
 	$effect(() => {
-		if (drawing) {
-			anvil.setPixel(pxX, pxY, [0, 0, 0, 255]);
+		if (!drawing) return;
+		// 範囲外なら無視
+		if (pxX < 0 || pxY < 0 || pxX >= width || pxY >= height) return;
+		anvil.setPixel(pxX, pxY, [0, 0, 0, 255]);
 
-			// completion line
-			if (lastPxX && lastPxY) {
-				const dx = pxX - lastPxX;
-				const dy = pxY - lastPxY;
-				for (let step = 1; step <= Math.max(Math.abs(dx), Math.abs(dy)); step++) {
-					const intermediateX =
-						lastPxX + Math.round((dx * step) / Math.max(Math.abs(dx), Math.abs(dy)));
-					const intermediateY =
-						lastPxY + Math.round((dy * step) / Math.max(Math.abs(dx), Math.abs(dy)));
+		// 直線補完（前フレームからの差分を埋める）
+		if (lastPxX !== undefined && lastPxY !== undefined) {
+			const dx = pxX - lastPxX;
+			const dy = pxY - lastPxY;
+			const steps = Math.max(Math.abs(dx), Math.abs(dy));
+			for (let step = 1; step <= steps; step++) {
+				const intermediateX = lastPxX + Math.round((dx * step) / steps);
+				const intermediateY = lastPxY + Math.round((dy * step) / steps);
+				if (
+					intermediateX >= 0 &&
+					intermediateY >= 0 &&
+					intermediateX < width &&
+					intermediateY < height
+				) {
 					anvil.setPixel(intermediateX, intermediateY, [0, 0, 0, 255]);
 				}
 			}
-
-			updateCanvas();
-			lastPxX = pxX;
-			lastPxY = pxY;
 		}
+
+		updateCanvas();
+		lastPxX = pxX;
+		lastPxY = pxY;
 	});
+
+	// CSS transform(scale) やレイアウトに依存しない座標計算
+	function computeCanvasCoords(e: PointerEvent) {
+		if (!canvas) return { cx: -1, cy: -1 };
+		const rect = canvas.getBoundingClientRect();
+		// 可視上の位置 -> 論理キャンバス座標へスケール変換
+		const scaleX = canvas.width / rect.width;
+		const scaleY = canvas.height / rect.height;
+		const cx = (e.clientX - rect.left) * scaleX;
+		const cy = (e.clientY - rect.top) * scaleY;
+		return { cx, cy };
+	}
 
 	onMount(() => {
 		canvas = document.getElementById('canvas') as HTMLCanvasElement;
@@ -77,9 +96,12 @@
 		canvas.addEventListener(
 			'pointerdown',
 			(e) => {
+				if (!e.isPrimary) return; // マルチタッチは無視
 				e.preventDefault();
-				rawX = e.offsetX;
-				rawY = e.offsetY;
+				canvas.setPointerCapture(e.pointerId);
+				const { cx, cy } = computeCanvasCoords(e);
+				rawX = cx;
+				rawY = cy;
 				drawing = true;
 				onStart();
 			},
@@ -89,9 +111,12 @@
 		canvas.addEventListener(
 			'pointermove',
 			(e) => {
+				if (!drawing) return;
+				if (!e.isPrimary) return;
 				e.preventDefault();
-				rawX = e.offsetX;
-				rawY = e.offsetY;
+				const { cx, cy } = computeCanvasCoords(e);
+				rawX = cx;
+				rawY = cy;
 			},
 			{ passive: false }
 		);
@@ -99,13 +124,16 @@
 		window.addEventListener(
 			'pointerup',
 			(e) => {
+				if (!e.isPrimary) return;
 				e.preventDefault();
 				lastPxX = undefined;
 				lastPxY = undefined;
-				drawing = false;
-				// 最終画像を callback
-				const imageData = new ImageData(anvil.getBufferData().slice(), width, height);
-				onCommit(imageData);
+				if (drawing) {
+					drawing = false;
+					// 最終画像を callback
+					const imageData = new ImageData(anvil.getBufferData().slice(), width, height);
+					onCommit(imageData);
+				}
 			},
 			{ passive: false }
 		);
@@ -113,20 +141,19 @@
 		canvas.addEventListener(
 			'pointerout',
 			(e) => {
-				e.preventDefault();
-				rawX = e.offsetX;
-				rawY = e.offsetY;
-				// drawing = false;
+				if (!e.isPrimary) return;
+				// pointer capture中は描画継続させるためここでは停止しない
 			},
-			{ passive: false }
+			{ passive: true }
 		);
 		canvas.addEventListener(
 			'pointercancel',
 			(e) => {
+				if (!e.isPrimary) return;
 				e.preventDefault();
-				rawX = e.offsetX;
-				rawY = e.offsetY;
 				drawing = false;
+				lastPxX = undefined;
+				lastPxY = undefined;
 			},
 			{ passive: false }
 		);
@@ -164,6 +191,10 @@
 
 	#canvas {
 		transform-origin: 0 0;
+		/* スマホでのスクロール/ピンチによる干渉を防ぐ */
+		touch-action: none;
+		-webkit-user-select: none;
+		user-select: none;
 	}
 
 	#info-container {
