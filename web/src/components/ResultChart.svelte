@@ -18,7 +18,7 @@
 						: 'blue'}"
 				></div>
 			</div>
-			<p class="chart_item_value">{Math.floor(item * 100) / 100}</p>
+			<p class="chart_item_value">{Math.round(item * 100) / 100}</p>
 		</div>
 	{/each}
 </div>

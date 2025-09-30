@@ -118,6 +118,9 @@
 				/>
 			</div>
 			<div class="right">
+				<p style="color: #00FFFF; font-family: ZFB09; font-size: 8px;text-transform: none;">
+					result
+				</p>
 				<!-- <p>result: {JSON.stringify(result)}</p> -->
 
 				<ResultChart result={result?.length ? result : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]} />
