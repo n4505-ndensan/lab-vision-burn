@@ -97,7 +97,9 @@
 
 		<div class="content">
 			<div class="left">
-				<p style="color: #FF00FF; font-family: ZFB09; font-size: 8px;text-transform: none;">
+				<p
+					style="color: #00FFFF; font-family: ZFB09; font-size: 8px; text-transform: none; margin-bottom: 8px;"
+				>
 					canvas
 				</p>
 				<DrawCanvas
