@@ -93,10 +93,13 @@
 	<div class="root">
 		<h1>Lab-Vision-Burn</h1>
 
-		<p>WASM: {ready ? 'ready' : 'loading...'}</p>
+		<!-- <p>WASM: {ready ? 'ready' : 'loading...'}</p> -->
 
 		<div class="content">
 			<div class="left">
+				<p style="color: #FF00FF; font-family: ZFB09; font-size: 8px;text-transform: none;">
+					canvas
+				</p>
 				<DrawCanvas
 					width={28}
 					height={28}
@@ -134,7 +137,7 @@
 						<canvas bind:this={originalImageCanvas} class="process_canvas" width={28} height={28}
 						></canvas>
 
-						<p>→</p>
+						<p>&gt;</p>
 
 						<canvas bind:this={processedImageCanvas} class="process_canvas" width={28} height={28}
 						></canvas>
@@ -159,17 +162,19 @@
 	.root {
 		display: flex;
 		flex-direction: column;
-		padding: 36px 64px;
+		padding: 36px 80px;
 		width: fit-content;
 		justify-self: center;
 		height: 100%;
-		background-color: #202020;
+		background-color: #101010;
+		border-left: 1px solid #80808080;
+		border-right: 1px solid #80808080;
 	}
 	.content {
 		display: flex;
 		flex-direction: row;
 		width: 100%;
-		gap: 56px;
+		gap: 72px;
 		margin-top: 24px;
 	}
 	.left {
@@ -186,13 +191,14 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: 8px;
+		gap: 12px;
 		margin-top: 4px;
 	}
 	.process_canvas {
 		width: 48px;
 		height: 48px;
-		border: 1px solid black;
 		image-rendering: pixelated;
+
+		background-color: white;
 	}
 </style>

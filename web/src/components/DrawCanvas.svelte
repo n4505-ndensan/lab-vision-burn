@@ -18,7 +18,7 @@
 		onStart = () => {}
 	}: Props = $props();
 
-	const scale = 12;
+	const scale = 14;
 
 	let canvas: HTMLCanvasElement;
 
@@ -158,7 +158,7 @@
 
 <style>
 	#canvas-container {
-		border: 1px solid black;
+		/* border: 1px solid black; */
 		margin-bottom: 12px;
 	}
 
