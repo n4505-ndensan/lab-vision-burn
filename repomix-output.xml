@@ -41,37 +41,4071 @@ The content is organized as follows:
 
 <directory_structure>
 .gitignore
-Cargo.toml
-src/data.rs
-src/main.rs
-src/model.rs
-src/train.rs
+.gitmodules
+model/.cargo/config.toml
+model/build.rs
+model/Cargo.toml
+model/src/data.rs
+model/src/lib.rs
+model/src/main.rs
+model/src/model.rs
+model/src/state.rs
+model/src/train.rs
+model/src/web.rs
+package.json
+web/.gitignore
+web/.npmrc
+web/.prettierignore
+web/.prettierrc
+web/eslint.config.js
+web/package.json
+web/README.md
+web/src/app.d.ts
+web/src/app.html
+web/src/components/DrawCanvas.svelte
+web/src/components/ResultChart.svelte
+web/src/lib/anvil/.git
+web/src/lib/anvil/.gitignore
+web/src/lib/anvil/index.ts
+web/src/lib/anvil/LICENSE
+web/src/lib/anvil/package.json
+web/src/lib/anvil/README.md
+web/src/lib/anvil/src/Anvil.ts
+web/src/lib/anvil/src/buffer/diff/LayerDiffs.ts
+web/src/lib/anvil/src/buffer/diff/LayerDiffsController.ts
+web/src/lib/anvil/src/buffer/PixelBuffer.ts
+web/src/lib/anvil/src/buffer/tile/LayerTiles.ts
+web/src/lib/anvil/src/buffer/tile/LayerTilesController.ts
+web/src/lib/anvil/src/ops_wasm/Cargo.toml
+web/src/lib/anvil/src/ops_wasm/src/buffer/mod.rs
+web/src/lib/anvil/src/ops_wasm/src/buffer/patch_buffer_rgba.rs
+web/src/lib/anvil/src/ops_wasm/src/fill/mod.rs
+web/src/lib/anvil/src/ops_wasm/src/lib.rs
+web/src/lib/anvil/src/ops/fill/FloodFill.ts
+web/src/lib/anvil/src/ops/pattern/Pattern.ts
+web/src/lib/anvil/src/ops/transfer/Transfer.ts
+web/src/lib/anvil/src/patch.ts
+web/src/lib/anvil/src/types.ts
+web/src/lib/anvil/test/Anvil.test.ts
+web/src/lib/anvil/test/LayerDiffs.test.ts
+web/src/lib/anvil/test/LayerTiles.test.ts
+web/src/lib/anvil/test/Pattern.test.ts
+web/src/lib/anvil/test/PatternMaskCache.test.ts
+web/src/lib/anvil/test/PixelBuffer.test.ts
+web/src/lib/anvil/tsconfig.json
+web/src/lib/anvil/vitest.config.ts
+web/src/lib/assets/favicon.svg
+web/src/lib/index.ts
+web/src/routes/+layout.svelte
+web/src/routes/+page.js
+web/src/routes/+page.svelte
+web/static/robots.txt
+web/svelte.config.js
+web/tsconfig.json
+web/vite.config.ts
 </directory_structure>
 
 <files>
 This section contains the contents of the repository's files.
 
-<file path=".gitignore">
-/target
+<file path="web/src/lib/anvil/.git">
+gitdir: ../../../../.git/modules/web/src/lib/anvil
 </file>
 
-<file path="Cargo.toml">
+<file path="web/src/lib/anvil/.gitignore">
+dist
+.wrangler
+.output
+.vercel
+.netlify
+.vinxi
+.vite-inspect
+app.config.timestamp_*.js
+
+# Environment
+.env
+.env*.local
+
+# dependencies
+node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+*.launch
+.settings/
+
+# Temp
+gitignore
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# repomix
+repomix-output.txt
+repomix-output.xml
+
+*.heapprofile
+
+*.sledge
+node_modules
+
+*.lnk
+.github/instructions
+.repomix
+# .vscode
+
+target
+
+post_build.bat
+
+.cargo
+.tauri
+</file>
+
+<file path="web/src/lib/anvil/index.ts">
+// Public API exports for @sledge/anvil
+export type { Patch, PatchMetadata } from './src/patch.js';
+export type { LayerPatch, Point, RGBA, Size, TileBounds, TileIndex, TileInfo } from './src/types.js';
+
+// Core classes
+export { Anvil } from './src/Anvil.js';
+export { PixelBuffer } from './src/buffer/PixelBuffer.js';
+
+// Utility functions
+export { linearToTileIndex, packedU32ToRgba, rgbaToPackedU32, tileIndexToLinear } from './src/types.js';
+
+// For advanced usage - direct access to components
+export { LayerDiffs } from './src/buffer/diff/LayerDiffs.js';
+export { LayerDiffsController } from './src/buffer/diff/LayerDiffsController.js';
+export { LayerTiles } from './src/buffer/tile/LayerTiles.js';
+export { LayerTilesController } from './src/buffer/tile/LayerTilesController.js';
+
+// Ops
+export { floodFill } from './src/ops/fill/FloodFill.js';
+export { createSolidPattern, patternStamp } from './src/ops/pattern/Pattern.js';
+export { transferBuffer } from './src/ops/transfer/Transfer.js';
+</file>
+
+<file path="web/src/lib/anvil/LICENSE">
+MIT License
+
+Copyright (c) 2025 sledge
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</file>
+
+<file path="web/src/lib/anvil/package.json">
+{
+  "name": "@sledge/anvil",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@sledge/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "wasm:build": "wasm-pack build ./src/ops_wasm --target bundler"
+  }
+}
+</file>
+
+<file path="web/src/lib/anvil/README.md">
+# Anvil
+
+<img src="./icon_120.png" width="96" height="96" style="image-rendering: pixelated;"  />
+
+Anvil is the pixel buffer processing engine for Sledge. It focuses on deterministic, side-effect free (except event hooks) manipulation of layer image data: pixels, tiles, diffs (patches), and stroke-oriented mutation aggregation.
+
+Status: Work In Progress (Foundational API design phase)
+
+## Core Principles
+
+1. Single Responsibility: Anvil owns in‑memory pixel state + diff/patch generation. It does NOT own UI events, global history stacks, or WebGL orchestration.
+2. Deterministic & Testable: All mutations are explicit API calls; no hidden global state, no implicit DOM/WebGL operations.
+3. Batch First: Expensive / high frequency operations should aggregate into patches (tile fills, pixel lists) before flushing.
+4. Renderer Agnostic: Rendering is an adapter consuming dirty tile info + buffer views.
+5. Lean Objects: Avoid over-naming concepts (e.g. no ambiguous "snapshot"). Terminology is concise and consistent.
+
+## Terminology
+
+| Term            | Meaning                                                                                            |
+| --------------- | -------------------------------------------------------------------------------------------------- |
+| PixelBuffer     | Raw contiguous RGBA8 (Uint8ClampedArray) with width/height                                         |
+| Tile            | Fixed-size sub-region (default 32 or 16 TBD) used for dirty tracking & uniform optimization        |
+| Uniform Tile    | A tile known to be a single flat color (fast fill & diff compression)                              |
+| Patch           | Aggregated atomic change set (whole, tiles[], pixels[]) used for undo/redo & history serialization |
+| DiffAccumulator | Collector that records mutations until flush() produces a Patch                                    |
+| LayerEngine     | Facade exposing per-layer pixel/tile/diff operations                                               |
+| Dirty Tiles     | Tiles marked as needing renderer texture upload                                                    |
+
+## Non-Goals (Phase 1)
+
+| Out of Scope                     | Rationale                                                                             |
+| -------------------------------- | ------------------------------------------------------------------------------------- |
+| Global multi-layer history stack | Stays in app so non-pixel actions (canvas resize, layer tree ops) unify there         |
+| WebGL resource lifecycle         | Keep renderer pluggable (future: Canvas2D fallback, headless tests)                   |
+| Input gesture handling           | Remains in app (CanvasAreaInteract / Operator) before coordinates become engine calls |
+| Selection logic                  | Injected as predicate/mask, not owned                                                 |
+| Tool preset storage              | App concern; engine only consumes parameters                                          |
+| Serialization format decisions   | Patch objects are plain data; persistence layer decides encoding                      |
+
+## Phase Roadmap
+
+| Phase | Focus                  | Deliverables                                                                     |
+| ----- | ---------------------- | -------------------------------------------------------------------------------- |
+| 0     | Draft (this)           | README, minimal interface sketch                                                 |
+| 1     | Core Buffer & Tiles    | PixelBuffer, TileSystem, dirty tracking, simple setPixel, tile fill, Patch shape |
+| 2     | Diff Aggregation       | DiffAccumulator, flush(), undo/redo applyPatch                                   |
+| 3     | Tool Bridge (optional) | Pen primitive helpers (mask cache + line interpolation) extracted from app       |
+| 4     | Renderer Adapter       | Helper to iterate dirty tiles + pack sub-views for WebGL uploads                 |
+| 5     | Performance            | Bitset dirty flags, uniform detection fast‑path, optional WASM hot paths         |
+| 6     | Extended Ops           | Flood fill / shape stamp modules (pluggable)                                     |
+
+## Minimal API Sketch (Phase 1–2)
+
+```ts
+type RGBA = [r: number, g: number, b: number, a: number];
+
+interface PixelBuffer {
+	readonly width: number;
+	readonly height: number;
+	data: Uint8ClampedArray; // length = width * height * 4
+	get(x: number, y: number): RGBA;
+	set(x: number, y: number, c: RGBA): void; // no diff logic here
+	resize(w: number, h: number, opts?: { srcOrigin?: {x:number;y:number}; destOrigin?: {x:number;y:number} }): void;
+}
+
+interface TileIndex { row: number; col: number; }
+
+interface TileInfo {
+	index: TileIndex;
+	isDirty: boolean;
+	isUniform: boolean;
+	uniformColor?: RGBA;
+}
+
+interface TileSystem {
+	readonly tileSize: number;
+	readonly rows: number;
+	readonly cols: number;
+	markDirty(x: number, y: number): void; // by pixel
+	fillTile(tile: TileIndex, color: RGBA, record?: (prevColor: RGBA | undefined) => void): void;
+	getTile(tile: TileIndex): TileInfo;
+	forEachDirty(cb: (tile: TileInfo) => void): void;
+	clearDirty(): void;
+}
+
+interface Patch {
+	whole?: { before: Uint8ClampedArray; after: Uint8ClampedArray };
+	tiles?: Array<{ tile: TileIndex; before?: number; after: number }>; // packed RGBA32
+	pixels?: Array<{
+		tile: TileIndex;
+		idx: Uint16Array;          // offsets within tile (0..tileSize*tileSize-1)
+		before: Uint32Array;       // packed RGBA32
+		after: Uint32Array;
+	}>;
+}
+
+interface DiffAccumulator {
+	addPixel(x: number, y: number, before: RGBA, after: RGBA): void;
+	addTileFill(tile: TileIndex, before: RGBA | undefined, after: RGBA): void;
+	flush(): Patch | undefined;
+	pendingPixels(): number;
+}
+
+interface LayerEngine {
+	readonly buffer: PixelBuffer;
+	readonly tiles: TileSystem;
+	readonly diffs: DiffAccumulator;
+	setPixel(x: number, y: number, rgba: RGBA, opts?: { skipIfDiffExists?: boolean }): boolean; // returns true if mutated
+	applyPatch(patch: Patch, mode: 'undo' | 'redo'): void;
+	getDirtyTiles(): TileIndex[]; // snapshot (renderer convenience)
+	clearDirtyFlags(): void;
+}
+```
+
+## Example (Single Layer Engine)
+
+```ts
+const engine = new LayerEngineImpl({ width: 256, height: 256 });
+engine.setPixel(10, 20, [255,0,0,255]);
+engine.setPixel(30, 52, [0,0,255,255]);
+
+// Iterate dirty tiles for renderer
+for (const tile of engine.getDirtyTiles()) {
+	// upload tile sub-rectangle from engine.buffer.data
+}
+
+const patch = engine.diffs.flush();
+if (patch) historyAdapter.record(layerId, patch);
+```
+
+## Under Consideration (Global / Multi-Layer Coordinator)
+
+We may later introduce an optional `AnvilDirector` that:
+* Manages N `LayerEngine` instances
+* Aggregates all dirty tiles by layer id
+* Provides a stable ordering for batched renderer uploads
+* Offers bulk serialization for autosave
+
+This is explicitly deferred until single-layer ergonomics & performance are solid.
+
+## Potential Optimizations (Planned)
+
+| Optimization           | Notes                                                        |
+| ---------------------- | ------------------------------------------------------------ |
+| Bitset dirty tracking  | Replace array of booleans to reduce memory & speed iteration |
+| Uniform tile detection | Fast skip of upload + diff compression                       |
+| SIMD / WASM packing    | Convert RGBA8 <-> RGBA32 in bulk                             |
+| Region coalescing      | Merge adjacent dirty tiles for fewer GL texSubImage calls    |
+| Lazy resize copy       | Defer pixel copy until first write inside new area           |
+
+## Testing Strategy
+
+| Layer           | Tests                                                      |
+| --------------- | ---------------------------------------------------------- |
+| PixelBuffer     | get/set/resize edge cases (bounds, negative origins clamp) |
+| TileSystem      | dirty marking, uniform transition, fill semantics          |
+| DiffAccumulator | single pixel, mixed tile+pixel, flush idempotency          |
+| LayerEngine     | patch apply undo/redo parity, dirty tile exposure          |
+
+## Integration Points (App Side)
+
+| Direction          | Hook                                                |
+| ------------------ | --------------------------------------------------- |
+| Engine -> App      | patch flushed (onPatch callback or manual pull)     |
+| App -> Engine      | applyPatch (undo/redo), resize, setPixel, bulk fill |
+| Engine -> Renderer | getDirtyTiles + PixelBuffer slice view              |
+
+## Current Vision Examples
+
+> Note all the codes below are just pseudo code to illustrate the idea.
+
+1. Keep Layer's buffer in one anvil, and provide control by API.
+
+```ts
+// initialize
+const allAnvils = allLayers().map((layer) => new Anvil(layer, defaultBuffers[layer.id] ?? undefined));
+
+// write pixel in (10, 20) of first layer
+const firstAnvil = allAnvils[0];
+firstAnvil.setPixel(10, 20, { r: 255, g: 0, b: 0, a: 255 });
+```
+
+2. Auto-managed tile-based diff system / diff system
+
+```ts
+console.log(firstAnvil.TILE_SIZE); // 16
+firstAnvil.setPixel(10, 20, { r: 255, g: 0, b: 0, a: 255 });
+
+// dev note: dirty tiles flag may should be replaced by bit buffer.
+console.log(firstAnvil.getDirtyTiles()); // [{ x: 0, y: 1 }]
+
+firstAnvil.setPixel(30, 52, { r: 0, g: 0, b: 255, a: 255 });
+console.log(firstAnvil.getDirtyTiles()); // [{ x: 0, y: 1 }, { x: 1, y: 3 }]
+
+firstAnvil.clearDirtyTiles();
+console.log(firstAnvil.getDirtyTiles()); // []
+
+console.log(firstAnvil.getDiffs()); // [PixelDiff, PixelDiff]
+
+const diffs = firstAnvil.popDiffs();
+registerDiffsToHistory(diffs);
+
+console.log(firstAnvil.getDiffs()); // []
+```
+
+> Features below are under consideration.
+> Note that "Anvil" from below is the global anvil managing multiple layers.
+
+3. Support multiple buffers (undecided)
+
+```ts
+const globalAnvil = new Anvil(allLayers(), defaultBuffers);
+
+// activate first buffer.
+globalAnvil.setActiveBuffer(0);
+// activate first buffer.
+globalAnvil.setActiveBuffer("layer1");
+// activate first buffer.
+globalAnvil.setActiveBuffer(allLayers()[0].id /* layer1-uuid */);
+
+// write pixel in (10, 20) of first layer (which is active)
+globalAnvil.setPixel(10, 20, { r: 255, g: 0, b: 0, a: 255 });
+
+globalAnvil.getDirtyTiles(); // { layer1-uuid: [{ x: 0, y: 1 }], layer2-uuid: [] }
+
+// activate second buffer.
+globalAnvil.setActiveBuffer(1);
+// write pixel in (30, 52) of second layer (which is active)
+globalAnvil.setPixel(30, 52, { r: 0, g: 0, b: 255, a: 255 });
+
+globalAnvil.getDirtyTiles(); // { layer1-uuid: [{ x: 0, y: 1 }], layer2-uuid: [{ x: 1, y: 3 }] }
+```
+
+4. Support WebGL Backend
+
+```ts
+// register canvas for global anvil
+const canvasRef = document.getElementById("my-canvas") as HTMLCanvasElement;
+globalAnvil.useWebGLBackend(canvasRef);
+
+// render only dirty tiles of first layer
+globalAnvil.reRenderWebGL({ onlyDirtyTiles: true, layers: [firstAnvil] });
+```
+
+## Deferred / Not Planned (for now)
+
+| Item                          | Reason                              |
+| ----------------------------- | ----------------------------------- |
+| Global undo stack ownership   | Cross-domain concerns remain in app |
+| Built-in WebGL renderer       | Keep adapter boundary clean         |
+| Custom color models (HSV etc) | Out of scope for pixel diff core    |
+| Async workers for every op    | Premature; measure first            |
+
+## Next Steps
+
+1. Implement Phase 1 core (`PixelBuffer`, `TileSystem` skeleton)
+2. Port existing `PixelBufferManager` logic + tests
+3. Introduce `DiffAccumulator` parity with current `DiffManager`
+4. Replace `LayerImageAgent` internals with `LayerEngineImpl` adapter
+5. Add Pen primitive extraction (mask cache) under optional tools module
+6. Benchmark dirty tile iteration vs current implementation
+
+---
+Feedback welcome. Keep API surface minimal until real migration pressure appears.
+</file>
+
+<file path="web/src/lib/anvil/src/Anvil.ts">
+import { PixelBuffer } from './buffer/PixelBuffer';
+import { LayerDiffs } from './buffer/diff/LayerDiffs';
+import { LayerDiffsController } from './buffer/diff/LayerDiffsController';
+import { LayerTiles } from './buffer/tile/LayerTiles';
+import { LayerTilesController } from './buffer/tile/LayerTilesController';
+import type { LayerPatch, Point, RGBA, Size, TileIndex } from './types';
+
+/**
+ * Anvil - Main facade for pixel-based drawing operations
+ *
+ * Provides a unified interface for pixel manipulation, change tracking,
+ * and performance optimization through tile-based management.
+ */
+export class Anvil {
+  private buffer: PixelBuffer;
+  private tiles: LayerTiles;
+  private tilesController: LayerTilesController;
+  private diffs: LayerDiffs;
+  private diffsController: LayerDiffsController;
+  private readonly tileSize: number;
+
+  constructor(width: number, height: number, tileSize = 32) {
+    this.tileSize = tileSize;
+
+    // Initialize core components
+    this.buffer = new PixelBuffer(width, height);
+    this.tiles = new LayerTiles(width, height, tileSize);
+    this.tilesController = new LayerTilesController(this.tiles, this.buffer);
+    this.diffs = new LayerDiffs();
+    this.diffsController = new LayerDiffsController(this.diffs, this.tilesController, tileSize);
+  }
+
+  // Basic properties
+  getWidth(): number {
+    return this.buffer.width;
+  }
+
+  getHeight(): number {
+    return this.buffer.height;
+  }
+
+  /**
+   * Load existing image data into the anvil
+   * @param imageData Existing pixel buffer to copy from
+   */
+  loadImageData(imageData: Uint8ClampedArray): void {
+    const expectedLength = this.buffer.width * this.buffer.height * 4;
+    if (imageData.length !== expectedLength) {
+      throw new Error(`Image data length ${imageData.length} does not match expected ${expectedLength}`);
+    }
+
+    // Copy data to internal buffer
+    this.buffer.data.set(imageData);
+
+    // Reset all tracking states
+    this.diffs.clear();
+    this.tilesController.setAllDirty();
+  }
+
+  /**
+   * Get the current buffer data
+   * @returns Copy of the current pixel buffer
+   */
+  getImageData(): Uint8ClampedArray {
+    return new Uint8ClampedArray(this.buffer.data);
+  }
+
+  getTileSize(): number {
+    return this.tileSize;
+  }
+
+  // Pixel operations
+  getPixel(x: number, y: number): RGBA {
+    if (!this.buffer.isInBounds(x, y)) {
+      throw new Error(`Pixel coordinates (${x}, ${y}) are out of bounds`);
+    }
+    return this.buffer.get(x, y);
+  }
+
+  setPixel(x: number, y: number, color: RGBA): void {
+    if (!this.buffer.isInBounds(x, y)) {
+      throw new Error(`Pixel coordinates (${x}, ${y}) are out of bounds`);
+    }
+
+    const oldColor = this.buffer.get(x, y);
+    this.buffer.set(x, y, color);
+    this.tilesController.markDirtyByPixel(x, y);
+    this.diffsController.addPixel(x, y, oldColor, color);
+
+    // Check if the tile might have become uniform after this change
+    const tileIndex = this.tiles.pixelToTileIndex(x, y);
+    this.checkTileUniformity(tileIndex);
+  }
+
+  private checkTileUniformity(tileIndex: { row: number; col: number }): void {
+    // Use the tile controller's detectTileUniformity method
+    this.tilesController.detectTileUniformity(tileIndex);
+  } // Fill operations
+  fillRect(x: number, y: number, width: number, height: number, color: RGBA): void {
+    if (width <= 0 || height <= 0) return;
+
+    // Check if this fill operation covers entire tiles
+    const startTileX = Math.floor(x / this.tileSize);
+    const startTileY = Math.floor(y / this.tileSize);
+    const endTileX = Math.floor((x + width - 1) / this.tileSize);
+    const endTileY = Math.floor((y + height - 1) / this.tileSize);
+
+    // Optimize: if fill covers entire tiles exactly
+    const tilesWide = Math.ceil(this.getWidth() / this.tileSize);
+    const tilesHigh = Math.ceil(this.getHeight() / this.tileSize);
+
+    for (let tileY = startTileY; tileY <= endTileY; tileY++) {
+      for (let tileX = startTileX; tileX <= endTileX; tileX++) {
+        if (tileX >= tilesWide || tileY >= tilesHigh) continue;
+
+        const tileStartX = tileX * this.tileSize;
+        const tileStartY = tileY * this.tileSize;
+        const tileEndX = Math.min(tileStartX + this.tileSize, this.getWidth());
+        const tileEndY = Math.min(tileStartY + this.tileSize, this.getHeight());
+
+        // Check if this fill completely covers this tile
+        if (x <= tileStartX && y <= tileStartY && x + width >= tileEndX && y + height >= tileEndY) {
+          // Tile is completely covered - use tile fill optimization
+          const tileIndex = { row: tileY, col: tileX };
+          const oldColor = this.tilesController.getTileInfo(tileIndex).uniformColor || ([0, 0, 0, 0] as RGBA);
+
+          this.tilesController.fillTile(tileIndex, color);
+          this.diffsController.addTileFill(tileIndex, oldColor, color);
+        } else {
+          // Tile is partially covered - fill individual pixels
+          for (let py = Math.max(y, tileStartY); py < Math.min(y + height, tileEndY); py++) {
+            for (let px = Math.max(x, tileStartX); px < Math.min(x + width, tileEndX); px++) {
+              this.setPixel(px, py, color);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  fillAll(color: RGBA): void {
+    this.fillRect(0, 0, this.getWidth(), this.getHeight(), color);
+  }
+
+  // Buffer access
+  getBufferData(): Uint8ClampedArray {
+    return this.buffer.data;
+  }
+
+  /**
+   * Register a whole-buffer change (before/after) into diff tracking.
+   * Marks all tiles dirty so renderer can refresh.
+   */
+  addWholeBufferChange(before: Uint8ClampedArray, after: Uint8ClampedArray): void {
+    if (before.length !== after.length) throw new Error('addWholeBufferChange: length mismatch');
+    this.diffsController.addWholeBufferChange(before, after);
+    this.tilesController.setAllDirty();
+  }
+
+  // Resize operations
+  resize(newWidth: number, newHeight: number): void {
+    const newSize: Size = { width: newWidth, height: newHeight };
+    this.buffer.resize(newSize);
+    this.tilesController.resize(newWidth, newHeight);
+    // Note: This would invalidate current diffs, so we clear them
+    this.diffs.clear();
+  }
+
+  resizeWithOffset(newWidth: number, newHeight: number, offsetX: number, offsetY: number): void {
+    const newSize: Size = { width: newWidth, height: newHeight };
+    const destOrigin: Point = { x: offsetX, y: offsetY };
+    this.buffer.resize(newSize, { destOrigin });
+    this.tilesController.resize(newWidth, newHeight);
+    // Note: This would invalidate current diffs, so we clear them
+    this.diffs.clear();
+  }
+
+  // Change tracking
+  hasPendingChanges(): boolean {
+    return this.diffs.hasPendingChanges();
+  }
+
+  getPendingPixelCount(): number {
+    return this.diffsController.getPendingPixelCount();
+  }
+
+  previewPatch(): LayerPatch | null {
+    const patch = this.diffsController.previewPatch();
+    return (patch as LayerPatch) || null;
+  }
+
+  flush(): LayerPatch | null {
+    const patch = this.diffsController.flush();
+    this.tilesController.clearAllDirty();
+    return (patch as LayerPatch) || null;
+  }
+
+  discardPendingChanges(): void {
+    this.diffsController.discardPendingChanges();
+  }
+
+  // Tile management
+  getTileInfo() {
+    const tilesWide = Math.ceil(this.getWidth() / this.tileSize);
+    const tilesHigh = Math.ceil(this.getHeight() / this.tileSize);
+    return {
+      tilesWide,
+      tilesHigh,
+      totalTiles: tilesWide * tilesHigh,
+      tileSize: this.tileSize,
+    };
+  }
+
+  getDirtyTileIndices(): TileIndex[] {
+    return this.tilesController.getDirtyTiles().map((info) => info.index);
+  }
+
+  getTileUniformColor(tileIndex: TileIndex): RGBA | null {
+    const tileInfo = this.tilesController.getTileInfo(tileIndex);
+    return tileInfo.uniformColor || null;
+  }
+
+  /**
+   * Clear all dirty tile flags (typically after renderer finishes uploading).
+   * Note: flush() already clears dirty flags when producing a patch, but
+   * full texture uploads (e.g. initial frame, resize) may require manual clear.
+   */
+  clearDirtyTiles(): void {
+    this.tilesController.clearAllDirty();
+  }
+
+  // Debug and diagnostics
+  getDebugInfo() {
+    const bufferSize = this.getWidth() * this.getHeight() * 4;
+    const diffsDebug = this.diffsController.getDebugInfo();
+
+    return {
+      width: this.getWidth(),
+      height: this.getHeight(),
+      tileSize: this.tileSize,
+      bufferSize,
+      ...diffsDebug,
+      tileInfo: this.getTileInfo(),
+    };
+  }
+}
+</file>
+
+<file path="web/src/lib/anvil/src/buffer/diff/LayerDiffs.ts">
+import type { RGBA, TileIndex } from '../../types.js';
+import { rgbaToPackedU32 } from '../../types.js';
+
+/**
+ * Model: Accumulates pending diffs before flush into Patch
+ * Responsible for: efficient storage of pixel changes, tile fills
+ */
+export class LayerDiffs {
+  // Pixel-level changes grouped by tile
+  private pixelDiffs: Map<
+    string,
+    {
+      tile: TileIndex;
+      changes: Map<number, { before: number; after: number }>; // tileLocalIndex -> packed RGBA32
+    }
+  > = new Map();
+
+  // Tile-level uniform fills
+  private tileFills: Map<
+    string,
+    {
+      tile: TileIndex;
+      before?: number; // packed RGBA32, undefined if was non-uniform
+      after: number; // packed RGBA32
+    }
+  > = new Map();
+
+  // Whole buffer replacements (rare, for canvas resize etc)
+  private wholeBufferChange?: {
+    before: Uint8ClampedArray;
+    after: Uint8ClampedArray;
+  };
+
+  /**
+   * Add a pixel-level change
+   */
+  addPixelChange(tile: TileIndex, tileLocalIndex: number, before: RGBA, after: RGBA): void {
+    const tileKey = `${tile.row},${tile.col}`;
+
+    if (!this.pixelDiffs.has(tileKey)) {
+      this.pixelDiffs.set(tileKey, {
+        tile,
+        changes: new Map(),
+      });
+    }
+
+    const tileDiff = this.pixelDiffs.get(tileKey)!;
+    tileDiff.changes.set(tileLocalIndex, {
+      before: rgbaToPackedU32(before),
+      after: rgbaToPackedU32(after),
+    });
+  }
+
+  /**
+   * Add a tile-level uniform fill
+   */
+  addTileFill(tile: TileIndex, before: RGBA | undefined, after: RGBA): void {
+    const tileKey = `${tile.row},${tile.col}`;
+
+    this.tileFills.set(tileKey, {
+      tile,
+      before: before ? rgbaToPackedU32(before) : undefined,
+      after: rgbaToPackedU32(after),
+    });
+
+    // Remove any pixel-level changes for this tile (tile fill overrides)
+    this.pixelDiffs.delete(tileKey);
+  }
+
+  /**
+   * Add a whole buffer replacement
+   */
+  addWholeBufferChange(before: Uint8ClampedArray, after: Uint8ClampedArray): void {
+    this.wholeBufferChange = {
+      before: new Uint8ClampedArray(before),
+      after: new Uint8ClampedArray(after),
+    };
+
+    // Clear all other changes (whole buffer overrides everything)
+    this.pixelDiffs.clear();
+    this.tileFills.clear();
+  }
+
+  /**
+   * Check if there are any pending changes
+   */
+  hasPendingChanges(): boolean {
+    return this.wholeBufferChange !== undefined || this.tileFills.size > 0 || this.pixelDiffs.size > 0;
+  }
+
+  /**
+   * Get count of pending pixel changes
+   */
+  getPendingPixelCount(): number {
+    if (this.wholeBufferChange) {
+      return this.wholeBufferChange.after.length / 4;
+    }
+
+    let count = 0;
+
+    // Count tile fills (each tile = tileSize² pixels)
+    count += this.tileFills.size * (32 * 32); // TODO: get tileSize from somewhere
+
+    // Count individual pixel changes
+    for (const tileDiff of this.pixelDiffs.values()) {
+      count += tileDiff.changes.size;
+    }
+
+    return count;
+  }
+
+  /**
+   * Get the accumulated changes without clearing them
+   */
+  getPendingChanges(): {
+    wholeBuffer?: { before: Uint8ClampedArray; after: Uint8ClampedArray };
+    tileFills: Array<{ tile: TileIndex; before?: number; after: number }>;
+    pixelChanges: Array<{
+      tile: TileIndex;
+      indices: number[];
+      beforeValues: number[];
+      afterValues: number[];
+    }>;
+  } {
+    const tileFills = Array.from(this.tileFills.values());
+
+    const pixelChanges = Array.from(this.pixelDiffs.values()).map((tileDiff) => {
+      const indices: number[] = [];
+      const beforeValues: number[] = [];
+      const afterValues: number[] = [];
+
+      for (const [index, change] of tileDiff.changes) {
+        indices.push(index);
+        beforeValues.push(change.before);
+        afterValues.push(change.after);
+      }
+
+      return {
+        tile: tileDiff.tile,
+        indices,
+        beforeValues,
+        afterValues,
+      };
+    });
+
+    return {
+      wholeBuffer: this.wholeBufferChange,
+      tileFills,
+      pixelChanges,
+    };
+  }
+
+  /**
+   * Clear all pending changes
+   */
+  clear(): void {
+    this.wholeBufferChange = undefined;
+    this.tileFills.clear();
+    this.pixelDiffs.clear();
+  }
+
+  /**
+   * Check if a specific pixel has a pending change
+   */
+  hasPixelChange(tile: TileIndex, tileLocalIndex: number): boolean {
+    const tileKey = `${tile.row},${tile.col}`;
+
+    // Tile fill overrides pixel changes
+    if (this.tileFills.has(tileKey)) {
+      return true;
+    }
+
+    const tileDiff = this.pixelDiffs.get(tileKey);
+    return tileDiff?.changes.has(tileLocalIndex) ?? false;
+  }
+
+  /**
+   * Get memory usage estimate in bytes
+   */
+  getMemoryUsage(): number {
+    let bytes = 0;
+
+    // Whole buffer changes
+    if (this.wholeBufferChange) {
+      bytes += this.wholeBufferChange.before.byteLength;
+      bytes += this.wholeBufferChange.after.byteLength;
+    }
+
+    // Tile fills (approximately 32 bytes per entry)
+    bytes += this.tileFills.size * 32;
+
+    // Pixel changes (approximately 16 bytes per pixel + Map overhead)
+    for (const tileDiff of this.pixelDiffs.values()) {
+      bytes += tileDiff.changes.size * 16;
+    }
+
+    return bytes;
+  }
+}
+</file>
+
+<file path="web/src/lib/anvil/src/buffer/diff/LayerDiffsController.ts">
+import type { Patch } from '../../patch.js';
+import type { RGBA, TileIndex } from '../../types.js';
+import { LayerTilesController } from '../tile/LayerTilesController.js';
+import { LayerDiffs } from './LayerDiffs.js';
+
+/**
+ * Controller: High-level diff operations and patch generation
+ * Responsible for: business logic, patch creation, coordinate translation
+ */
+export class LayerDiffsController {
+  constructor(
+    private diffs: LayerDiffs,
+    private tilesController: LayerTilesController,
+    private tileSize: number
+  ) {}
+
+  /**
+   * Add a pixel change by global coordinates
+   */
+  addPixel(x: number, y: number, before: RGBA, after: RGBA): void {
+    const tile = this.tilesController['tiles'].pixelToTileIndex(x, y);
+    const bounds = this.tilesController['tiles'].getTileBounds(tile);
+
+    // Convert to tile-local coordinates
+    const localX = x - bounds.x;
+    const localY = y - bounds.y;
+    const tileLocalIndex = localY * this.tileSize + localX;
+
+    this.diffs.addPixelChange(tile, tileLocalIndex, before, after);
+  }
+
+  /**
+   * Add a tile fill operation
+   */
+  addTileFill(tile: TileIndex, before: RGBA | undefined, after: RGBA): void {
+    this.diffs.addTileFill(tile, before, after);
+  }
+
+  /**
+   * Add whole buffer replacement
+   */
+  addWholeBufferChange(before: Uint8ClampedArray, after: Uint8ClampedArray): void {
+    this.diffs.addWholeBufferChange(before, after);
+  }
+
+  /**
+   * Check if there are pending changes
+   */
+  hasPendingChanges(): boolean {
+    return this.diffs.hasPendingChanges();
+  }
+
+  /**
+   * Get count of pending pixel changes
+   */
+  getPendingPixelCount(): number {
+    return this.diffs.getPendingPixelCount();
+  }
+
+  /**
+   * Check if a specific pixel has a pending diff
+   */
+  hasPixelDiff(x: number, y: number): boolean {
+    const tile = this.tilesController['tiles'].pixelToTileIndex(x, y);
+    const bounds = this.tilesController['tiles'].getTileBounds(tile);
+
+    const localX = x - bounds.x;
+    const localY = y - bounds.y;
+    const tileLocalIndex = localY * this.tileSize + localX;
+
+    return this.diffs.hasPixelChange(tile, tileLocalIndex);
+  }
+
+  /**
+   * Flush accumulated changes into a Patch and clear internal state
+   */
+  flush(): Patch | undefined {
+    if (!this.diffs.hasPendingChanges()) {
+      return undefined;
+    }
+
+    const pending = this.diffs.getPendingChanges();
+    const patch: Patch = {};
+
+    // Whole buffer changes
+    if (pending.wholeBuffer) {
+      patch.whole = pending.wholeBuffer;
+    }
+
+    // Tile fills
+    if (pending.tileFills.length > 0) {
+      patch.tiles = pending.tileFills;
+    }
+
+    // Pixel changes - convert to the Patch format
+    if (pending.pixelChanges.length > 0) {
+      patch.pixels = pending.pixelChanges.map((change) => ({
+        tile: change.tile,
+        idx: new Uint16Array(change.indices),
+        before: new Uint32Array(change.beforeValues),
+        after: new Uint32Array(change.afterValues),
+      }));
+    }
+
+    // Clear accumulated changes
+    this.diffs.clear();
+
+    return patch;
+  }
+
+  /**
+   * Force flush without clearing (for preview/inspection)
+   */
+  previewPatch(): Patch | undefined {
+    if (!this.diffs.hasPendingChanges()) {
+      return undefined;
+    }
+
+    const pending = this.diffs.getPendingChanges();
+    const patch: Patch = {};
+
+    if (pending.wholeBuffer) {
+      patch.whole = pending.wholeBuffer;
+    }
+
+    if (pending.tileFills.length > 0) {
+      patch.tiles = pending.tileFills;
+    }
+
+    if (pending.pixelChanges.length > 0) {
+      patch.pixels = pending.pixelChanges.map((change) => ({
+        tile: change.tile,
+        idx: new Uint16Array(change.indices),
+        before: new Uint32Array(change.beforeValues),
+        after: new Uint32Array(change.afterValues),
+      }));
+    }
+
+    return patch;
+  }
+
+  /**
+   * Clear all pending changes without creating a patch
+   */
+  discardPendingChanges(): void {
+    this.diffs.clear();
+  }
+
+  /**
+   * Get memory usage of accumulated diffs
+   */
+  getMemoryUsage(): number {
+    return this.diffs.getMemoryUsage();
+  }
+
+  /**
+   * Get debugging information about current diff state
+   */
+  getDebugInfo(): {
+    hasPending: boolean;
+    pendingPixels: number;
+    memoryUsage: number;
+    hasWhole: boolean;
+    tileCount: number;
+    pixelTileCount: number;
+  } {
+    const pending = this.diffs.getPendingChanges();
+
+    return {
+      hasPending: this.diffs.hasPendingChanges(),
+      pendingPixels: this.diffs.getPendingPixelCount(),
+      memoryUsage: this.diffs.getMemoryUsage(),
+      hasWhole: !!pending.wholeBuffer,
+      tileCount: pending.tileFills.length,
+      pixelTileCount: pending.pixelChanges.length,
+    };
+  }
+}
+</file>
+
+<file path="web/src/lib/anvil/src/buffer/PixelBuffer.ts">
+import type { Point, RGBA, Size } from '../types.js';
+
+/**
+ * Core pixel buffer operations - raw RGBA8 array management
+ * Model responsibility: owns buffer state, provides bounds-checked access
+ */
+export class PixelBuffer {
+  public readonly width: number;
+  public readonly height: number;
+  public data: Uint8ClampedArray;
+
+  constructor(width: number, height: number, initialData?: Uint8ClampedArray) {
+    this.width = width;
+    this.height = height;
+    this.data = initialData ?? new Uint8ClampedArray(width * height * 4);
+
+    if (this.data.length !== width * height * 4) {
+      throw new Error(`Buffer size mismatch: expected ${width * height * 4}, got ${this.data.length}`);
+    }
+  }
+
+  /**
+   * Get pixel color at coordinates (bounds-checked)
+   */
+  get(x: number, y: number): RGBA {
+    if (!this.isInBounds(x, y)) {
+      return [0, 0, 0, 0]; // transparent black for out-of-bounds
+    }
+
+    const idx = (y * this.width + x) * 4;
+    return [this.data[idx], this.data[idx + 1], this.data[idx + 2], this.data[idx + 3]];
+  }
+
+  /**
+   * Set pixel color at coordinates (bounds-checked)
+   * Returns true if pixel was actually changed
+   */
+  set(x: number, y: number, color: RGBA): boolean {
+    if (!this.isInBounds(x, y)) {
+      return false;
+    }
+
+    const idx = (y * this.width + x) * 4;
+    const changed =
+      this.data[idx] !== color[0] || this.data[idx + 1] !== color[1] || this.data[idx + 2] !== color[2] || this.data[idx + 3] !== color[3];
+
+    if (changed) {
+      this.data[idx] = color[0];
+      this.data[idx + 1] = color[1];
+      this.data[idx + 2] = color[2];
+      this.data[idx + 3] = color[3];
+    }
+
+    return changed;
+  }
+
+  /**
+   * Check if coordinates are within buffer bounds
+   */
+  isInBounds(x: number, y: number): boolean {
+    return x >= 0 && x < this.width && y >= 0 && y < this.height;
+  }
+
+  /**
+   * Resize buffer with optional source/destination origins for cropping/pasting
+   */
+  resize(
+    newSize: Size,
+    options?: {
+      srcOrigin?: Point;
+      destOrigin?: Point;
+    }
+  ): void {
+    const { width: newW, height: newH } = newSize;
+    const srcOrigin = options?.srcOrigin ?? { x: 0, y: 0 };
+    const destOrigin = options?.destOrigin ?? { x: 0, y: 0 };
+
+    const oldW = this.width;
+    const oldH = this.height;
+    const oldBuf = this.data;
+    const newBuf = new Uint8ClampedArray(newW * newH * 4);
+
+    // Calculate copy region
+    const copyW = Math.max(0, Math.min(oldW - srcOrigin.x, newW - destOrigin.x));
+    const copyH = Math.max(0, Math.min(oldH - srcOrigin.y, newH - destOrigin.y));
+
+    // Copy row by row
+    for (let y = 0; y < copyH; y++) {
+      const srcRow = (y + srcOrigin.y) * oldW + srcOrigin.x;
+      const destRow = (y + destOrigin.y) * newW + destOrigin.x;
+      const srcOffset = srcRow * 4;
+      const destOffset = destRow * 4;
+
+      newBuf.set(oldBuf.subarray(srcOffset, srcOffset + copyW * 4), destOffset);
+    }
+
+    // Update properties - TypeScript requires this pattern for readonly fields
+    (this as any).width = newW;
+    (this as any).height = newH;
+    this.data = newBuf;
+  }
+
+  /**
+   * Create a copy of this buffer
+   */
+  clone(): PixelBuffer {
+    return new PixelBuffer(this.width, this.height, new Uint8ClampedArray(this.data));
+  }
+
+  /**
+   * Fill entire buffer with a single color
+   */
+  fill(color: RGBA): void {
+    const [r, g, b, a] = color;
+    for (let i = 0; i < this.data.length; i += 4) {
+      this.data[i] = r;
+      this.data[i + 1] = g;
+      this.data[i + 2] = b;
+      this.data[i + 3] = a;
+    }
+  }
+}
+</file>
+
+<file path="web/src/lib/anvil/src/buffer/tile/LayerTiles.ts">
+import type { RGBA, TileBounds, TileIndex, TileInfo } from '../../types.js';
+import { packedU32ToRgba, rgbaToPackedU32, tileIndexToLinear } from '../../types.js';
+
+/**
+ * Model: Manages tile grid state - dirty flags and uniform colors
+ * Responsible for: bitset storage, uniform color tracking, bounds calculation
+ */
+export class LayerTiles {
+  public readonly tileSize: number;
+  public readonly rows: number;
+  public readonly cols: number;
+  public readonly totalTiles: number;
+
+  // Bitset storage for flags (more memory efficient than boolean arrays)
+  private dirtyFlags: Uint32Array;
+  private uniformFlags: Uint32Array;
+
+  // Sparse storage for uniform colors (only store when tile is uniform)
+  private uniformColors: Map<number, number> = new Map(); // tileIndex -> packed RGBA32
+
+  constructor(width: number, height: number, tileSize = 32) {
+    this.tileSize = tileSize;
+    this.cols = Math.ceil(width / tileSize);
+    this.rows = Math.ceil(height / tileSize);
+    this.totalTiles = this.rows * this.cols;
+
+    // Allocate bitsets (32 tiles per uint32)
+    const flagArraySize = Math.ceil(this.totalTiles / 32);
+    this.dirtyFlags = new Uint32Array(flagArraySize);
+    this.uniformFlags = new Uint32Array(flagArraySize);
+  }
+
+  /**
+   * Convert pixel coordinates to tile index
+   */
+  pixelToTileIndex(x: number, y: number): TileIndex {
+    return {
+      row: Math.floor(y / this.tileSize),
+      col: Math.floor(x / this.tileSize),
+    };
+  }
+
+  /**
+   * Get tile bounds in pixel coordinates
+   */
+  getTileBounds(index: TileIndex): TileBounds {
+    return {
+      x: index.col * this.tileSize,
+      y: index.row * this.tileSize,
+      width: this.tileSize,
+      height: this.tileSize,
+    };
+  }
+
+  /**
+   * Check if tile index is valid
+   */
+  isValidTileIndex(index: TileIndex): boolean {
+    return index.row >= 0 && index.row < this.rows && index.col >= 0 && index.col < this.cols;
+  }
+
+  /**
+   * Get tile dirty flag
+   */
+  isDirty(index: TileIndex): boolean {
+    if (!this.isValidTileIndex(index)) return false;
+
+    const linear = tileIndexToLinear(index, this.cols);
+    const wordIndex = Math.floor(linear / 32);
+    const bitIndex = linear % 32;
+
+    return (this.dirtyFlags[wordIndex] & (1 << bitIndex)) !== 0;
+  }
+
+  /**
+   * Set tile dirty flag
+   */
+  setDirty(index: TileIndex, dirty: boolean): void {
+    if (!this.isValidTileIndex(index)) return;
+
+    const linear = tileIndexToLinear(index, this.cols);
+    const wordIndex = Math.floor(linear / 32);
+    const bitIndex = linear % 32;
+
+    if (dirty) {
+      this.dirtyFlags[wordIndex] |= 1 << bitIndex;
+    } else {
+      this.dirtyFlags[wordIndex] &= ~(1 << bitIndex);
+    }
+  }
+
+  /**
+   * Get tile uniform flag
+   */
+  isUniform(index: TileIndex): boolean {
+    if (!this.isValidTileIndex(index)) return false;
+
+    const linear = tileIndexToLinear(index, this.cols);
+    const wordIndex = Math.floor(linear / 32);
+    const bitIndex = linear % 32;
+
+    return (this.uniformFlags[wordIndex] & (1 << bitIndex)) !== 0;
+  }
+
+  /**
+   * Set tile uniform flag and color
+   */
+  setUniform(index: TileIndex, uniform: boolean, color?: RGBA): void {
+    if (!this.isValidTileIndex(index)) return;
+
+    const linear = tileIndexToLinear(index, this.cols);
+    const wordIndex = Math.floor(linear / 32);
+    const bitIndex = linear % 32;
+
+    if (uniform && color) {
+      this.uniformFlags[wordIndex] |= 1 << bitIndex;
+      this.uniformColors.set(linear, rgbaToPackedU32(color));
+    } else {
+      this.uniformFlags[wordIndex] &= ~(1 << bitIndex);
+      this.uniformColors.delete(linear);
+    }
+  }
+
+  /**
+   * Get tile uniform color (returns undefined if not uniform)
+   */
+  getUniformColor(index: TileIndex): RGBA | undefined {
+    if (!this.isUniform(index)) return undefined;
+
+    const linear = tileIndexToLinear(index, this.cols);
+    const packed = this.uniformColors.get(linear);
+
+    return packed !== undefined ? packedU32ToRgba(packed) : undefined;
+  }
+
+  /**
+   * Get complete tile information
+   */
+  getTileInfo(index: TileIndex): TileInfo {
+    return {
+      index,
+      bounds: this.getTileBounds(index),
+      isDirty: this.isDirty(index),
+      isUniform: this.isUniform(index),
+      uniformColor: this.getUniformColor(index),
+    };
+  }
+
+  /**
+   * Iterate all dirty tiles
+   */
+  forEachDirty(callback: (info: TileInfo) => void): void {
+    for (let linear = 0; linear < this.totalTiles; linear++) {
+      const wordIndex = Math.floor(linear / 32);
+      const bitIndex = linear % 32;
+
+      if ((this.dirtyFlags[wordIndex] & (1 << bitIndex)) !== 0) {
+        const index = {
+          row: Math.floor(linear / this.cols),
+          col: linear % this.cols,
+        };
+        callback(this.getTileInfo(index));
+      }
+    }
+  }
+
+  /**
+   * Get array of all dirty tile indices (for renderer convenience)
+   */
+  getDirtyTileIndices(): TileIndex[] {
+    const result: TileIndex[] = [];
+    this.forEachDirty((info) => result.push(info.index));
+    return result;
+  }
+
+  /**
+   * Clear all dirty flags
+   */
+  clearAllDirty(): void {
+    this.dirtyFlags.fill(0);
+  }
+
+  /**
+   * Set all tiles as dirty (useful for full refresh)
+   */
+  setAllDirty(): void {
+    this.dirtyFlags.fill(0xffffffff);
+
+    // Clear excess bits in the last word
+    const excessBits = this.totalTiles % 32;
+    if (excessBits > 0) {
+      const lastWordIndex = this.dirtyFlags.length - 1;
+      const mask = (1 << excessBits) - 1;
+      this.dirtyFlags[lastWordIndex] &= mask;
+    }
+  }
+
+  /**
+   * Get statistics for debugging
+   */
+  getStats(): {
+    totalTiles: number;
+    dirtyTiles: number;
+    uniformTiles: number;
+    memoryUsage: number; // bytes
+  } {
+    let dirtyCount = 0;
+    let uniformCount = 0;
+
+    for (let linear = 0; linear < this.totalTiles; linear++) {
+      const wordIndex = Math.floor(linear / 32);
+      const bitIndex = linear % 32;
+
+      if ((this.dirtyFlags[wordIndex] & (1 << bitIndex)) !== 0) {
+        dirtyCount++;
+      }
+      if ((this.uniformFlags[wordIndex] & (1 << bitIndex)) !== 0) {
+        uniformCount++;
+      }
+    }
+
+    const memoryUsage = this.dirtyFlags.byteLength + this.uniformFlags.byteLength + this.uniformColors.size * 8; // approximately 8 bytes per Map entry
+
+    return {
+      totalTiles: this.totalTiles,
+      dirtyTiles: dirtyCount,
+      uniformTiles: uniformCount,
+      memoryUsage,
+    };
+  }
+}
+</file>
+
+<file path="web/src/lib/anvil/src/buffer/tile/LayerTilesController.ts">
+import type { PixelBuffer } from '../../buffer/PixelBuffer.js';
+import type { RGBA, TileIndex, TileInfo } from '../../types.js';
+import { LayerTiles } from './LayerTiles.js';
+
+/**
+ * Controller: High-level tile operations and pixel-to-tile coordination
+ * Responsible for: business logic, buffer integration, uniform detection
+ */
+export class LayerTilesController {
+  constructor(
+    private tiles: LayerTiles,
+    private buffer: PixelBuffer
+  ) {}
+
+  /**
+   * Mark tile dirty by pixel coordinates
+   */
+  markDirtyByPixel(x: number, y: number): void {
+    const tileIndex = this.tiles.pixelToTileIndex(x, y);
+    this.tiles.setDirty(tileIndex, true);
+
+    // If tile was uniform, it's no longer uniform after pixel change
+    if (this.tiles.isUniform(tileIndex)) {
+      this.tiles.setUniform(tileIndex, false);
+    }
+  }
+
+  /**
+   * Fill entire tile with uniform color
+   * Returns the previous uniform color if it was uniform, undefined otherwise
+   */
+  fillTile(tileIndex: TileIndex, color: RGBA): RGBA | undefined {
+    if (!this.tiles.isValidTileIndex(tileIndex)) return undefined;
+
+    const previousColor = this.tiles.getUniformColor(tileIndex);
+    const bounds = this.tiles.getTileBounds(tileIndex);
+
+    // Fill the buffer area
+    for (let ty = 0; ty < bounds.height; ty++) {
+      for (let tx = 0; tx < bounds.width; tx++) {
+        const x = bounds.x + tx;
+        const y = bounds.y + ty;
+
+        if (this.buffer.isInBounds(x, y)) {
+          this.buffer.set(x, y, color);
+        }
+      }
+    }
+
+    // Mark as uniform and dirty
+    this.tiles.setUniform(tileIndex, true, color);
+    this.tiles.setDirty(tileIndex, true);
+
+    return previousColor;
+  }
+
+  /**
+   * Check if a tile is actually uniform by sampling the buffer
+   * (useful for validation or after manual buffer modifications)
+   */
+  detectTileUniformity(tileIndex: TileIndex): boolean {
+    if (!this.tiles.isValidTileIndex(tileIndex)) return false;
+
+    const bounds = this.tiles.getTileBounds(tileIndex);
+    let firstColor: RGBA | undefined = undefined;
+
+    for (let ty = 0; ty < bounds.height; ty++) {
+      for (let tx = 0; tx < bounds.width; tx++) {
+        const x = bounds.x + tx;
+        const y = bounds.y + ty;
+
+        if (!this.buffer.isInBounds(x, y)) continue;
+
+        const color = this.buffer.get(x, y);
+
+        if (!firstColor) {
+          firstColor = color;
+        } else if (color[0] !== firstColor[0] || color[1] !== firstColor[1] || color[2] !== firstColor[2] || color[3] !== firstColor[3]) {
+          return false; // Not uniform
+        }
+      }
+    }
+
+    // Update internal state to match reality
+    if (firstColor) {
+      this.tiles.setUniform(tileIndex, true, firstColor);
+    }
+
+    return true;
+  }
+
+  /**
+   * Validate all tiles' uniformity against buffer contents
+   * (expensive operation - mainly for debugging/testing)
+   */
+  validateAllTileUniformity(): void {
+    for (let row = 0; row < this.tiles.rows; row++) {
+      for (let col = 0; col < this.tiles.cols; col++) {
+        this.detectTileUniformity({ row, col });
+      }
+    }
+  }
+
+  /**
+   * Get tile information with current buffer state
+   */
+  getTileInfo(index: TileIndex): TileInfo {
+    return this.tiles.getTileInfo(index);
+  }
+
+  /**
+   * Get all dirty tile information
+   */
+  getDirtyTiles(): TileInfo[] {
+    const result: TileInfo[] = [];
+    this.tiles.forEachDirty((info) => result.push(info));
+    return result;
+  }
+
+  /**
+   * Clear all dirty flags
+   */
+  clearAllDirty(): void {
+    this.tiles.clearAllDirty();
+  }
+
+  /**
+   * Mark all tiles as dirty (for full refresh)
+   */
+  setAllDirty(): void {
+    this.tiles.setAllDirty();
+  }
+
+  /**
+   * Resize tile grid to match new buffer dimensions
+   */
+  resize(newWidth: number, newHeight: number): void {
+    // Create new tile grid
+    const newTiles = new LayerTiles(newWidth, newHeight, this.tiles.tileSize);
+
+    // Copy over existing tile states where they overlap
+    const minRows = Math.min(this.tiles.rows, newTiles.rows);
+    const minCols = Math.min(this.tiles.cols, newTiles.cols);
+
+    for (let row = 0; row < minRows; row++) {
+      for (let col = 0; col < minCols; col++) {
+        const index = { row, col };
+        const oldInfo = this.tiles.getTileInfo(index);
+
+        if (oldInfo.isDirty) {
+          newTiles.setDirty(index, true);
+        }
+        if (oldInfo.isUniform && oldInfo.uniformColor) {
+          newTiles.setUniform(index, true, oldInfo.uniformColor);
+        }
+      }
+    }
+
+    // Replace internal tiles instance
+    (this as any).tiles = newTiles;
+  }
+
+  /**
+   * Get statistics including buffer-derived info
+   */
+  getStats() {
+    return this.tiles.getStats();
+  }
+}
+</file>
+
+<file path="web/src/lib/anvil/src/ops_wasm/Cargo.toml">
 [package]
-name = "lab-vision-burn"
+name = "anvil-ops-wasm"
 version = "0.1.0"
-edition = "2024"
+authors = ["innsbluck <innsbluck@gmail.com>"]
+description = "wasm module for anvil"
+license = "MIT/Apache-2.0"
+edition = "2021"
+
+[package.metadata.wasm-pack.output]
+name = "@anvil/wasm"
+
+[lib]
+crate-type = ["cdylib"]
 
 [dependencies]
-anyhow = "1"
-clap = { version = "4", features = ["derive"] }
-image = "0.25"
-
-burn = { version = "0.18", features = ["wgpu", "vision", "train"] }
-burn-wgpu = "0.18"
-burn-dataset = "0.18"
+wasm-bindgen = "0.2.100"
 </file>
 
-<file path="src/data.rs">
+<file path="web/src/lib/anvil/src/ops_wasm/src/buffer/mod.rs">
+pub mod patch_buffer_rgba;
+</file>
+
+<file path="web/src/lib/anvil/src/ops_wasm/src/buffer/patch_buffer_rgba.rs">
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+pub fn patch_buffer_rgba(
+    // target
+    target: &[u8],
+    target_width: u32,
+    target_height: u32,
+    // patch
+    patch: &[u8],
+    patch_width: u32,
+    patch_height: u32,
+    offset_x: f32,
+    offset_y: f32,
+) -> Vec<u8> {
+    let w = target_width as i32;
+    let h = target_height as i32;
+
+    // Expect RGBA buffers
+    let mut result = target.to_vec();
+
+    // Validate patch buffer size matches dimensions (RGBA)
+    let src_w = patch_width as i32;
+    let src_h = patch_height as i32;
+    if src_w <= 0 || src_h <= 0 {
+        return result;
+    }
+    if (src_w as usize) * (src_h as usize) * 4 != patch.len() {
+        return result;
+    }
+
+    let dx = offset_x.round() as i32;
+    let dy = offset_y.round() as i32;
+
+    for sy in 0..src_h {
+        for sx in 0..src_w {
+            let src_idx = (sy * src_w + sx) as usize;
+            let src_start = src_idx * 4;
+            if src_start + 3 >= patch.len() {
+                continue;
+            }
+
+            let px_r = patch[src_start] as u8;
+            let px_g = patch[src_start + 1] as u8;
+            let px_b = patch[src_start + 2] as u8;
+            let px_a = patch[src_start + 3] as u8;
+
+            if px_a == 0 {
+                continue;
+            }
+
+            let tx = sx + dx;
+            let ty = sy + dy;
+
+            if tx < 0 || tx >= w || ty < 0 || ty >= h {
+                continue;
+            }
+
+            let tgt_idx = (ty * w + tx) as usize;
+            let tgt_start = tgt_idx * 4;
+            if tgt_start + 3 >= result.len() {
+                continue;
+            }
+
+            let dst_r = result[tgt_start] as f32;
+            let dst_g = result[tgt_start + 1] as f32;
+            let dst_b = result[tgt_start + 2] as f32;
+            let dst_a = result[tgt_start + 3] as f32;
+
+            let src_a_f = px_a as f32 / 255.0;
+            let dst_a_f = dst_a / 255.0;
+
+            // premultiplied-like alpha blend (source over)
+            let out_r = (px_r as f32 * src_a_f + dst_r * (1.0 - src_a_f))
+                .round()
+                .clamp(0.0, 255.0) as u8;
+            let out_g = (px_g as f32 * src_a_f + dst_g * (1.0 - src_a_f))
+                .round()
+                .clamp(0.0, 255.0) as u8;
+            let out_b = (px_b as f32 * src_a_f + dst_b * (1.0 - src_a_f))
+                .round()
+                .clamp(0.0, 255.0) as u8;
+            let out_a = ((src_a_f + dst_a_f * (1.0 - src_a_f)) * 255.0)
+                .round()
+                .clamp(0.0, 255.0) as u8;
+
+            result[tgt_start] = out_r;
+            result[tgt_start + 1] = out_g;
+            result[tgt_start + 2] = out_b;
+            result[tgt_start + 3] = out_a;
+        }
+    }
+
+    result
+}
+</file>
+
+<file path="web/src/lib/anvil/src/ops_wasm/src/fill/mod.rs">
+use wasm_bindgen::prelude::*;
+
+/// スキャンライン方式のFloodFill実装
+///
+/// この実装は以下の特徴を持ちます：
+/// - メモリ効率的なスキャンライン方式
+/// - スタックオーバーフロー回避
+/// - 高速な隣接色判定
+/// - 選択範囲制限サポート
+#[wasm_bindgen]
+pub fn scanline_flood_fill(
+    buffer: &mut [u8],
+    width: u32,
+    height: u32,
+    start_x: u32,
+    start_y: u32,
+    fill_color_r: u8,
+    fill_color_g: u8,
+    fill_color_b: u8,
+    fill_color_a: u8,
+    threshold: u8,
+) -> bool {
+    let width = width as usize;
+    let height = height as usize;
+    let start_x = start_x as usize;
+    let start_y = start_y as usize;
+
+    if start_x >= width || start_y >= height {
+        return false;
+    }
+
+    let start_index = (start_y * width + start_x) * 4;
+    let target_color = [
+        buffer[start_index],
+        buffer[start_index + 1],
+        buffer[start_index + 2],
+        buffer[start_index + 3],
+    ];
+
+    let fill_color = [fill_color_r, fill_color_g, fill_color_b, fill_color_a];
+
+    // 既に同じ色の場合は何もしない
+    // if colors_match(&target_color, &fill_color, 0) {
+    //     return false;
+    // }
+
+    // しきい値が最大の場合、マスク条件に合致する全画素を高速に塗りつぶす
+    if threshold == 255 {
+        for y in 0..height {
+            for x in 0..width {
+                let idx = (y * width + x) * 4;
+                buffer[idx] = fill_color[0];
+                buffer[idx + 1] = fill_color[1];
+                buffer[idx + 2] = fill_color[2];
+                buffer[idx + 3] = fill_color[3];
+            }
+        }
+        return true;
+    }
+
+    let mut stack = Vec::new();
+    let mut visited = vec![false; width * height];
+    stack.push((start_x, start_y));
+
+    while let Some((x, y)) = stack.pop() {
+        if x >= width || y >= height {
+            continue;
+        }
+
+        let flat_index = y * width + x;
+        if visited[flat_index] {
+            continue;
+        }
+
+        let pixel_index = flat_index * 4;
+        let current_color = [
+            buffer[pixel_index],
+            buffer[pixel_index + 1],
+            buffer[pixel_index + 2],
+            buffer[pixel_index + 3],
+        ];
+
+        // 対象色でない場合は継続
+        if !colors_match(&current_color, &target_color, threshold) {
+            continue;
+        }
+
+        // スキャンライン方式：左右に拡張
+        let mut left = x;
+        let mut right = x;
+
+        // 左方向に拡張
+        while left > 0 {
+            let lf = y * width + (left - 1);
+            if visited[lf] {
+                break;
+            }
+            let left_index = lf * 4;
+            let left_color = [
+                buffer[left_index],
+                buffer[left_index + 1],
+                buffer[left_index + 2],
+                buffer[left_index + 3],
+            ];
+            if colors_match(&left_color, &target_color, threshold) {
+                left -= 1;
+                visited[lf] = true;
+            } else {
+                break;
+            }
+        }
+
+        // 右方向に拡張
+        while right < width - 1 {
+            let rf = y * width + (right + 1);
+            if visited[rf] {
+                break;
+            }
+            let right_index = rf * 4;
+            let right_color = [
+                buffer[right_index],
+                buffer[right_index + 1],
+                buffer[right_index + 2],
+                buffer[right_index + 3],
+            ];
+            if colors_match(&right_color, &target_color, threshold) {
+                right += 1;
+                visited[rf] = true;
+            } else {
+                break;
+            }
+        }
+
+        // 水平ラインを塗りつぶし
+        for scan_x in left..=right {
+            let flat = y * width + scan_x;
+            visited[flat] = true;
+            let scan_index = flat * 4;
+            buffer[scan_index] = fill_color[0];
+            buffer[scan_index + 1] = fill_color[1];
+            buffer[scan_index + 2] = fill_color[2];
+            buffer[scan_index + 3] = fill_color[3];
+        }
+
+        // 上下のピクセルをスタックに追加
+        for scan_x in left..=right {
+            // 上の行
+            if y > 0 {
+                let up_y = y - 1;
+                let up_flat = up_y * width + scan_x;
+                if !visited[up_flat] {
+                    let up_index = up_flat * 4;
+                    let up_color = [
+                        buffer[up_index],
+                        buffer[up_index + 1],
+                        buffer[up_index + 2],
+                        buffer[up_index + 3],
+                    ];
+                    if colors_match(&up_color, &target_color, threshold) {
+                        stack.push((scan_x, up_y));
+                    }
+                }
+            }
+
+            // 下の行
+            if y < height - 1 {
+                let down_y = y + 1;
+                let down_flat = down_y * width + scan_x;
+                if !visited[down_flat] {
+                    let down_index = down_flat * 4;
+                    let down_color = [
+                        buffer[down_index],
+                        buffer[down_index + 1],
+                        buffer[down_index + 2],
+                        buffer[down_index + 3],
+                    ];
+                    if colors_match(&down_color, &target_color, threshold) {
+                        stack.push((scan_x, down_y));
+                    }
+                }
+            }
+        }
+    }
+
+    true
+}
+
+/// 選択範囲制限付きスキャンライン FloodFill
+#[wasm_bindgen]
+pub fn scanline_flood_fill_with_mask(
+    buffer: &mut [u8],
+    width: u32,
+    height: u32,
+    start_x: u32,
+    start_y: u32,
+    fill_color_r: u8,
+    fill_color_g: u8,
+    fill_color_b: u8,
+    fill_color_a: u8,
+    threshold: u8,
+    selection_mask: &[u8],
+    limit_mode: &str,
+) -> bool {
+    let width = width as usize;
+    let height = height as usize;
+    let start_x = start_x as usize;
+    let start_y = start_y as usize;
+
+    if start_x >= width || start_y >= height {
+        return false;
+    }
+
+    // 選択範囲制限チェック関数
+    let is_allowed = |x: usize, y: usize| -> bool {
+        let mask_index = y * width + x;
+        if mask_index >= selection_mask.len() {
+            return false;
+        }
+        let is_in_selection = selection_mask[mask_index] == 1;
+
+        match limit_mode {
+            "inside" => is_in_selection,
+            "outside" => !is_in_selection,
+            _ => true,
+        }
+    };
+
+    // 開始位置が制限に違反していないかチェック
+    if !is_allowed(start_x, start_y) {
+        return false;
+    }
+
+    let start_index = (start_y * width + start_x) * 4;
+    let target_color = [
+        buffer[start_index],
+        buffer[start_index + 1],
+        buffer[start_index + 2],
+        buffer[start_index + 3],
+    ];
+
+    let fill_color = [fill_color_r, fill_color_g, fill_color_b, fill_color_a];
+
+    // 既に同じ色の場合は何もしない
+    // if colors_match(&target_color, &fill_color, 0) {
+    //     return false;
+    // }
+
+    // しきい値が最大の場合、マスク条件に合致する全画素を高速に塗りつぶす
+    if threshold == 255 {
+        for y in 0..height {
+            for x in 0..width {
+                if is_allowed(x, y) {
+                    let idx = (y * width + x) * 4;
+                    buffer[idx] = fill_color[0];
+                    buffer[idx + 1] = fill_color[1];
+                    buffer[idx + 2] = fill_color[2];
+                    buffer[idx + 3] = fill_color[3];
+                }
+            }
+        }
+        return true;
+    }
+
+    let mut stack = Vec::new();
+    let mut visited = vec![false; width * height];
+    stack.push((start_x, start_y));
+
+    while let Some((x, y)) = stack.pop() {
+        if x >= width || y >= height {
+            continue;
+        }
+
+        let flat_index = y * width + x;
+        if visited[flat_index] {
+            continue;
+        }
+        visited[flat_index] = true;
+
+        // 選択範囲制限チェック
+        if !is_allowed(x, y) {
+            continue;
+        }
+
+        let pixel_index = flat_index * 4;
+        let current_color = [
+            buffer[pixel_index],
+            buffer[pixel_index + 1],
+            buffer[pixel_index + 2],
+            buffer[pixel_index + 3],
+        ];
+
+        // 対象色でない場合は継続
+        if !colors_match(&current_color, &target_color, threshold) {
+            continue;
+        }
+
+        // スキャンライン方式：左右に拡張（選択範囲制限付き）
+        let mut left = x;
+        let mut right = x;
+
+        // 左方向に拡張
+        while left > 0 && is_allowed(left - 1, y) {
+            let left_index = (y * width + (left - 1)) * 4;
+            let left_color = [
+                buffer[left_index],
+                buffer[left_index + 1],
+                buffer[left_index + 2],
+                buffer[left_index + 3],
+            ];
+            if colors_match(&left_color, &target_color, threshold) {
+                left -= 1;
+                visited[y * width + left] = true;
+            } else {
+                break;
+            }
+        }
+
+        // 右方向に拡張
+        while right < width - 1 && is_allowed(right + 1, y) {
+            let right_index = (y * width + (right + 1)) * 4;
+            let right_color = [
+                buffer[right_index],
+                buffer[right_index + 1],
+                buffer[right_index + 2],
+                buffer[right_index + 3],
+            ];
+            if colors_match(&right_color, &target_color, threshold) {
+                right += 1;
+                visited[y * width + right] = true;
+            } else {
+                break;
+            }
+        }
+
+        // 水平ラインを塗りつぶし
+        for scan_x in left..=right {
+            let scan_index = (y * width + scan_x) * 4;
+            buffer[scan_index] = fill_color[0];
+            buffer[scan_index + 1] = fill_color[1];
+            buffer[scan_index + 2] = fill_color[2];
+            buffer[scan_index + 3] = fill_color[3];
+        }
+
+        // 上下のピクセルをスタックに追加
+        for scan_x in left..=right {
+            // 上の行
+            if y > 0 {
+                let up_y = y - 1;
+                let up_flat = up_y * width + scan_x;
+                if !visited[up_flat] && is_allowed(scan_x, up_y) {
+                    let up_index = up_flat * 4;
+                    let up_color = [
+                        buffer[up_index],
+                        buffer[up_index + 1],
+                        buffer[up_index + 2],
+                        buffer[up_index + 3],
+                    ];
+                    if colors_match(&up_color, &target_color, threshold) {
+                        stack.push((scan_x, up_y));
+                    }
+                }
+            }
+
+            // 下の行
+            if y < height - 1 {
+                let down_y = y + 1;
+                let down_flat = down_y * width + scan_x;
+                if !visited[down_flat] && is_allowed(scan_x, down_y) {
+                    let down_index = down_flat * 4;
+                    let down_color = [
+                        buffer[down_index],
+                        buffer[down_index + 1],
+                        buffer[down_index + 2],
+                        buffer[down_index + 3],
+                    ];
+                    if colors_match(&down_color, &target_color, threshold) {
+                        stack.push((scan_x, down_y));
+                    }
+                }
+            }
+        }
+    }
+
+    true
+}
+
+/// 色の類似性判定（threshold付き）
+fn colors_match(color1: &[u8; 4], color2: &[u8; 4], threshold: u8) -> bool {
+    if threshold == 0 {
+        color1 == color2
+    } else {
+        let diff_r = (color1[0] as i16 - color2[0] as i16).abs();
+        let diff_g = (color1[1] as i16 - color2[1] as i16).abs();
+        let diff_b = (color1[2] as i16 - color2[2] as i16).abs();
+        // let diff_a = (color1[3] as i16 - color2[3] as i16).abs();
+
+        diff_r <= threshold as i16 && diff_g <= threshold as i16 && diff_b <= threshold as i16
+        // && diff_a <= threshold as i16
+    }
+}
+</file>
+
+<file path="web/src/lib/anvil/src/ops_wasm/src/lib.rs">
+use wasm_bindgen::prelude::*;
+
+pub mod buffer;
+pub mod fill;
+
+#[wasm_bindgen]
+extern "C" {
+    pub fn alert(s: &str);
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
+}
+
+#[macro_export]
+macro_rules! console_log {
+    ($($t:tt)*) => (crate::log(&format_args!($($t)*).to_string()))
+}
+</file>
+
+<file path="web/src/lib/anvil/src/ops/fill/FloodFill.ts">
+// FloodFill。
+// 基本的にsledgeや他のユースケースから手法や最適化に関する情報は見えないようにしたい。
+// 現状のWASM / scanline fillで十分速いので、floodfill関数は黙ってそれを採用する。
+
+import { scanline_flood_fill, scanline_flood_fill_with_mask } from '../../ops_wasm/pkg/anvil_ops_wasm.js';
+
+export function floodFill(args: {
+  target: Uint8ClampedArray;
+  targetWidth: number;
+  targetHeight: number;
+  startX: number;
+  startY: number;
+  fillColor: [number, number, number, number];
+  threshold?: number;
+  maskBuffer?: Uint8Array;
+  maskMode?: 'inside' | 'outside' | 'none';
+}): boolean {
+  const { target, targetWidth, targetHeight, startX, startY, fillColor, threshold, maskBuffer, maskMode } = args;
+
+  if (maskBuffer) {
+    // does breaking change
+    const result = scanline_flood_fill_with_mask(
+      new Uint8Array(target.buffer, target.byteOffset, target.byteLength),
+      targetWidth,
+      targetHeight,
+      startX,
+      startY,
+      fillColor[0],
+      fillColor[1],
+      fillColor[2],
+      fillColor[3],
+      threshold ?? 0,
+      maskBuffer,
+      maskMode ?? 'inside'
+    );
+
+    return result;
+  } else {
+    // does breaking change
+    const result = scanline_flood_fill(
+      new Uint8Array(target.buffer, target.byteOffset, target.byteLength),
+      targetWidth,
+      targetHeight,
+      startX,
+      startY,
+      fillColor[0],
+      fillColor[1],
+      fillColor[2],
+      fillColor[3],
+      threshold ?? 0
+    );
+
+    return result;
+  }
+}
+</file>
+
+<file path="web/src/lib/anvil/src/ops/pattern/Pattern.ts">
+// パターンの貼り付けを行う。
+// 主にペン/消しゴム操作で使うことになるが、そのうちディザリンググラデーションやトーンで repeatable なパターンを貼り付ける場合もここに集約する。
+// 現状: 最小実装 (単色/タイルパターン + 円形カバレッジ + normal / erase ブレンド)。将来的に以下を拡張予定:
+// - 複数ブレンドモード (multiply / lighten など)
+// - 行スパン / RLE 最適化
+// - 外部提供 coverageMask をそのまま使う経路
+// - rotate / scale / pattern wrap mode (mirror など)
+
+import type { RGBA } from '../../types.js';
+
+// Pattern: ひとまず最小。wrapX/Y は今は 'repeat' のみ対応。
+export interface Pattern {
+  width: number;
+  height: number;
+  data: Uint8ClampedArray; // RGBA 連続 (width * height * 4)
+}
+
+export interface PatternStampOptions {
+  target: Uint8ClampedArray;
+  targetWidth: number;
+  targetHeight: number;
+  centerX: number;
+  centerY: number;
+  pattern: Pattern;
+  radius?: number; // 旧 circle カバレッジ方式用
+  opacity?: number;
+  blendMode?: 'normal' | 'erase';
+  coverageMask?: Uint8Array;
+  // 新: shape:size ベースのピクセルマスクを利用する経路。maskKey が指定され、shape/size も与えられればキャッシュから取得/生成。
+  maskKey?: string; // 例: "circle:10" / "square:5"
+  shape?: 'circle' | 'square';
+  size?: number; // shape と組み合わせてマスク生成に使用
+}
+
+// PixelMask: PenTool から移管する形状マスク。値は 0/1。
+export interface PixelMask {
+  mask: Uint8Array; // 0 or 1
+  width: number;
+  height: number;
+  offsetX: number; // 中心から左上まで
+  offsetY: number;
+}
+
+// shape:size キーのキャッシュ
+const pixelMaskCache: Map<string, PixelMask> = new Map();
+
+function maskCacheKey(shape: 'circle' | 'square', size: number): string {
+  return `${shape}:${size}`;
+}
+
+export function getOrCreateShapeMask(shape: 'circle' | 'square', size: number, key?: string): PixelMask {
+  const finalKey = key ?? maskCacheKey(shape, size);
+  let m = pixelMaskCache.get(finalKey);
+  if (!m) {
+    m = generateShapePixelMask(size, shape);
+    pixelMaskCache.set(finalKey, m);
+  }
+  return m;
+}
+
+// 単色パターン生成ヘルパー
+export function createSolidPattern(color: RGBA): Pattern {
+  const data = new Uint8ClampedArray(4);
+  data[0] = color[0];
+  data[1] = color[1];
+  data[2] = color[2];
+  data[3] = color[3];
+  return { width: 1, height: 1, data };
+}
+
+// 円形カバレッジマスク生成 (中心含む) 0..255
+function generateCircleCoverage(radius: number): { mask: Uint8Array; size: number } {
+  const r = Math.max(0, Math.floor(radius));
+  const size = r * 2 + 1;
+  const mask = new Uint8Array(size * size);
+  const rr = r + 0.5; // アンチエイリアス簡易閾値 (中心補正)
+  const rrSq = rr * rr;
+  for (let y = 0; y < size; y++) {
+    const dy = y - r;
+    for (let x = 0; x < size; x++) {
+      const dx = x - r;
+      const distSq = dx * dx + dy * dy;
+      if (distSq <= rrSq) {
+        // 簡易的にフルカバレッジ。将来的にフェードを dist で計算しても良い。
+        mask[y * size + x] = 255;
+      }
+    }
+  }
+  return { mask, size };
+}
+
+// PenDraw.ts の getDrawnPixelMask 相当: size, shape から最小バウンディング矩形マスク生成
+function generateShapePixelMask(size: number, shape: 'circle' | 'square'): PixelMask {
+  const coords: Array<{ x: number; y: number }> = [];
+  const seen = new Set<string>();
+
+  // 描画関数 (最小限) - 偶数サイズ時の中心合わせは PenDraw と同様ロジック
+  const emit = (x: number, y: number) => {
+    const k = `${x},${y}`;
+    if (!seen.has(k)) {
+      seen.add(k);
+      coords.push({ x, y });
+    }
+  };
+
+  // shape ごとの座標列挙
+  if (shape === 'square') {
+    let centerX = 0;
+    let centerY = 0;
+    const even = size % 2 === 0;
+    // 偶数サイズは rawPosition=0 と仮定して Math.round(0)=0 で OK
+    centerX = 0;
+    centerY = 0;
+    const half = Math.floor(size / 2);
+    const start = -half;
+    const end = size - half - 1;
+    for (let dy = start; dy <= end; dy++) {
+      for (let dx = start; dx <= end; dx++) {
+        emit(centerX + dx, centerY + dy);
+      }
+    }
+  } else {
+    const even = size % 2 === 0;
+    const centerX = 0;
+    const centerY = 0;
+    const radius = size / 2;
+    const radiusSq = radius * radius;
+    const bound = Math.ceil((size - 1) / 2);
+    for (let dy = -bound; dy <= bound; dy++) {
+      for (let dx = -bound; dx <= bound; dx++) {
+        let pixelX: number, pixelY: number;
+        if (even) {
+          pixelX = Math.floor(centerX + dx);
+          pixelY = Math.floor(centerY + dy);
+          const deltaX = pixelX + 0.5 - centerX;
+          const deltaY = pixelY + 0.5 - centerY;
+          const d2 = deltaX * deltaX + deltaY * deltaY;
+          if (d2 <= radiusSq) emit(pixelX, pixelY);
+        } else {
+          pixelX = centerX + dx;
+          pixelY = centerY + dy;
+          const d2 = dx * dx + dy * dy;
+          if (d2 <= radiusSq) emit(pixelX, pixelY);
+        }
+      }
+    }
+  }
+
+  if (coords.length === 0) return { mask: new Uint8Array(0), width: 0, height: 0, offsetX: 0, offsetY: 0 };
+
+  let minX = coords[0].x,
+    maxX = coords[0].x,
+    minY = coords[0].y,
+    maxY = coords[0].y;
+  for (const { x, y } of coords) {
+    if (x < minX) minX = x;
+    if (x > maxX) maxX = x;
+    if (y < minY) minY = y;
+    if (y > maxY) maxY = y;
+  }
+  const width = maxX - minX + 1;
+  const height = maxY - minY + 1;
+  const mask = new Uint8Array(width * height);
+  for (const { x, y } of coords) {
+    const ix = x - minX;
+    const iy = y - minY;
+    mask[iy * width + ix] = 1;
+  }
+  return { mask, width, height, offsetX: minX, offsetY: minY };
+}
+
+// ブレンド (normal, erase)。dst, src は 0..255。coverage, opacity は 0..1 へ正規化した後で使う。
+function blendPixel(
+  mode: 'normal' | 'erase',
+  dst: Uint8ClampedArray,
+  di: number,
+  sr: number,
+  sg: number,
+  sb: number,
+  sa: number,
+  cov: number,
+  opacity: number
+) {
+  if (mode === 'erase') {
+    // アルファ減衰のみ。色は保持 (多くのペイント系挙動)。
+    const factor = 1 - cov * opacity;
+    dst[di + 3] = Math.round(dst[di + 3] * factor);
+    return;
+  }
+  // normal
+  const a = (sa / 255) * cov * opacity; // 0..1
+  if (a <= 0) return;
+  const inv = 1 - a;
+  const da = dst[di + 3] / 255;
+  const outA = a + da * inv; // 0..1
+  // premultiplied 合成的計算 (簡易)
+  dst[di + 0] = Math.round(sr * a + dst[di + 0] * inv);
+  dst[di + 1] = Math.round(sg * a + dst[di + 1] * inv);
+  dst[di + 2] = Math.round(sb * a + dst[di + 2] * inv);
+  dst[di + 3] = Math.round(outA * 255);
+}
+
+// 最小スタンプ実装
+export function patternStamp(opts: PatternStampOptions): void {
+  const {
+    target,
+    targetWidth,
+    targetHeight,
+    centerX,
+    centerY,
+    pattern,
+    radius,
+    opacity = 1,
+    blendMode = 'normal',
+    coverageMask,
+    maskKey,
+    shape,
+    size,
+  } = opts;
+
+  if (!target || targetWidth <= 0 || targetHeight <= 0) return; // 値が揃っていない
+  if (!pattern || pattern.width <= 0 || pattern.height <= 0) return;
+
+  // ピクセルマスク経路優先: maskKey+shape+size が揃っている場合
+  if (maskKey && shape && typeof size === 'number') {
+    const pixelMask = getOrCreateShapeMask(shape, size, maskKey);
+    const { mask, width: mW, height: mH, offsetX, offsetY } = pixelMask;
+    const pW = pattern.width;
+    const pH = pattern.height;
+    const pData = pattern.data;
+    for (let iy = 0; iy < mH; iy++) {
+      const ty = centerY + offsetY + iy;
+      if (ty < 0 || ty >= targetHeight) continue;
+      for (let ix = 0; ix < mW; ix++) {
+        if (mask[iy * mW + ix] !== 1) continue;
+        const tx = centerX + offsetX + ix;
+        if (tx < 0 || tx >= targetWidth) continue;
+        const px = ((tx % pW) + pW) % pW;
+        const py = ((ty % pH) + pH) % pH;
+        const pi = (py * pW + px) * 4;
+        const sr = pData[pi];
+        const sg = pData[pi + 1];
+        const sb = pData[pi + 2];
+        const sa = pData[pi + 3];
+        if (sa === 0 && blendMode !== 'erase') continue;
+        const di = (ty * targetWidth + tx) * 4;
+        // ピクセルマスクは 0/1 なので cov = 1
+        blendPixel(blendMode, target, di, sr, sg, sb, sa, 1, opacity);
+      }
+    }
+    return;
+  }
+
+  // 旧 circle coverage 経路 (後方互換)
+  const r = radius != null ? Math.max(0, Math.floor(radius)) : Math.max(pattern.width, pattern.height) >> 1;
+  const circle = coverageMask ? { mask: coverageMask, size: Math.floor(Math.sqrt(coverageMask.length)) } : generateCircleCoverage(r);
+  const cmask = circle.mask;
+  const cSize = circle.size;
+  if (cmask.length !== cSize * cSize) return; // square チェック
+  const startX = centerX - r;
+  const startY = centerY - r;
+  const pW = pattern.width;
+  const pH = pattern.height;
+  const pData = pattern.data;
+  for (let my = 0; my < cSize; my++) {
+    const ty = startY + my;
+    if (ty < 0 || ty >= targetHeight) continue;
+    for (let mx = 0; mx < cSize; mx++) {
+      const cov255 = cmask[my * cSize + mx];
+      if (cov255 === 0) continue;
+      const tx = startX + mx;
+      if (tx < 0 || tx >= targetWidth) continue;
+      const px = ((tx % pW) + pW) % pW;
+      const py = ((ty % pH) + pH) % pH;
+      const pi = (py * pW + px) * 4;
+      const sr = pData[pi];
+      const sg = pData[pi + 1];
+      const sb = pData[pi + 2];
+      const sa = pData[pi + 3];
+      if (sa === 0 && blendMode !== 'erase') continue;
+      const di = (ty * targetWidth + tx) * 4;
+      blendPixel(blendMode, target, di, sr, sg, sb, sa, cov255 / 255, opacity);
+    }
+  }
+}
+
+// TODO: 将来的に stroke 経由 (連続 stamp) をまとめる API を追加予定。
+</file>
+
+<file path="web/src/lib/anvil/src/ops/transfer/Transfer.ts">
+// 現状、sledge側で「転写」に関する処理が複数存在する
+// 画像 => ImageTransferApplier
+// 下のレイヤーと合成 => LayerMergeApplier
+// 選択範囲をレイヤーに転写 => FloatingBufferApplier
+
+import { patch_buffer_rgba } from '../../ops_wasm/pkg/anvil_ops_wasm.js';
+
+// レイヤー合成だけは単なる上書きだけではなくwebGL合成を行うので少し異なるが、基本的にバッファをバッファの上にオフセットやスケールを指定して転写するのは変わらない
+// 今後、画像や選択範囲の変形等もサポートすることを考えると、LayerMerge以外の転写操作はAnvilのここに集約したい。
+
+interface TransferOptions {
+  scaleX?: number;
+  scaleY?: number;
+  rotate?: number;
+  offsetX?: number;
+  offsetY?: number;
+}
+
+// 前述のとおりWebGL合成は特殊なのでsledgeに残す。実装するにしてもこのようにBlendModeを@sledge/coreから引っ張ってくるので、色々と面倒になる。保留。
+// interface WebGLTransferOptions extends TransferOptions {
+//     blendMode?: BlendMode
+// }
+
+export function transferBuffer(
+  source: Uint8ClampedArray,
+  sourceWidth: number,
+  sourceHeight: number,
+  target: Uint8ClampedArray,
+  targetWidth: number,
+  targetHeight: number,
+  options?: TransferOptions
+): Uint8ClampedArray {
+  const { scaleX = 1.0, scaleY = 1.0, rotate = 0, offsetX = 0, offsetY = 0 } = options || {};
+
+  try {
+    const res = patch_buffer_rgba(
+      new Uint8Array(target.buffer, target.byteOffset, target.byteLength),
+      targetWidth,
+      targetHeight,
+      new Uint8Array(source.buffer, source.byteOffset, source.byteLength),
+      sourceWidth,
+      sourceHeight,
+      offsetX,
+      offsetY
+    );
+    return new Uint8ClampedArray(res.buffer, res.byteOffset, res.byteLength);
+  } catch (e) {
+    console.error('applyFloatingBuffer wasm error', e);
+    return target;
+  }
+}
+</file>
+
+<file path="web/src/lib/anvil/src/patch.ts">
+import type { TileIndex } from './types.js';
+
+// Patch structure for undo/redo operations
+export interface Patch {
+  // Whole buffer replacement (for large changes like canvas resize)
+  whole?: {
+    before: Uint8ClampedArray;
+    after: Uint8ClampedArray;
+  };
+
+  // Tile-level uniform fills
+  tiles?: Array<{
+    tile: TileIndex;
+    before?: number; // packed RGBA32, undefined = was non-uniform
+    after: number; // packed RGBA32
+  }>;
+
+  // Pixel-level changes within tiles
+  pixels?: Array<{
+    tile: TileIndex;
+    idx: Uint16Array; // tile-local indices (0..tileSize²-1)
+    before: Uint32Array; // packed RGBA32
+    after: Uint32Array; // packed RGBA32
+  }>;
+}
+
+// Metadata for patch application
+export interface PatchMetadata {
+  layerId?: string;
+  tool?: string;
+  timestamp?: number;
+  pixelCount?: number;
+}
+</file>
+
+<file path="web/src/lib/anvil/src/types.ts">
+// Core types for Anvil
+export type RGBA = [r: number, g: number, b: number, a: number];
+
+export interface Point {
+  x: number;
+  y: number;
+}
+
+export interface Size {
+  width: number;
+  height: number;
+}
+
+export interface TileIndex {
+  row: number;
+  col: number;
+}
+
+export interface TileBounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface TileInfo {
+  index: TileIndex;
+  bounds: TileBounds;
+  isDirty: boolean;
+  isUniform: boolean;
+  uniformColor?: RGBA;
+}
+
+// Utility functions for color conversion
+export function rgbaToPackedU32(rgba: RGBA): number {
+  return (rgba[3] << 24) | (rgba[0] << 16) | (rgba[1] << 8) | rgba[2];
+}
+
+export function packedU32ToRgba(packed: number): RGBA {
+  return [(packed >> 16) & 0xff, (packed >> 8) & 0xff, packed & 0xff, (packed >>> 24) & 0xff];
+}
+
+export function tileIndexToLinear(index: TileIndex, cols: number): number {
+  return index.row * cols + index.col;
+}
+
+export function linearToTileIndex(linear: number, cols: number): TileIndex {
+  return {
+    row: Math.floor(linear / cols),
+    col: linear % cols,
+  };
+}
+
+// Patch types for change tracking
+export interface LayerPatch {
+  pixels?: Array<{
+    tile: TileIndex;
+    idx: number[];
+    before: RGBA[];
+    after: RGBA[];
+  }>;
+  tiles?: Array<{
+    tile: TileIndex;
+    before: RGBA;
+    after: RGBA;
+  }>;
+  whole?: {
+    before: Uint8ClampedArray;
+    after: Uint8ClampedArray;
+  };
+}
+</file>
+
+<file path="web/src/lib/anvil/test/Anvil.test.ts">
+import { beforeEach, describe, expect, it } from 'vitest';
+import { Anvil } from '../src/Anvil';
+import type { RGBA, TileIndex } from '../src/types';
+
+describe('Anvil Facade Integration', () => {
+  let anvil: Anvil;
+  const width = 128;
+  const height = 96;
+  const tileSize = 32;
+
+  beforeEach(() => {
+    anvil = new Anvil(width, height, tileSize);
+  });
+
+  describe('Initialization', () => {
+    it('should create anvil with correct dimensions', () => {
+      expect(anvil.getWidth()).toBe(width);
+      expect(anvil.getHeight()).toBe(height);
+      expect(anvil.getTileSize()).toBe(tileSize);
+    });
+
+    it('should initialize with transparent pixels', () => {
+      const blackPixel = anvil.getPixel(0, 0);
+      expect(blackPixel).toEqual([0, 0, 0, 0]);
+
+      const centerPixel = anvil.getPixel(width / 2, height / 2);
+      expect(centerPixel).toEqual([0, 0, 0, 0]);
+    });
+
+    it('should have correct tile grid dimensions', () => {
+      const tileInfo = anvil.getTileInfo();
+      expect(tileInfo.tilesWide).toBe(Math.ceil(width / tileSize));
+      expect(tileInfo.tilesHigh).toBe(Math.ceil(height / tileSize));
+      expect(tileInfo.totalTiles).toBe(tileInfo.tilesWide * tileInfo.tilesHigh);
+    });
+
+    it('should start with no pending changes', () => {
+      expect(anvil.hasPendingChanges()).toBe(false);
+      expect(anvil.getPendingPixelCount()).toBe(0);
+    });
+  });
+
+  describe('Pixel Operations', () => {
+    it('should set and get individual pixels', () => {
+      const redColor: RGBA = [255, 0, 0, 255];
+      const blueColor: RGBA = [0, 0, 255, 128];
+
+      anvil.setPixel(10, 15, redColor);
+      anvil.setPixel(50, 60, blueColor);
+
+      expect(anvil.getPixel(10, 15)).toEqual(redColor);
+      expect(anvil.getPixel(50, 60)).toEqual(blueColor);
+
+      // Verify other pixels remain transparent
+      expect(anvil.getPixel(20, 25)).toEqual([0, 0, 0, 0]);
+    });
+
+    it('should handle bounds checking for pixels', () => {
+      const color: RGBA = [100, 100, 100, 255];
+
+      // Valid coordinates
+      expect(() => anvil.setPixel(0, 0, color)).not.toThrow();
+      expect(() => anvil.setPixel(width - 1, height - 1, color)).not.toThrow();
+
+      // Out of bounds coordinates
+      expect(() => anvil.setPixel(-1, 0, color)).toThrow();
+      expect(() => anvil.setPixel(0, -1, color)).toThrow();
+      expect(() => anvil.setPixel(width, 0, color)).toThrow();
+      expect(() => anvil.setPixel(0, height, color)).toThrow();
+
+      // Similar for getPixel
+      expect(() => anvil.getPixel(-1, 0)).toThrow();
+      expect(() => anvil.getPixel(width, height)).toThrow();
+    });
+
+    it('should support fill operations', () => {
+      const fillColor: RGBA = [200, 100, 50, 180];
+
+      // Fill a rectangular region
+      anvil.fillRect(10, 10, 20, 15, fillColor);
+
+      // Check pixels inside the rectangle
+      expect(anvil.getPixel(15, 12)).toEqual(fillColor);
+      expect(anvil.getPixel(25, 20)).toEqual(fillColor);
+
+      // Check pixels outside the rectangle
+      expect(anvil.getPixel(5, 5)).toEqual([0, 0, 0, 0]);
+      expect(anvil.getPixel(35, 30)).toEqual([0, 0, 0, 0]);
+    });
+
+    it('should support whole buffer fill', () => {
+      const backgroundColor: RGBA = [64, 128, 192, 255];
+
+      anvil.fillAll(backgroundColor);
+
+      // Check random pixels
+      expect(anvil.getPixel(0, 0)).toEqual(backgroundColor);
+      expect(anvil.getPixel(width / 2, height / 2)).toEqual(backgroundColor);
+      expect(anvil.getPixel(width - 1, height - 1)).toEqual(backgroundColor);
+    });
+  });
+
+  describe('Change Tracking', () => {
+    it('should track individual pixel changes', () => {
+      expect(anvil.hasPendingChanges()).toBe(false);
+
+      anvil.setPixel(25, 30, [255, 255, 0, 255]);
+
+      expect(anvil.hasPendingChanges()).toBe(true);
+      expect(anvil.getPendingPixelCount()).toBeGreaterThan(0);
+    });
+
+    it('should track fill operations', () => {
+      anvil.fillRect(0, 0, 32, 32, [128, 64, 32, 255]);
+
+      expect(anvil.hasPendingChanges()).toBe(true);
+      expect(anvil.getPendingPixelCount()).toBe(32 * 32);
+    });
+
+    it('should generate patches for changes', () => {
+      const redColor: RGBA = [255, 0, 0, 255];
+      const blueColor: RGBA = [0, 0, 255, 255];
+
+      // Make some pixel changes
+      anvil.setPixel(5, 5, redColor);
+      anvil.setPixel(10, 10, redColor);
+
+      // Fill a tile
+      anvil.fillRect(32, 32, 32, 32, blueColor);
+
+      const patch = anvil.previewPatch();
+
+      expect(patch).toBeDefined();
+      expect(patch!.pixels).toBeDefined();
+      expect(patch!.tiles).toBeDefined();
+
+      // Ensure patch reflects our changes
+      expect(patch!.pixels!.length).toBeGreaterThan(0);
+      expect(patch!.tiles!.length).toBeGreaterThan(0);
+    });
+
+    it('should flush changes and clear state', () => {
+      anvil.setPixel(40, 40, [100, 200, 50, 255]);
+
+      expect(anvil.hasPendingChanges()).toBe(true);
+
+      const patch = anvil.flush();
+
+      expect(patch).toBeDefined();
+      expect(anvil.hasPendingChanges()).toBe(false);
+      expect(anvil.getPendingPixelCount()).toBe(0);
+    });
+
+    it('should discard pending changes', () => {
+      anvil.setPixel(20, 20, [80, 160, 240, 200]);
+      anvil.fillRect(50, 50, 10, 10, [255, 128, 0, 255]);
+
+      expect(anvil.hasPendingChanges()).toBe(true);
+
+      anvil.discardPendingChanges();
+
+      expect(anvil.hasPendingChanges()).toBe(false);
+      expect(anvil.getPendingPixelCount()).toBe(0);
+    });
+  });
+
+  describe('Buffer Management', () => {
+    it('should provide access to raw buffer data', () => {
+      const bufferData = anvil.getBufferData();
+
+      expect(bufferData).toBeInstanceOf(Uint8ClampedArray);
+      expect(bufferData.length).toBe(width * height * 4);
+
+      // Initially should be all zeros (transparent)
+      expect(bufferData.every((value: number) => value === 0)).toBe(true);
+    });
+
+    it('should update buffer data when pixels change', () => {
+      const color: RGBA = [255, 128, 64, 200];
+
+      anvil.setPixel(10, 10, color);
+
+      const bufferData = anvil.getBufferData();
+      const pixelIndex = (10 * width + 10) * 4;
+
+      expect(bufferData[pixelIndex]).toBe(color[0]); // R
+      expect(bufferData[pixelIndex + 1]).toBe(color[1]); // G
+      expect(bufferData[pixelIndex + 2]).toBe(color[2]); // B
+      expect(bufferData[pixelIndex + 3]).toBe(color[3]); // A
+    });
+
+    it('should handle buffer resize operations', () => {
+      const newWidth = 256;
+      const newHeight = 192;
+
+      // Set some initial data
+      anvil.setPixel(50, 50, [255, 0, 0, 255]);
+
+      anvil.resize(newWidth, newHeight);
+
+      expect(anvil.getWidth()).toBe(newWidth);
+      expect(anvil.getHeight()).toBe(newHeight);
+
+      // Data within original bounds should be preserved
+      expect(anvil.getPixel(50, 50)).toEqual([255, 0, 0, 255]);
+
+      // New areas should be transparent
+      expect(anvil.getPixel(200, 150)).toEqual([0, 0, 0, 0]);
+    });
+
+    it('should handle resize with offset preservation', () => {
+      const originalColor: RGBA = [0, 255, 0, 255];
+      anvil.setPixel(10, 10, originalColor);
+
+      // Resize with offset (simulate moving canvas origin)
+      anvil.resizeWithOffset(width * 2, height * 2, 50, 50);
+
+      expect(anvil.getWidth()).toBe(width * 2);
+      expect(anvil.getHeight()).toBe(height * 2);
+
+      // Original pixel should be at new location
+      expect(anvil.getPixel(10 + 50, 10 + 50)).toEqual(originalColor);
+
+      // Original location should be transparent
+      expect(anvil.getPixel(10, 10)).toEqual([0, 0, 0, 0]);
+    });
+  });
+
+  describe('Tile Management', () => {
+    it('should track dirty tiles after changes', () => {
+      // Initially no dirty tiles
+      expect(anvil.getDirtyTileIndices()).toHaveLength(0);
+
+      // Make a change in first tile
+      anvil.setPixel(15, 15, [255, 255, 255, 255]);
+
+      const dirtyTiles = anvil.getDirtyTileIndices();
+      expect(dirtyTiles).toHaveLength(1);
+      expect(dirtyTiles[0]).toEqual({ row: 0, col: 0 });
+    });
+
+    it('should track multiple dirty tiles', () => {
+      // Make changes in different tiles
+      anvil.setPixel(10, 10, [255, 0, 0, 255]); // Tile (0,0)
+      anvil.setPixel(50, 10, [0, 255, 0, 255]); // Tile (0,1)
+      anvil.setPixel(10, 50, [0, 0, 255, 255]); // Tile (1,0)
+
+      const dirtyTiles = anvil.getDirtyTileIndices();
+      expect(dirtyTiles).toHaveLength(3);
+
+      // Check that all expected tiles are marked dirty
+      const tileSet = new Set(dirtyTiles.map((t: TileIndex) => `${t.row},${t.col}`));
+      expect(tileSet.has('0,0')).toBe(true);
+      expect(tileSet.has('0,1')).toBe(true);
+      expect(tileSet.has('1,0')).toBe(true);
+    });
+
+    it('should clear dirty tiles after flush', () => {
+      anvil.setPixel(20, 20, [128, 128, 128, 255]);
+
+      expect(anvil.getDirtyTileIndices()).toHaveLength(1);
+
+      anvil.flush();
+
+      expect(anvil.getDirtyTileIndices()).toHaveLength(0);
+    });
+
+    it('should handle tile uniform color optimization', () => {
+      const uniformColor: RGBA = [100, 150, 200, 255];
+
+      // Fill entire tile with same color
+      for (let y = 0; y < tileSize; y++) {
+        for (let x = 0; x < tileSize; x++) {
+          anvil.setPixel(x, y, uniformColor);
+        }
+      }
+
+      // Tile should be marked as having uniform color
+      const tileColor = anvil.getTileUniformColor({ row: 0, col: 0 });
+      expect(tileColor).toEqual(uniformColor);
+    });
+  });
+
+  describe('Performance and Memory', () => {
+    it('should provide debug information', () => {
+      anvil.setPixel(30, 30, [255, 255, 255, 255]);
+      anvil.fillRect(64, 64, 32, 32, [128, 128, 128, 255]);
+
+      const debugInfo = anvil.getDebugInfo();
+
+      expect(debugInfo.hasPending).toBe(true);
+      expect(debugInfo.pendingPixels).toBeGreaterThan(0);
+      expect(debugInfo.memoryUsage).toBeGreaterThan(0);
+      expect(debugInfo.bufferSize).toBe(width * height * 4);
+      expect(debugInfo.tileCount).toBeGreaterThan(0);
+    });
+
+    it('should handle large batch operations efficiently', () => {
+      const startTime = performance.now();
+      const uniquePositions = new Set<string>();
+
+      // Perform many pixel operations
+      for (let i = 0; i < 1000; i++) {
+        const x = Math.floor(Math.random() * width);
+        const y = Math.floor(Math.random() * height);
+        const color: RGBA = [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), 255];
+
+        // Track unique positions
+        uniquePositions.add(`${x},${y}`);
+        anvil.setPixel(x, y, color);
+      }
+
+      const elapsed = performance.now() - startTime;
+
+      // Should complete within reasonable time (adjust threshold as needed)
+      expect(elapsed).toBeLessThan(100); // 100ms for 1000 operations
+      expect(anvil.hasPendingChanges()).toBe(true);
+      // Should count unique pixels, not total operations (due to potential coordinate duplicates)
+      expect(anvil.getPendingPixelCount()).toBe(uniquePositions.size);
+    });
+
+    it('should optimize repeated operations on same pixel', () => {
+      const finalColor: RGBA = [200, 100, 50, 255];
+
+      // Make multiple changes to the same pixel
+      anvil.setPixel(25, 25, [255, 0, 0, 255]);
+      anvil.setPixel(25, 25, [0, 255, 0, 255]);
+      anvil.setPixel(25, 25, [0, 0, 255, 255]);
+      anvil.setPixel(25, 25, finalColor);
+
+      // Final result should be the last color set
+      expect(anvil.getPixel(25, 25)).toEqual(finalColor);
+
+      // Internal diff tracking may optimize this to single change
+      expect(anvil.hasPendingChanges()).toBe(true);
+    });
+  });
+
+  describe('Edge Cases and Error Handling', () => {
+    it('should handle extreme coordinates gracefully', () => {
+      const validColor: RGBA = [128, 128, 128, 255];
+
+      // Test boundary conditions
+      expect(() => anvil.setPixel(0, 0, validColor)).not.toThrow();
+      expect(() => anvil.setPixel(width - 1, height - 1, validColor)).not.toThrow();
+
+      // Test just outside bounds
+      expect(() => anvil.setPixel(-1, 0, validColor)).toThrow();
+      expect(() => anvil.setPixel(width, 0, validColor)).toThrow();
+      expect(() => anvil.setPixel(0, -1, validColor)).toThrow();
+      expect(() => anvil.setPixel(0, height, validColor)).toThrow();
+    });
+
+    it('should handle invalid colors gracefully', () => {
+      // These should be clamped to valid ranges
+      const clampedColor: RGBA = [300, -50, 256, 300]; // Out of 0-255 range
+
+      expect(() => anvil.setPixel(10, 10, clampedColor)).not.toThrow();
+
+      const resultColor = anvil.getPixel(10, 10);
+      expect(resultColor[0]).toBeGreaterThanOrEqual(0);
+      expect(resultColor[0]).toBeLessThanOrEqual(255);
+      expect(resultColor[1]).toBeGreaterThanOrEqual(0);
+      expect(resultColor[1]).toBeLessThanOrEqual(255);
+      expect(resultColor[2]).toBeGreaterThanOrEqual(0);
+      expect(resultColor[2]).toBeLessThanOrEqual(255);
+      expect(resultColor[3]).toBeGreaterThanOrEqual(0);
+      expect(resultColor[3]).toBeLessThanOrEqual(255);
+    });
+
+    it('should handle zero-size operations', () => {
+      // Fill with zero width/height should not crash
+      expect(() => anvil.fillRect(10, 10, 0, 0, [255, 255, 255, 255])).not.toThrow();
+      expect(() => anvil.fillRect(10, 10, 0, 10, [255, 255, 255, 255])).not.toThrow();
+      expect(() => anvil.fillRect(10, 10, 10, 0, [255, 255, 255, 255])).not.toThrow();
+
+      // Should not create any changes
+      expect(anvil.hasPendingChanges()).toBe(false);
+    });
+
+    it('should handle resize to very small dimensions', () => {
+      anvil.resize(1, 1);
+
+      expect(anvil.getWidth()).toBe(1);
+      expect(anvil.getHeight()).toBe(1);
+
+      expect(() => anvil.setPixel(0, 0, [255, 0, 0, 255])).not.toThrow();
+      expect(() => anvil.setPixel(1, 0, [255, 0, 0, 255])).toThrow();
+      expect(() => anvil.setPixel(0, 1, [255, 0, 0, 255])).toThrow();
+    });
+  });
+});
+</file>
+
+<file path="web/src/lib/anvil/test/LayerDiffs.test.ts">
+import { beforeEach, describe, expect, it } from 'vitest';
+import { PixelBuffer } from '../src/buffer/PixelBuffer';
+import { LayerDiffs } from '../src/buffer/diff/LayerDiffs';
+import { LayerDiffsController } from '../src/buffer/diff/LayerDiffsController';
+import { LayerTiles } from '../src/buffer/tile/LayerTiles';
+import { LayerTilesController } from '../src/buffer/tile/LayerTilesController';
+import type { RGBA, TileIndex } from '../src/types';
+
+describe('LayerDiffs and LayerDiffsController', () => {
+  let diffs: LayerDiffs;
+  let buffer: PixelBuffer;
+  let tiles: LayerTiles;
+  let tilesController: LayerTilesController;
+  let diffsController: LayerDiffsController;
+  const bufferWidth = 64;
+  const bufferHeight = 64;
+  const tileSize = 32;
+
+  beforeEach(() => {
+    buffer = new PixelBuffer(bufferWidth, bufferHeight);
+    tiles = new LayerTiles(bufferWidth, bufferHeight, tileSize);
+    tilesController = new LayerTilesController(tiles, buffer);
+    diffs = new LayerDiffs();
+    diffsController = new LayerDiffsController(diffs, tilesController, tileSize);
+  });
+
+  describe('LayerDiffs Model', () => {
+    it('should initialize empty', () => {
+      expect(diffs.hasPendingChanges()).toBe(false);
+      expect(diffs.getPendingPixelCount()).toBe(0);
+    });
+
+    it('should accumulate pixel diffs', () => {
+      const tileIndex: TileIndex = { row: 0, col: 0 };
+
+      diffs.addPixelChange(tileIndex, 5, [255, 0, 0, 255], [0, 255, 0, 255]);
+      diffs.addPixelChange(tileIndex, 10, [0, 0, 255, 255], [255, 255, 0, 255]);
+
+      expect(diffs.hasPendingChanges()).toBe(true);
+
+      const pending = diffs.getPendingChanges();
+      expect(pending.pixelChanges).toHaveLength(1);
+      expect(pending.pixelChanges[0].indices).toHaveLength(2);
+    });
+
+    it('should handle tile fills', () => {
+      const tileIndex: TileIndex = { row: 1, col: 1 };
+      const newColor: RGBA = [128, 64, 192, 255];
+      const oldColor: RGBA = [255, 255, 255, 255];
+
+      diffs.addTileFill(tileIndex, oldColor, newColor);
+
+      expect(diffs.hasPendingChanges()).toBe(true);
+
+      const pending = diffs.getPendingChanges();
+      expect(pending.tileFills).toHaveLength(1);
+      expect(pending.tileFills[0].tile).toEqual(tileIndex);
+    });
+
+    it('should handle whole buffer changes', () => {
+      const oldBuffer = new Uint8ClampedArray(bufferWidth * bufferHeight * 4);
+      const newBuffer = new Uint8ClampedArray(bufferWidth * bufferHeight * 4);
+      oldBuffer.fill(100);
+      newBuffer.fill(200);
+
+      diffs.addWholeBufferChange(oldBuffer, newBuffer);
+
+      expect(diffs.hasPendingChanges()).toBe(true);
+
+      const pending = diffs.getPendingChanges();
+      expect(pending.wholeBuffer).toBeDefined();
+      expect(pending.wholeBuffer!.before).toEqual(oldBuffer);
+      expect(pending.wholeBuffer!.after).toEqual(newBuffer);
+    });
+
+    it('should clear all changes', () => {
+      const tileIndex: TileIndex = { row: 0, col: 0 };
+
+      diffs.addPixelChange(tileIndex, 5, [255, 0, 0, 255], [0, 255, 0, 255]);
+      diffs.addTileFill(tileIndex, [128, 64, 192, 255], [255, 255, 255, 255]);
+
+      expect(diffs.hasPendingChanges()).toBe(true);
+
+      diffs.clear();
+
+      expect(diffs.hasPendingChanges()).toBe(false);
+      expect(diffs.getPendingPixelCount()).toBe(0);
+    });
+
+    it('should handle multiple tiles', () => {
+      const tile1: TileIndex = { row: 0, col: 0 };
+      const tile2: TileIndex = { row: 0, col: 1 };
+      const tile3: TileIndex = { row: 1, col: 0 };
+
+      diffs.addPixelChange(tile1, 5, [255, 0, 0, 255], [0, 0, 0, 0]);
+      diffs.addPixelChange(tile2, 10, [0, 255, 0, 255], [0, 0, 0, 0]);
+      diffs.addTileFill(tile3, [128, 128, 128, 255], [0, 0, 255, 255]);
+
+      const pending = diffs.getPendingChanges();
+      expect(pending.pixelChanges).toHaveLength(2);
+      expect(pending.tileFills).toHaveLength(1);
+
+      // Check that changes are properly separated by tile
+      expect(pending.pixelChanges[0].tile).toEqual(tile1);
+      expect(pending.pixelChanges[1].tile).toEqual(tile2);
+      expect(pending.tileFills[0].tile).toEqual(tile3);
+    });
+
+    it('should track pixel changes per tile location', () => {
+      const tileIndex: TileIndex = { row: 0, col: 0 };
+
+      expect(diffs.hasPixelChange(tileIndex, 5)).toBe(false);
+
+      diffs.addPixelChange(tileIndex, 5, [0, 0, 0, 0], [255, 0, 0, 255]);
+
+      expect(diffs.hasPixelChange(tileIndex, 5)).toBe(true);
+      expect(diffs.hasPixelChange(tileIndex, 10)).toBe(false);
+    });
+  });
+
+  describe('LayerDiffsController', () => {
+    it('should record pixel changes by global coordinates', () => {
+      const oldColor: RGBA = [0, 0, 0, 0];
+      const newColor: RGBA = [255, 128, 64, 200];
+
+      diffsController.addPixel(10, 15, oldColor, newColor);
+
+      expect(diffs.hasPendingChanges()).toBe(true);
+
+      // Verify the change is tracked
+      expect(diffsController.hasPixelDiff(10, 15)).toBe(true);
+      expect(diffsController.hasPixelDiff(20, 25)).toBe(false);
+    });
+
+    it('should record tile fills', () => {
+      const tileIndex: TileIndex = { row: 0, col: 1 };
+      const oldColor: RGBA = [100, 100, 100, 255];
+      const newColor: RGBA = [255, 0, 0, 255];
+
+      diffsController.addTileFill(tileIndex, oldColor, newColor);
+
+      expect(diffs.hasPendingChanges()).toBe(true);
+
+      const pending = diffs.getPendingChanges();
+      expect(pending.tileFills).toHaveLength(1);
+      expect(pending.tileFills[0].tile).toEqual(tileIndex);
+    });
+
+    it('should generate patches correctly', () => {
+      const color1: RGBA = [255, 0, 0, 255];
+      const color2: RGBA = [0, 255, 0, 255];
+      const fillColor: RGBA = [0, 0, 255, 255];
+
+      // Record some changes
+      diffsController.addPixel(5, 10, [0, 0, 0, 0], color1);
+      diffsController.addPixel(25, 30, [0, 0, 0, 0], color2);
+      diffsController.addTileFill({ row: 1, col: 1 }, [128, 128, 128, 255], fillColor);
+
+      const patch = diffsController.previewPatch();
+
+      expect(patch).toBeDefined();
+      expect(patch!.pixels).toBeDefined();
+      expect(patch!.tiles).toBeDefined();
+      expect(patch!.pixels!).toHaveLength(1); // Pixel changes are grouped by tile
+      expect(patch!.tiles!).toHaveLength(1);
+    });
+
+    it('should flush changes correctly', () => {
+      diffsController.addPixel(10, 10, [0, 0, 0, 0], [255, 255, 255, 255]);
+
+      expect(diffs.hasPendingChanges()).toBe(true);
+
+      const patch = diffsController.flush();
+
+      expect(patch).toBeDefined();
+      expect(diffs.hasPendingChanges()).toBe(false);
+    });
+
+    it('should handle mixed operations efficiently', () => {
+      const redColor: RGBA = [255, 0, 0, 255];
+      const blueColor: RGBA = [0, 0, 255, 255];
+      const greenColor: RGBA = [0, 255, 0, 255];
+
+      // Individual pixel changes in first tile
+      diffsController.addPixel(5, 5, [0, 0, 0, 0], redColor);
+      diffsController.addPixel(10, 10, [0, 0, 0, 0], redColor);
+      diffsController.addPixel(15, 15, [0, 0, 0, 0], redColor);
+
+      // Tile fill operation in second tile
+      diffsController.addTileFill({ row: 0, col: 1 }, [128, 128, 128, 255], blueColor);
+
+      // More pixel changes in a different tile
+      diffsController.addPixel(35, 35, [0, 0, 0, 0], greenColor);
+      diffsController.addPixel(40, 40, [0, 0, 0, 0], greenColor);
+
+      const patch = diffsController.previewPatch();
+
+      expect(patch!.pixels!).toHaveLength(2); // Two tiles with pixel changes
+      expect(patch!.tiles!).toHaveLength(1); // One tile fill
+      expect(patch!.whole).toBeUndefined();
+
+      // Verify pixel counts
+      const tile1Pixels = patch!.pixels!.find((p) => p.tile.row === 0 && p.tile.col === 0);
+      const tile2Pixels = patch!.pixels!.find((p) => p.tile.row === 1 && p.tile.col === 1);
+
+      expect(tile1Pixels?.idx.length).toBe(3); // 3 pixel changes in tile (0,0)
+      expect(tile2Pixels?.idx.length).toBe(2); // 2 pixel changes in tile (1,1)
+    });
+
+    it('should handle whole buffer changes', () => {
+      const bufferSize = bufferWidth * bufferHeight * 4;
+      const oldBufferData = new Uint8ClampedArray(bufferSize);
+      const newBufferData = new Uint8ClampedArray(bufferSize);
+      oldBufferData.fill(128);
+      newBufferData.fill(255);
+
+      diffsController.addWholeBufferChange(oldBufferData, newBufferData);
+
+      expect(diffs.hasPendingChanges()).toBe(true);
+
+      const patch = diffsController.previewPatch();
+      expect(patch!.whole).toBeDefined();
+      expect(patch!.pixels).toBeUndefined();
+      expect(patch!.tiles).toBeUndefined();
+    });
+
+    it('should provide useful debugging information', () => {
+      // Initially clean
+      let debugInfo = diffsController.getDebugInfo();
+      expect(debugInfo.hasPending).toBe(false);
+      expect(debugInfo.pendingPixels).toBe(0);
+      expect(debugInfo.hasWhole).toBe(false);
+
+      // Add some changes
+      diffsController.addPixel(10, 10, [0, 0, 0, 0], [255, 0, 0, 255]);
+      diffsController.addTileFill({ row: 1, col: 1 }, [128, 128, 128, 255], [0, 255, 0, 255]);
+
+      debugInfo = diffsController.getDebugInfo();
+      expect(debugInfo.hasPending).toBe(true);
+      expect(debugInfo.pendingPixels).toBeGreaterThan(0);
+      expect(debugInfo.tileCount).toBe(1);
+      expect(debugInfo.pixelTileCount).toBe(1);
+      expect(debugInfo.memoryUsage).toBeGreaterThan(0);
+    });
+  });
+
+  describe('Integration scenarios', () => {
+    it('should track complex editing session', () => {
+      // Phase 1: Draw some pixels
+      for (let i = 0; i < 10; i++) {
+        diffsController.addPixel(i * 3, i * 2, [0, 0, 0, 0], [i * 25, 255 - i * 25, 128, 255]);
+      }
+
+      // Phase 2: Fill a tile
+      diffsController.addTileFill({ row: 1, col: 0 }, [64, 64, 64, 255], [255, 128, 0, 255]);
+
+      // Phase 3: More pixel edits in second tile row
+      for (let i = 0; i < 5; i++) {
+        diffsController.addPixel(40 + i, 40 + i, [255, 128, 0, 255], [0, 0, 255, 255]);
+      }
+
+      expect(diffs.hasPendingChanges()).toBe(true);
+      expect(diffsController.getPendingPixelCount()).toBeGreaterThan(1000); // Tile fill adds many pixels
+
+      const patch = diffsController.flush();
+
+      expect(patch).toBeDefined();
+      expect(patch!.pixels).toBeDefined();
+      expect(patch!.tiles).toBeDefined();
+
+      // After flush, diffs should be clean
+      expect(diffs.hasPendingChanges()).toBe(false);
+    });
+
+    it('should handle edge case coordinates', () => {
+      // Test pixels at tile boundaries
+      const edgeCoords = [
+        [0, 0], // Top-left of first tile
+        [31, 31], // Bottom-right of first tile
+        [32, 32], // Top-left of second tile
+        [63, 63], // Bottom-right of last tile
+      ];
+
+      edgeCoords.forEach(([x, y], index) => {
+        diffsController.addPixel(x, y, [0, 0, 0, 0], [index * 60, index * 60, index * 60, 255]);
+      });
+
+      expect(diffs.hasPendingChanges()).toBe(true);
+
+      const patch = diffsController.previewPatch();
+      expect(patch!.pixels).toBeDefined();
+
+      // Verify all edge pixels are tracked
+      edgeCoords.forEach(([x, y]) => {
+        expect(diffsController.hasPixelDiff(x, y)).toBe(true);
+      });
+    });
+
+    it('should discard pending changes when requested', () => {
+      diffsController.addPixel(10, 10, [0, 0, 0, 0], [255, 0, 0, 255]);
+      diffsController.addTileFill({ row: 1, col: 1 }, [128, 128, 128, 255], [0, 255, 0, 255]);
+
+      expect(diffs.hasPendingChanges()).toBe(true);
+
+      diffsController.discardPendingChanges();
+
+      expect(diffs.hasPendingChanges()).toBe(false);
+      expect(diffsController.getPendingPixelCount()).toBe(0);
+    });
+
+    it('should handle tile fill overriding pixel changes', () => {
+      const tileIndex: TileIndex = { row: 0, col: 0 };
+
+      // First add pixel changes
+      diffsController.addPixel(5, 5, [0, 0, 0, 0], [255, 0, 0, 255]);
+      diffsController.addPixel(10, 10, [0, 0, 0, 0], [0, 255, 0, 255]);
+
+      let pending = diffs.getPendingChanges();
+      expect(pending.pixelChanges).toHaveLength(1);
+      expect(pending.tileFills).toHaveLength(0);
+
+      // Then add tile fill - should override pixel changes for that tile
+      diffsController.addTileFill(tileIndex, [64, 64, 64, 255], [0, 0, 255, 255]);
+
+      pending = diffs.getPendingChanges();
+      expect(pending.pixelChanges).toHaveLength(0); // Pixel changes should be cleared
+      expect(pending.tileFills).toHaveLength(1);
+    });
+  });
+});
+</file>
+
+<file path="web/src/lib/anvil/test/LayerTiles.test.ts">
+import { beforeEach, describe, expect, it } from 'vitest';
+import { PixelBuffer } from '../src/buffer/PixelBuffer';
+import { LayerTiles } from '../src/buffer/tile/LayerTiles';
+import { LayerTilesController } from '../src/buffer/tile/LayerTilesController';
+import type { RGBA, TileIndex } from '../src/types';
+
+describe('LayerTiles and LayerTilesController', () => {
+  let tiles: LayerTiles;
+  let buffer: PixelBuffer;
+  let controller: LayerTilesController;
+  const tileSize = 32;
+  const bufferWidth = 128; // 4 tiles wide
+  const bufferHeight = 96; // 3 tiles high
+
+  beforeEach(() => {
+    buffer = new PixelBuffer(bufferWidth, bufferHeight);
+    tiles = new LayerTiles(bufferWidth, bufferHeight, tileSize);
+    controller = new LayerTilesController(tiles, buffer);
+  });
+
+  describe('LayerTiles Model', () => {
+    it('should calculate tile grid correctly', () => {
+      expect(tiles.cols).toBe(4); // 128 / 32
+      expect(tiles.rows).toBe(3); // 96 / 32
+      expect(tiles.totalTiles).toBe(12); // 4 * 3
+    });
+
+    it('should initialize with no dirty tiles', () => {
+      const stats = tiles.getStats();
+      expect(stats.dirtyTiles).toBe(0);
+      expect(tiles.getDirtyTileIndices()).toEqual([]);
+    });
+
+    it('should manage dirty flags correctly', () => {
+      const tileIndex: TileIndex = { row: 1, col: 2 };
+
+      expect(tiles.isDirty(tileIndex)).toBe(false);
+
+      tiles.setDirty(tileIndex, true);
+      expect(tiles.isDirty(tileIndex)).toBe(true);
+
+      const dirtyTiles = tiles.getDirtyTileIndices();
+      expect(dirtyTiles).toHaveLength(1);
+      expect(dirtyTiles[0]).toEqual(tileIndex);
+    });
+
+    it('should clear dirty flags', () => {
+      tiles.setDirty({ row: 0, col: 0 }, true);
+      tiles.setDirty({ row: 1, col: 1 }, true);
+      tiles.setDirty({ row: 2, col: 3 }, true);
+
+      let stats = tiles.getStats();
+      expect(stats.dirtyTiles).toBe(3);
+      expect(tiles.getDirtyTileIndices()).toHaveLength(3);
+
+      tiles.clearAllDirty();
+
+      stats = tiles.getStats();
+      expect(stats.dirtyTiles).toBe(0);
+      expect(tiles.getDirtyTileIndices()).toEqual([]);
+    });
+
+    it('should manage uniform color tiles', () => {
+      const tileIndex: TileIndex = { row: 1, col: 1 };
+      const color: RGBA = [255, 128, 64, 200];
+
+      expect(tiles.isUniform(tileIndex)).toBe(false);
+
+      tiles.setUniform(tileIndex, true, color);
+      expect(tiles.isUniform(tileIndex)).toBe(true);
+      expect(tiles.getUniformColor(tileIndex)).toEqual(color);
+    });
+
+    it('should handle edge cases for tile indices', () => {
+      // Valid edge cases
+      expect(tiles.isDirty({ row: 0, col: 0 })).toBe(false);
+      expect(tiles.isDirty({ row: 2, col: 3 })).toBe(false);
+
+      // Invalid indices should not crash
+      expect(() => tiles.isDirty({ row: -1, col: 0 })).not.toThrow();
+      expect(() => tiles.isDirty({ row: 10, col: 0 })).not.toThrow();
+      expect(tiles.isDirty({ row: -1, col: 0 })).toBe(false);
+      expect(tiles.isDirty({ row: 10, col: 0 })).toBe(false);
+    });
+
+    it('should convert pixel coordinates to tile index', () => {
+      expect(tiles.pixelToTileIndex(0, 0)).toEqual({ row: 0, col: 0 });
+      expect(tiles.pixelToTileIndex(31, 31)).toEqual({ row: 0, col: 0 });
+      expect(tiles.pixelToTileIndex(32, 32)).toEqual({ row: 1, col: 1 });
+      expect(tiles.pixelToTileIndex(64, 32)).toEqual({ row: 1, col: 2 });
+      expect(tiles.pixelToTileIndex(127, 95)).toEqual({ row: 2, col: 3 });
+    });
+  });
+
+  describe('LayerTilesController', () => {
+    it('should get tile bounds correctly', () => {
+      const bounds = tiles.getTileBounds({ row: 1, col: 2 });
+
+      expect(bounds.x).toBe(64); // 2 * 32
+      expect(bounds.y).toBe(32); // 1 * 32
+      expect(bounds.width).toBe(32);
+      expect(bounds.height).toBe(32);
+    });
+
+    it('should mark tiles dirty when pixels change', () => {
+      const color: RGBA = [255, 0, 0, 255];
+
+      // Directly set pixel to verify marking works
+      buffer.set(50, 50, color);
+      controller.markDirtyByPixel(50, 50);
+
+      const expectedTile = tiles.pixelToTileIndex(50, 50);
+      expect(tiles.isDirty(expectedTile)).toBe(true);
+
+      // Verify pixel was actually set
+      expect(buffer.get(50, 50)).toEqual(color);
+    });
+
+    it('should fill tiles uniformly', () => {
+      const tileIndex: TileIndex = { row: 1, col: 1 };
+      const fillColor: RGBA = [128, 64, 192, 255];
+
+      controller.fillTile(tileIndex, fillColor);
+
+      // Tile should be marked as uniform
+      expect(tiles.isUniform(tileIndex)).toBe(true);
+      expect(tiles.getUniformColor(tileIndex)).toEqual(fillColor);
+      expect(tiles.isDirty(tileIndex)).toBe(true);
+
+      // Check that pixels in the tile are actually filled
+      const bounds = tiles.getTileBounds(tileIndex);
+      expect(buffer.get(bounds.x, bounds.y)).toEqual(fillColor);
+      expect(buffer.get(bounds.x + 15, bounds.y + 15)).toEqual(fillColor);
+    });
+
+    it('should handle partial tiles at edges', () => {
+      // Create buffer that doesn't align perfectly with tile size
+      const smallBuffer = new PixelBuffer(50, 50); // 1.56 tiles in each dimension
+      const smallTiles = new LayerTiles(50, 50, 32);
+      const smallController = new LayerTilesController(smallTiles, smallBuffer);
+
+      expect(smallTiles.cols).toBe(2); // ceil(50/32)
+      expect(smallTiles.rows).toBe(2); // ceil(50/32)
+
+      // Fill edge tile
+      const edgeTile: TileIndex = { row: 1, col: 1 };
+      const color: RGBA = [100, 200, 50, 255];
+      smallController.fillTile(edgeTile, color);
+
+      // Verify partial tile was filled correctly
+      expect(smallBuffer.get(32, 32)).toEqual(color);
+      expect(smallBuffer.get(49, 49)).toEqual(color);
+    });
+
+    it('should break uniformity when individual pixels change', () => {
+      const tileIndex: TileIndex = { row: 0, col: 0 };
+      const uniformColor: RGBA = [100, 100, 100, 255];
+      const differentColor: RGBA = [200, 50, 150, 255];
+
+      // Fill tile uniformly
+      controller.fillTile(tileIndex, uniformColor);
+      expect(tiles.isUniform(tileIndex)).toBe(true);
+
+      // Change one pixel and mark dirty manually
+      buffer.set(5, 5, differentColor);
+      controller.markDirtyByPixel(5, 5);
+
+      // Tile should no longer be uniform
+      expect(tiles.isUniform(tileIndex)).toBe(false);
+      expect(tiles.isDirty(tileIndex)).toBe(true);
+    });
+
+    it('should detect tile uniformity', () => {
+      const tileIndex: TileIndex = { row: 0, col: 0 };
+      const color: RGBA = [150, 150, 150, 255];
+
+      // Manually fill buffer area
+      const bounds = tiles.getTileBounds(tileIndex);
+      for (let y = bounds.y; y < bounds.y + bounds.height; y++) {
+        for (let x = bounds.x; x < bounds.x + bounds.width; x++) {
+          if (buffer.isInBounds(x, y)) {
+            buffer.set(x, y, color);
+          }
+        }
+      }
+
+      // Initially not marked as uniform
+      expect(tiles.isUniform(tileIndex)).toBe(false);
+
+      // Detect uniformity
+      const isUniform = controller.detectTileUniformity(tileIndex);
+      expect(isUniform).toBe(true);
+      expect(tiles.isUniform(tileIndex)).toBe(true);
+      expect(tiles.getUniformColor(tileIndex)).toEqual(color);
+    });
+  });
+
+  describe('Integration scenarios', () => {
+    it('should handle multiple tile operations', () => {
+      const redColor: RGBA = [255, 0, 0, 255];
+      const blueColor: RGBA = [0, 0, 255, 255];
+      const greenColor: RGBA = [0, 255, 0, 255];
+
+      // Fill some tiles
+      controller.fillTile({ row: 0, col: 0 }, redColor);
+      controller.fillTile({ row: 1, col: 1 }, blueColor);
+
+      // Set individual pixels
+      buffer.set(100, 50, greenColor);
+      controller.markDirtyByPixel(100, 50);
+
+      const dirtyTiles = tiles.getDirtyTileIndices();
+      expect(dirtyTiles.length).toBeGreaterThanOrEqual(3);
+
+      // Verify operations
+      expect(tiles.isUniform({ row: 0, col: 0 })).toBe(true);
+      expect(tiles.isUniform({ row: 1, col: 1 })).toBe(true);
+      expect(buffer.get(100, 50)).toEqual(greenColor);
+    });
+
+    it('should efficiently track changes across the buffer', () => {
+      // Set pixels in different tiles
+      buffer.set(10, 10, [255, 0, 0, 255]); // Tile (0,0)
+      controller.markDirtyByPixel(10, 10);
+
+      buffer.set(50, 50, [0, 255, 0, 255]); // Tile (1,1)
+      controller.markDirtyByPixel(50, 50);
+
+      buffer.set(100, 80, [0, 0, 255, 255]); // Tile (2,3)
+      controller.markDirtyByPixel(100, 80);
+
+      const dirtyTiles = tiles.getDirtyTileIndices();
+      expect(dirtyTiles).toHaveLength(3);
+
+      // Verify specific tiles are dirty
+      expect(tiles.isDirty({ row: 0, col: 0 })).toBe(true);
+      expect(tiles.isDirty({ row: 1, col: 1 })).toBe(true);
+      expect(tiles.isDirty({ row: 2, col: 3 })).toBe(true);
+
+      // Clean tiles should not be dirty
+      expect(tiles.isDirty({ row: 0, col: 1 })).toBe(false);
+      expect(tiles.isDirty({ row: 2, col: 0 })).toBe(false);
+    });
+
+    it('should provide useful statistics', () => {
+      // Initially clean
+      let stats = tiles.getStats();
+      expect(stats.totalTiles).toBe(12);
+      expect(stats.dirtyTiles).toBe(0);
+      expect(stats.uniformTiles).toBe(0);
+
+      // Add some dirty tiles
+      controller.fillTile({ row: 0, col: 0 }, [255, 0, 0, 255]);
+      controller.fillTile({ row: 1, col: 1 }, [0, 255, 0, 255]);
+
+      stats = tiles.getStats();
+      expect(stats.dirtyTiles).toBe(2);
+      expect(stats.uniformTiles).toBe(2);
+      expect(stats.memoryUsage).toBeGreaterThan(0);
+    });
+  });
+});
+</file>
+
+<file path="web/src/lib/anvil/test/Pattern.test.ts">
+import { describe, expect, test } from 'vitest';
+import { createSolidPattern, patternStamp } from '../src/ops/pattern/Pattern.js';
+
+function createBlank(width: number, height: number, color: [number, number, number, number] = [0, 0, 0, 0]) {
+  const arr = new Uint8ClampedArray(width * height * 4);
+  for (let i = 0; i < width * height; i++) {
+    const o = i * 4;
+    arr[o] = color[0];
+    arr[o + 1] = color[1];
+    arr[o + 2] = color[2];
+    arr[o + 3] = color[3];
+  }
+  return arr;
+}
+
+describe('patternStamp', () => {
+  test('stamps solid 1x1 pattern with radius', () => {
+    const w = 16,
+      h = 16;
+    const buf = createBlank(w, h);
+    const pattern = createSolidPattern([255, 0, 0, 255]);
+
+    patternStamp({
+      target: buf,
+      targetWidth: w,
+      targetHeight: h,
+      centerX: 8,
+      centerY: 8,
+      pattern,
+      radius: 2,
+    });
+
+    // 半径2 -> 直径5 の円マスク (単純実装なので点数を概算チェック)
+    let colored = 0;
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        if (buf[i + 3] !== 0) {
+          colored++;
+          expect(buf[i]).toBe(255);
+          expect(buf[i + 1]).toBe(0);
+          expect(buf[i + 2]).toBe(0);
+        }
+      }
+    }
+    // 半径2 の理論的な面積 ~ pi*r^2 = 12.56 -> マスクは格子なので 13-21 程度
+    expect(colored).toBeGreaterThanOrEqual(12);
+    expect(colored).toBeLessThanOrEqual(21);
+  });
+
+  test('erase blend reduces alpha', () => {
+    const w = 8,
+      h = 8;
+    const buf = createBlank(w, h, [10, 20, 30, 255]);
+    const pattern = createSolidPattern([0, 0, 0, 255]);
+
+    patternStamp({
+      target: buf,
+      targetWidth: w,
+      targetHeight: h,
+      centerX: 4,
+      centerY: 4,
+      pattern,
+      radius: 1,
+      blendMode: 'erase',
+      opacity: 1,
+    });
+
+    // 中心付近の alpha が減衰したか (完全 0 にはならない)
+    let changed = 0;
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        if (buf[i + 3] < 255) {
+          changed++;
+          // 色チャンネルは保持
+          expect(buf[i]).toBe(10);
+          expect(buf[i + 1]).toBe(20);
+          expect(buf[i + 2]).toBe(30);
+        }
+      }
+    }
+    expect(changed).toBeGreaterThan(0);
+  });
+});
+</file>
+
+<file path="web/src/lib/anvil/test/PatternMaskCache.test.ts">
+import { describe, expect, test } from 'vitest';
+import { createSolidPattern, getOrCreateShapeMask, patternStamp } from '../src/ops/pattern/Pattern.js';
+
+function makeTarget(w: number, h: number) {
+  return new Uint8ClampedArray(w * h * 4);
+}
+
+function countColored(buf: Uint8ClampedArray, w: number, h: number) {
+  let c = 0;
+  for (let i = 0; i < w * h; i++) if (buf[i * 4 + 3] !== 0) c++;
+  return c;
+}
+
+describe('patternStamp shape:size pixel mask cache', () => {
+  test('circle:10 mask reused and stamping works', () => {
+    const key = 'circle:10';
+    const mask1 = getOrCreateShapeMask('circle', 10, key);
+    const mask2 = getOrCreateShapeMask('circle', 10, key);
+    expect(mask1).toBe(mask2); // キャッシュ再利用
+
+    const w = 64,
+      h = 64;
+    const buf = makeTarget(w, h);
+    const pattern = createSolidPattern([0, 255, 0, 255]);
+
+    patternStamp({
+      target: buf,
+      targetWidth: w,
+      targetHeight: h,
+      centerX: 30,
+      centerY: 31,
+      pattern,
+      maskKey: key,
+      shape: 'circle',
+      size: 10,
+      opacity: 1,
+    });
+
+    const colored = countColored(buf, w, h);
+    expect(colored).toBeGreaterThan(0);
+  });
+
+  test('square:5 stamp uses correct area (approx)', () => {
+    const key = 'square:5';
+    const w = 32,
+      h = 32;
+    const buf = makeTarget(w, h);
+    const pattern = createSolidPattern([255, 0, 0, 255]);
+
+    patternStamp({
+      target: buf,
+      targetWidth: w,
+      targetHeight: h,
+      centerX: 10,
+      centerY: 10,
+      pattern,
+      maskKey: key,
+      shape: 'square',
+      size: 5,
+    });
+
+    // 5x5 = 25 ピクセル (端が画面内なのでそのまま)
+    const colored = countColored(buf, w, h);
+    expect(colored).toBe(25);
+  });
+});
+</file>
+
+<file path="web/src/lib/anvil/test/PixelBuffer.test.ts">
+import { beforeEach, describe, expect, it } from 'vitest';
+import { PixelBuffer } from '../src/buffer/PixelBuffer';
+import type { RGBA } from '../src/types';
+
+describe('PixelBuffer', () => {
+  let buffer: PixelBuffer;
+  const width = 16;
+  const height = 16;
+
+  beforeEach(() => {
+    buffer = new PixelBuffer(width, height);
+  });
+
+  describe('initialization', () => {
+    it('should create buffer with correct dimensions', () => {
+      expect(buffer.width).toBe(width);
+      expect(buffer.height).toBe(height);
+      expect(buffer.data.length).toBe(width * height * 4);
+    });
+
+    it('should initialize with transparent pixels', () => {
+      const pixel = buffer.get(0, 0);
+      expect(pixel).toEqual([0, 0, 0, 0]);
+    });
+
+    it('should accept initial data', () => {
+      const data = new Uint8ClampedArray(width * height * 4);
+      data.fill(255); // Fill with white
+      const bufferWithData = new PixelBuffer(width, height, data);
+
+      const pixel = bufferWithData.get(0, 0);
+      expect(pixel).toEqual([255, 255, 255, 255]);
+    });
+  });
+
+  describe('pixel operations', () => {
+    it('should set and get pixels correctly', () => {
+      const color: RGBA = [255, 128, 64, 200];
+      buffer.set(5, 7, color);
+
+      const retrieved = buffer.get(5, 7);
+      expect(retrieved).toEqual(color);
+    });
+
+    it('should handle edge coordinates', () => {
+      const color: RGBA = [100, 150, 200, 255];
+
+      // Top-left corner
+      buffer.set(0, 0, color);
+      expect(buffer.get(0, 0)).toEqual(color);
+
+      // Bottom-right corner
+      buffer.set(width - 1, height - 1, color);
+      expect(buffer.get(width - 1, height - 1)).toEqual(color);
+    });
+
+    it('should handle out-of-bounds gracefully', () => {
+      // Should not throw errors
+      expect(() => buffer.set(-1, 0, [255, 0, 0, 255])).not.toThrow();
+      expect(() => buffer.set(width, 0, [255, 0, 0, 255])).not.toThrow();
+      expect(() => buffer.set(0, height, [255, 0, 0, 255])).not.toThrow();
+
+      // Should return [0, 0, 0, 0] for out-of-bounds
+      expect(buffer.get(-1, 0)).toEqual([0, 0, 0, 0]);
+      expect(buffer.get(width, 0)).toEqual([0, 0, 0, 0]);
+      expect(buffer.get(0, height)).toEqual([0, 0, 0, 0]);
+    });
+
+    it('should return true when pixel changes', () => {
+      const color: RGBA = [255, 0, 0, 255];
+      const result = buffer.set(5, 5, color);
+      expect(result).toBe(true);
+    });
+
+    it('should return false when pixel does not change', () => {
+      const color: RGBA = [0, 0, 0, 0]; // Default transparent
+      const result = buffer.set(5, 5, color);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('resize operations', () => {
+    beforeEach(() => {
+      // Set some test data
+      buffer.set(2, 3, [255, 0, 0, 255]); // Red
+      buffer.set(8, 8, [0, 255, 0, 255]); // Green
+    });
+
+    it('should resize buffer larger', () => {
+      buffer.resize({ width: 32, height: 24 });
+
+      expect(buffer.width).toBe(32);
+      expect(buffer.height).toBe(24);
+      expect(buffer.data.length).toBe(32 * 24 * 4);
+
+      // Original data should be preserved
+      expect(buffer.get(2, 3)).toEqual([255, 0, 0, 255]);
+      expect(buffer.get(8, 8)).toEqual([0, 255, 0, 255]);
+    });
+
+    it('should resize buffer smaller', () => {
+      buffer.resize({ width: 8, height: 8 });
+
+      expect(buffer.width).toBe(8);
+      expect(buffer.height).toBe(8);
+
+      // Data within new bounds should be preserved
+      expect(buffer.get(2, 3)).toEqual([255, 0, 0, 255]);
+
+      // Data outside new bounds should be inaccessible
+      expect(buffer.get(8, 8)).toEqual([0, 0, 0, 0]);
+    });
+
+    it('should resize with origin offset', () => {
+      buffer.resize({ width: 24, height: 24 }, { destOrigin: { x: 4, y: 4 } });
+
+      expect(buffer.width).toBe(24);
+      expect(buffer.height).toBe(24);
+
+      // Original pixel at (2, 3) should now be at (2+4, 3+4) = (6, 7)
+      expect(buffer.get(6, 7)).toEqual([255, 0, 0, 255]);
+      expect(buffer.get(12, 12)).toEqual([0, 255, 0, 255]);
+    });
+  });
+
+  describe('utility methods', () => {
+    it('should check bounds correctly', () => {
+      expect(buffer.isInBounds(0, 0)).toBe(true);
+      expect(buffer.isInBounds(width - 1, height - 1)).toBe(true);
+      expect(buffer.isInBounds(-1, 0)).toBe(false);
+      expect(buffer.isInBounds(width, 0)).toBe(false);
+      expect(buffer.isInBounds(0, height)).toBe(false);
+    });
+
+    it('should clone buffer correctly', () => {
+      buffer.set(5, 5, [255, 128, 64, 200]);
+      buffer.set(10, 10, [64, 128, 255, 150]);
+
+      const cloned = buffer.clone();
+
+      expect(cloned.width).toBe(buffer.width);
+      expect(cloned.height).toBe(buffer.height);
+      expect(cloned.get(5, 5)).toEqual([255, 128, 64, 200]);
+      expect(cloned.get(10, 10)).toEqual([64, 128, 255, 150]);
+
+      // Verify it's a separate instance
+      cloned.set(5, 5, [100, 100, 100, 100]);
+      expect(buffer.get(5, 5)).toEqual([255, 128, 64, 200]); // Original unchanged
+    });
+
+    it('should fill buffer with color', () => {
+      const fillColor: RGBA = [128, 64, 192, 255];
+      buffer.fill(fillColor);
+
+      // Check multiple positions
+      expect(buffer.get(0, 0)).toEqual(fillColor);
+      expect(buffer.get(5, 5)).toEqual(fillColor);
+      expect(buffer.get(width - 1, height - 1)).toEqual(fillColor);
+    });
+  });
+});
+</file>
+
+<file path="web/src/lib/anvil/tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowJs": true,
+    "strict": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "outDir": "./dist",
+    "rootDir": "./",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "noEmit": false
+  },
+  "include": ["index.ts", "src/**/*"],
+  "exclude": ["dist", "node_modules", "**/*.test.ts"]
+}
+</file>
+
+<file path="web/src/lib/anvil/vitest.config.ts">
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    globals: true,
+    environment: 'node',
+  },
+});
+</file>
+
+<file path=".gitmodules">
+[submodule "web/src/lib/anvil"]
+	path = web/src/lib/anvil
+	url = https://github.com/sledge-pdm/anvil.git
+</file>
+
+<file path="model/.cargo/config.toml">
+[target.wasm32-unknown-unknown]
+rustflags = ["--cfg", "getrandom_backend=\"wasm_js\""]
+</file>
+
+<file path="model/build.rs">
+use std::{env, fs, path::PathBuf};
+
+fn main() {
+    let artifact_path = PathBuf::from("artifacts/model.bin");
+    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
+    fs::create_dir_all(&out_dir).unwrap();
+    let dest = out_dir.join("model.bin");
+
+    if artifact_path.exists() {
+        println!("cargo:rerun-if-changed=artifacts/model.bin");
+        fs::copy(&artifact_path, &dest).expect("copy model.bin");
+    } else {
+        println!(
+            "cargo:warning=artifacts/model.bin not found; embedding empty placeholder (run training first for real model)"
+        );
+        // 空ファイル生成 (include_bytes が失敗しないように)
+        fs::write(&dest, &[] as &[u8]).expect("write placeholder model.burn");
+    }
+}
+</file>
+
+<file path="model/src/data.rs">
 use burn::{data::dataloader::batcher::Batcher, data::dataset::vision::MnistItem, prelude::*};
 
 #[derive(Clone, Default)]
@@ -108,19 +4142,19 @@ impl<B: Backend> Batcher<B, MnistItem, MnistBatch<B>> for MnistBatcher {
 }
 </file>
 
-<file path="src/main.rs">
+<file path="model/src/main.rs">
 #![recursion_limit = "256"]
 // src/main.rs
 mod data;
 mod model;
 mod train;
 
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use burn::{prelude::*, record::CompactRecorder};
 use burn_wgpu::{Wgpu, WgpuDevice};
-use std::{fs, path::Path};
 use clap::{Args, Parser, Subcommand};
 use image::{DynamicImage, ImageReader};
+use std::{fs, path::Path};
 
 #[derive(Subcommand)]
 enum Commands {
@@ -186,7 +4220,11 @@ fn infer_paths(path: &str) -> Result<()> {
         let mut files: Vec<_> = fs::read_dir(path)?
             .filter_map(|e| e.ok())
             .map(|e| e.path())
-            .filter(|p| p.extension().map(|ext| ext.eq_ignore_ascii_case("png")).unwrap_or(false))
+            .filter(|p| {
+                p.extension()
+                    .map(|ext| ext.eq_ignore_ascii_case("png"))
+                    .unwrap_or(false)
+            })
             .collect();
         files.sort();
         if files.is_empty() {
@@ -204,7 +4242,9 @@ fn infer_paths(path: &str) -> Result<()> {
         let pred = infer_single_path(&model, &device, Path::new(path))?;
         println!("Predicted: {pred}");
     } else {
-        return Err(anyhow!("指定パスがファイルでもディレクトリでもありません: {path}"));
+        return Err(anyhow!(
+            "指定パスがファイルでもディレクトリでもありません: {path}"
+        ));
     }
     Ok(())
 }
@@ -239,7 +4279,7 @@ fn to_mnist_tensor<B: Backend>(img: &DynamicImage, device: &B::Device) -> Tensor
 }
 </file>
 
-<file path="src/model.rs">
+<file path="model/src/model.rs">
 // src/model.rs
 use burn::nn::{
     Linear, LinearConfig, PaddingConfig2d, Relu,
@@ -296,7 +4336,429 @@ impl<B: Backend> LeNet<B> {
 }
 </file>
 
-<file path="src/train.rs">
+<file path="model/src/state.rs">
+use crate::model::LeNet;
+use burn::{
+    module::Module,
+    record::{BinBytesRecorder, FullPrecisionSettings, Recorder},
+};
+use burn_wgpu::{WgpuDevice, graphics::AutoGraphicsApi, init_setup_async};
+type Backend = burn_wgpu::Wgpu;
+
+static STATE_ENCODED: &[u8] = include_bytes!("../artifacts/model.bin");
+
+/// Builds and loads trained parameters into the model.
+pub async fn build_and_load_model() -> LeNet<Backend> {
+    init_setup_async::<AutoGraphicsApi>(&WgpuDevice::default(), Default::default()).await;
+
+    let model: LeNet<Backend> = LeNet::new(&Default::default());
+    let record = BinBytesRecorder::<FullPrecisionSettings, &'static [u8]>::default()
+        .load(STATE_ENCODED, &Default::default())
+        .expect("Failed to decode state");
+
+    model.load_record(record)
+}
+</file>
+
+<file path="web/.gitignore">
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+</file>
+
+<file path="web/.npmrc">
+engine-strict=true
+</file>
+
+<file path="web/.prettierignore">
+# Package Managers
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+bun.lock
+bun.lockb
+
+# Miscellaneous
+/static/
+</file>
+
+<file path="web/.prettierrc">
+{
+	"useTabs": true,
+	"singleQuote": true,
+	"trailingComma": "none",
+	"printWidth": 100,
+	"plugins": ["prettier-plugin-svelte"],
+	"overrides": [
+		{
+			"files": "*.svelte",
+			"options": {
+				"parser": "svelte"
+			}
+		}
+	]
+}
+</file>
+
+<file path="web/eslint.config.js">
+import prettier from 'eslint-config-prettier';
+import { fileURLToPath } from 'node:url';
+import { includeIgnoreFile } from '@eslint/compat';
+import js from '@eslint/js';
+import svelte from 'eslint-plugin-svelte';
+import { defineConfig } from 'eslint/config';
+import globals from 'globals';
+import ts from 'typescript-eslint';
+import svelteConfig from './svelte.config.js';
+
+const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
+
+export default defineConfig(
+	includeIgnoreFile(gitignorePath),
+	js.configs.recommended,
+	...ts.configs.recommended,
+	...svelte.configs.recommended,
+	prettier,
+	...svelte.configs.prettier,
+	{
+		languageOptions: {
+			globals: { ...globals.browser, ...globals.node }
+		},
+		rules: {
+			// typescript-eslint strongly recommend that you do not use the no-undef lint rule on TypeScript projects.
+			// see: https://typescript-eslint.io/troubleshooting/faqs/eslint/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
+			'no-undef': 'off'
+		}
+	},
+	{
+		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
+		languageOptions: {
+			parserOptions: {
+				projectService: true,
+				extraFileExtensions: ['.svelte'],
+				parser: ts.parser,
+				svelteConfig
+			}
+		}
+	}
+);
+</file>
+
+<file path="web/package.json">
+{
+	"name": "web",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"format": "prettier --write .",
+		"lint": "prettier --check . && eslint ."
+	},
+	"devDependencies": {
+		"@eslint/compat": "^1.2.5",
+		"@eslint/js": "^9.22.0",
+		"@sveltejs/adapter-auto": "^6.0.0",
+		"@sveltejs/kit": "^2.22.0",
+		"@sveltejs/vite-plugin-svelte": "^6.0.0",
+		"@types/node": "^22",
+		"eslint": "^9.22.0",
+		"eslint-config-prettier": "^10.0.1",
+		"eslint-plugin-svelte": "^3.0.0",
+		"globals": "^16.0.0",
+		"prettier": "^3.4.2",
+		"prettier-plugin-svelte": "^3.3.3",
+		"svelte": "^5.0.0",
+		"svelte-check": "^4.0.0",
+		"typescript": "^5.0.0",
+		"typescript-eslint": "^8.20.0",
+		"vite": "^7.0.4",
+		"vite-plugin-wasm": "^3.5.0"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild"
+		]
+	}
+}
+</file>
+
+<file path="web/README.md">
+# sv
+
+Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+
+## Creating a project
+
+If you're seeing this, you've probably already done this step. Congrats!
+
+```sh
+# create a new project in the current directory
+npx sv create
+
+# create a new project in my-app
+npx sv create my-app
+```
+
+## Developing
+
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+
+```sh
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
+
+## Building
+
+To create a production version of your app:
+
+```sh
+npm run build
+```
+
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+</file>
+
+<file path="web/src/app.d.ts">
+// See https://svelte.dev/docs/kit/types#app.d.ts
+// for information about these interfaces
+declare global {
+	namespace App {
+		// interface Error {}
+		// interface Locals {}
+		// interface PageData {}
+		// interface PageState {}
+		// interface Platform {}
+	}
+}
+
+export {};
+</file>
+
+<file path="web/src/app.html">
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>
+</file>
+
+<file path="web/src/components/ResultChart.svelte">
+<script lang="ts">
+	interface Props {
+		result: number[];
+	}
+
+	let { result }: Props = $props();
+</script>
+
+<div class="chart_container">
+	{#each result as item, index}
+		<div class="chart_item">
+			<p class="chart_item_label">{index}</p>
+			<div class="chart_item_bar_container">
+				<div
+					class="chart_item_bar"
+					style="height: {item * 100}%; background-color: {item === Math.max(...result)
+						? 'magenta'
+						: 'blue'}"
+				></div>
+			</div>
+			<p class="chart_item_value">{Math.floor(item * 100) / 100}</p>
+		</div>
+	{/each}
+</div>
+
+<style>
+	.chart_container {
+		display: flex;
+		flex-direction: row;
+		gap: 12px;
+		height: 180px;
+		/* margin: 12px; */
+	}
+
+	.chart_item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: end;
+	}
+	.chart_item_label {
+		font-size: 16px;
+		font-weight: bold;
+		margin-bottom: 12px;
+	}
+	.chart_item_bar_container {
+		display: flex;
+		flex-direction: column;
+		justify-content: end;
+		width: 24px;
+		flex-grow: 1;
+		background-color: #00000010;
+	}
+	.chart_item_bar {
+		width: 100%;
+		background-color: blue;
+	}
+	.chart_item_value {
+		font-size: 12px;
+		margin-top: 4px;
+	}
+</style>
+</file>
+
+<file path="web/src/lib/assets/favicon.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="107" height="128" viewBox="0 0 107 128"><title>svelte-logo</title><path d="M94.157 22.819c-10.4-14.885-30.94-19.297-45.792-9.835L22.282 29.608A29.92 29.92 0 0 0 8.764 49.65a31.5 31.5 0 0 0 3.108 20.231 30 30 0 0 0-4.477 11.183 31.9 31.9 0 0 0 5.448 24.116c10.402 14.887 30.942 19.297 45.791 9.835l26.083-16.624A29.92 29.92 0 0 0 98.235 78.35a31.53 31.53 0 0 0-3.105-20.232 30 30 0 0 0 4.474-11.182 31.88 31.88 0 0 0-5.447-24.116" style="fill:#ff3e00"/><path d="M45.817 106.582a20.72 20.72 0 0 1-22.237-8.243 19.17 19.17 0 0 1-3.277-14.503 18 18 0 0 1 .624-2.435l.49-1.498 1.337.981a33.6 33.6 0 0 0 10.203 5.098l.97.294-.09.968a5.85 5.85 0 0 0 1.052 3.878 6.24 6.24 0 0 0 6.695 2.485 5.8 5.8 0 0 0 1.603-.704L69.27 76.28a5.43 5.43 0 0 0 2.45-3.631 5.8 5.8 0 0 0-.987-4.371 6.24 6.24 0 0 0-6.698-2.487 5.7 5.7 0 0 0-1.6.704l-9.953 6.345a19 19 0 0 1-5.296 2.326 20.72 20.72 0 0 1-22.237-8.243 19.17 19.17 0 0 1-3.277-14.502 17.99 17.99 0 0 1 8.13-12.052l26.081-16.623a19 19 0 0 1 5.3-2.329 20.72 20.72 0 0 1 22.237 8.243 19.17 19.17 0 0 1 3.277 14.503 18 18 0 0 1-.624 2.435l-.49 1.498-1.337-.98a33.6 33.6 0 0 0-10.203-5.1l-.97-.294.09-.968a5.86 5.86 0 0 0-1.052-3.878 6.24 6.24 0 0 0-6.696-2.485 5.8 5.8 0 0 0-1.602.704L37.73 51.72a5.42 5.42 0 0 0-2.449 3.63 5.79 5.79 0 0 0 .986 4.372 6.24 6.24 0 0 0 6.698 2.486 5.8 5.8 0 0 0 1.602-.704l9.952-6.342a19 19 0 0 1 5.295-2.328 20.72 20.72 0 0 1 22.237 8.242 19.17 19.17 0 0 1 3.277 14.503 18 18 0 0 1-8.13 12.053l-26.081 16.622a19 19 0 0 1-5.3 2.328" style="fill:#fff"/></svg>
+</file>
+
+<file path="web/src/lib/index.ts">
+// place files you want to import through the `$lib` alias in this folder.
+</file>
+
+<file path="web/src/routes/+page.js">
+// WASM (Mnist) を正しく初期化してから推論するよう修正
+// SSR 無効化（サーバ側で wasm を扱わないため）
+export const ssr = false;
+</file>
+
+<file path="web/static/robots.txt">
+# allow crawling everything by default
+User-agent: *
+Disallow:
+</file>
+
+<file path="web/tsconfig.json">
+{
+	"extends": "./.svelte-kit/tsconfig.json",
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true,
+		"moduleResolution": "bundler"
+	}
+	// Path aliases are handled by https://svelte.dev/docs/kit/configuration#alias
+	// except $lib which is handled by https://svelte.dev/docs/kit/configuration#files
+	//
+	// To make changes to top-level options such as include and exclude, we recommend extending
+	// the generated config; see https://svelte.dev/docs/kit/configuration#typescript
+}
+</file>
+
+<file path="model/Cargo.toml">
+[package]
+name = "lab-vision-burn-model"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+image = "0.25"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rmp-serde = "1"
+
+# Base (shared) features for all targets (wasm-safe subset).
+burn = { version = "0.18", features = ["wgpu"] }
+burn-wgpu = "0.18"
+
+# Wasm-specific helper crates
+wasm-bindgen = "0.2.100"
+wasm-bindgen-futures = "0.4"
+serde-wasm-bindgen = "0.6"
+wasm-logger = "0.2"
+web-time = "1.1.0"
+js-sys = "0.3"
+console_error_panic_hook = { version = "0.1", optional = true }
+web-sys = { version = "0.3", features = [
+    "Window",
+    "Response",
+    "Request",
+    "RequestInit",
+    "Headers",
+    "ReadableStream",
+    "AbortController",
+] }
+
+getrandom = { version = "0.3", default-features = false, features = [
+    "wasm_js",
+] }
+uuid = { version = "1", default-features = false, features = ["v4", "js"] }
+
+# Add training feature only for non-wasm targets to avoid pulling in native deps like SQLite when building to wasm.
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+burn = { version = "0.18", features = ["wgpu", "vision", "train"] }
+burn-dataset = "0.18"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+console_error_panic_hook = { version = "0.1" }
+</file>
+
+<file path="model/src/lib.rs">
+// no_std を外して serde_json を wasm でも利用可能にする
+extern crate alloc;
+
+#[cfg(not(target_arch = "wasm32"))]
+pub mod data; // training / dataset logic (non-wasm)
+pub mod model;
+#[cfg(not(target_arch = "wasm32"))]
+pub mod train; // training entry (non-wasm)
+
+#[cfg(target_arch = "wasm32")]
+pub mod state;
+#[cfg(target_arch = "wasm32")]
+pub mod web; // wasm entry points (only compile for wasm)
+
+// Re-export commonly used types for web
+pub use model::LeNet;
+</file>
+
+<file path="model/src/train.rs">
 // src/train.rs
 use crate::data::{MnistBatch, MnistBatcher};
 use crate::model::LeNet;
@@ -309,7 +4771,7 @@ use burn::{
     nn::loss::CrossEntropyLossConfig,
     optim::{AdamConfig, GradientsParams, Optimizer},
     prelude::*,
-    record::CompactRecorder,
+    record::{BinBytesRecorder, CompactRecorder, FullPrecisionSettings, Recorder},
 };
 use burn_wgpu::WgpuDevice;
 type B = burn_wgpu::Wgpu;
@@ -379,9 +4841,18 @@ pub fn train(cfg: TrainConfig) -> Result<()> {
     std::fs::create_dir_all("artifacts")?;
     let base_model: LeNet<B> = model.clone().valid();
     base_model
+        .clone()
         .save_file("artifacts/model.burn", &CompactRecorder::new())
         .expect("save");
     println!("Saved: artifacts/model.burn");
+
+    // 追加: BinBytesRecorder で bytes 化し artifacts/model.bin として保存 (WASM 埋め込み用)
+    let record = base_model.clone().into_record();
+    let bytes: Vec<u8> = BinBytesRecorder::<FullPrecisionSettings, Vec<u8>>::default()
+        .record(record, ())
+        .expect("serialize bin bytes");
+    std::fs::write("artifacts/model.bin", &bytes).expect("write model.bin");
+    println!("Saved: artifacts/model.bin ({} bytes)", bytes.len());
     Ok(())
 }
 
@@ -411,6 +4882,575 @@ where
     }
     ((correct as f32) / (total.max(1) as f32), total)
 }
+</file>
+
+<file path="model/src/web.rs">
+// https://github.com/tracel-ai/burn/blob/main/examples/mnist-inference-web/src/web.rs
+
+#![allow(clippy::new_without_default)]
+
+use alloc::string::String;
+use js_sys::Array;
+
+#[cfg(target_family = "wasm")]
+use wasm_bindgen::prelude::*;
+
+use crate::model::LeNet;
+use crate::state::build_and_load_model;
+// (record loading temporarily disabled until proper deserialization path implemented)
+type Backend = burn_wgpu::Wgpu;
+
+// use state::build_and_load_model instead
+
+use burn::tensor::Tensor;
+
+#[cfg_attr(target_family = "wasm", wasm_bindgen(start))]
+pub fn start() {
+    #[cfg(target_arch = "wasm32")]
+    console_error_panic_hook::set_once();
+}
+
+/// Mnist structure that corresponds to JavaScript class.
+/// See:[exporting-rust-struct](https://rustwasm.github.io/wasm-bindgen/contributing/design/exporting-rust-struct.html)
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub struct Mnist {
+    model: Option<LeNet<Backend>>,
+}
+
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+impl Mnist {
+    /// Constructor called by JavaScripts with the new keyword.
+    #[cfg_attr(target_family = "wasm", wasm_bindgen(constructor))]
+    pub fn new() -> Self {
+        #[cfg(target_arch = "wasm32")]
+        console_error_panic_hook::set_once();
+        Self { model: None }
+    }
+
+    /// Returns the inference results.
+    ///
+    /// This method is called from JavaScript via generated wrapper code by wasm-bindgen.
+    ///
+    /// # Arguments
+    ///
+    /// * `input` - A f32 slice of input 28x28 image
+    ///
+    /// See bindgen support types for passing and returning arrays:
+    /// * [number-slices](https://rustwasm.github.io/wasm-bindgen/reference/types/number-slices.html)
+    /// * [boxed-number-slices](https://rustwasm.github.io/wasm-bindgen/reference/types/boxed-number-slices.html)
+    ///
+    pub async fn inference(&mut self, input: &[f32]) -> Result<Array, String> {
+        if self.model.is_none() {
+            self.load().await?;
+        }
+
+        let model = self.model.as_ref().unwrap();
+
+        let device = Default::default();
+        // Reshape from the 1D array to 3d tensor [batch, height, width]
+        let input = Tensor::<Backend, 1>::from_floats(input, &device)
+            .reshape([1usize, 28, 28]) // [B=1,H,W]
+            .reshape([1usize, 1, 28, 28]); // [B,C=1,H,W]
+
+        // Normalize input: make between [0,1] and make the mean=0 and std=1
+        // values mean=0.1307,std=0.3081 were copied from Pytorch Mist Example
+        // https://github.com/pytorch/examples/blob/54f4572509891883a947411fd7239237dd2a39c3/mnist/main.py#L122
+
+        let input = ((input / 255) - 0.1307) / 0.3081;
+
+        // Run the tensor input through the model
+        let output: Tensor<Backend, 2> = model.forward(input);
+
+        // Convert the model output into probability distribution using softmax formula
+        let output = burn::tensor::activation::softmax(output, 1);
+
+        // Flatten output tensor with [1, 10] shape into boxed slice of [f32]
+        let output = output.into_data_async().await;
+
+        let array = Array::new();
+        for value in output.iter::<f32>() {
+            array.push(&value.into());
+        }
+
+        Ok(array)
+    }
+
+    /// 明示的に学習済みモデルをロード (二度目以降は何もしない)
+    #[cfg_attr(target_family = "wasm", wasm_bindgen)]
+    pub async fn load(&mut self) -> Result<(), String> {
+        if self.model.is_some() {
+            return Ok(());
+        }
+        self.model = Some(build_and_load_model().await);
+        Ok(())
+    }
+
+    /// モデルがロード済みか
+    #[cfg_attr(target_family = "wasm", wasm_bindgen(js_name = "isLoaded"))]
+    pub fn is_loaded(&self) -> bool {
+        self.model.is_some()
+    }
+
+    /// Top-1 クラス (0-9) を返す簡易推論 API
+    #[cfg_attr(target_family = "wasm", wasm_bindgen(js_name = "inferenceTop1"))]
+    pub async fn inference_top1(&mut self, input: &[f32]) -> Result<u32, String> {
+        if self.model.is_none() {
+            self.load().await?;
+        }
+        let model = self.model.as_ref().ok_or("model not loaded")?;
+        let device = Default::default();
+        let input = Tensor::<Backend, 1>::from_floats(input, &device)
+            .reshape([1usize, 28, 28])
+            .reshape([1usize, 1, 28, 28]);
+        let input = ((input / 255) - 0.1307) / 0.3081;
+        let output: Tensor<Backend, 2> = model.forward(input);
+        let pred = output.argmax(1).into_data_async().await;
+        let mut class_id: u32 = 0;
+        if let Some(v) = pred.iter::<i32>().next() {
+            class_id = v as u32;
+        }
+        Ok(class_id)
+    }
+}
+</file>
+
+<file path="package.json">
+{
+	"name": "lab-vision-burn",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"model:train": "cd model && cargo run --release -- train",
+		"model:eval": "cd model && cargo run --release -- eval",
+		"model:wasm": "cd model && wasm-pack build --out-dir pkg --release --target web --no-default-features",
+		"web": "cd web && pnpm dev --open"
+	}
+}
+</file>
+
+<file path="web/src/routes/+layout.svelte">
+<script lang="ts">
+	import favicon from '$lib/assets/favicon.svg';
+
+	let { children } = $props();
+</script>
+
+<svelte:head>
+	<link rel="icon" href={favicon} />
+</svelte:head>
+
+{@render children?.()}
+
+<style>
+	:global(p) {
+		line-height: 1;
+		padding: 0;
+		margin: 0;
+	}
+	:global(button) {
+		width: fit-content;
+	}
+</style>
+</file>
+
+<file path="web/svelte.config.js">
+import adapter from '@sveltejs/adapter-auto';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+	// Consult https://svelte.dev/docs/kit/integrations
+	// for more information about preprocessors
+	preprocess: vitePreprocess(),
+
+	kit: {
+		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
+		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
+		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
+		adapter: adapter()
+	},
+	server: {
+		hmr: false // Disable Hot Module Reload
+	}
+};
+
+export default config;
+</file>
+
+<file path="web/vite.config.ts">
+import { sveltekit } from '@sveltejs/kit/vite';
+import { defineConfig } from 'vite';
+import wasm from 'vite-plugin-wasm';
+
+export default defineConfig({
+	plugins: [sveltekit(), wasm()],
+	server: {
+		hmr: false
+	}
+});
+</file>
+
+<file path=".gitignore">
+target
+node_modules
+</file>
+
+<file path="web/src/components/DrawCanvas.svelte">
+<script lang="ts">
+	import { Anvil } from '$lib/anvil';
+	import { onMount } from 'svelte';
+
+	interface Props {
+		width?: number;
+		height?: number;
+		onUpdate?: (image: ImageData) => void; // 描画中の都度更新
+		onCommit?: (image: ImageData) => void; // pointerup で最終画像確定
+		onStart?: () => void; // pointerdown で描画開始
+	}
+
+	let {
+		width = 28,
+		height = 28,
+		onUpdate = (i) => {},
+		onCommit = (i) => {},
+		onStart = () => {}
+	}: Props = $props();
+
+	const scale = 10;
+
+	let canvas: HTMLCanvasElement;
+
+	let anvil = new Anvil(width, height, 10);
+
+	let rawX = $state(0);
+	let rawY = $state(0);
+	let pxX = $derived(Math.floor(rawX));
+	let pxY = $derived(Math.floor(rawY));
+	let lastPxX = $state<number | undefined>(0);
+	let lastPxY = $state<number | undefined>(0);
+	let drawing = $state(false);
+
+	const updateCanvas = () => {
+		const imageData = new ImageData(anvil.getBufferData().slice(), width, height);
+		onUpdate(imageData);
+		if (canvas) {
+			const ctx = canvas.getContext('2d');
+			if (ctx) {
+				ctx.putImageData(imageData, 0, 0);
+			}
+		}
+	};
+
+	$effect(() => {
+		if (drawing) {
+			anvil.setPixel(pxX, pxY, [0, 0, 0, 255]);
+
+			// completion line
+			if (lastPxX && lastPxY) {
+				const dx = pxX - lastPxX;
+				const dy = pxY - lastPxY;
+				for (let step = 1; step <= Math.max(Math.abs(dx), Math.abs(dy)); step++) {
+					const intermediateX =
+						lastPxX + Math.round((dx * step) / Math.max(Math.abs(dx), Math.abs(dy)));
+					const intermediateY =
+						lastPxY + Math.round((dy * step) / Math.max(Math.abs(dx), Math.abs(dy)));
+					anvil.setPixel(intermediateX, intermediateY, [0, 0, 0, 255]);
+				}
+			}
+
+			updateCanvas();
+			lastPxX = pxX;
+			lastPxY = pxY;
+		}
+	});
+
+	onMount(() => {
+		canvas = document.getElementById('canvas') as HTMLCanvasElement;
+		if (!canvas) return;
+
+		// initial reset
+		anvil.fillAll([255, 255, 255, 255]);
+		updateCanvas();
+
+		canvas.addEventListener(
+			'pointerdown',
+			(e) => {
+				e.preventDefault();
+				rawX = e.offsetX;
+				rawY = e.offsetY;
+				drawing = true;
+				onStart();
+			},
+			{ passive: false }
+		);
+
+		canvas.addEventListener(
+			'pointermove',
+			(e) => {
+				e.preventDefault();
+				rawX = e.offsetX;
+				rawY = e.offsetY;
+			},
+			{ passive: false }
+		);
+
+		window.addEventListener(
+			'pointerup',
+			(e) => {
+				e.preventDefault();
+				lastPxX = undefined;
+				lastPxY = undefined;
+				drawing = false;
+				// 最終画像を callback
+				const imageData = new ImageData(anvil.getBufferData().slice(), width, height);
+				onCommit(imageData);
+			},
+			{ passive: false }
+		);
+
+		canvas.addEventListener(
+			'pointerout',
+			(e) => {
+				e.preventDefault();
+				rawX = e.offsetX;
+				rawY = e.offsetY;
+				// drawing = false;
+			},
+			{ passive: false }
+		);
+		canvas.addEventListener(
+			'pointercancel',
+			(e) => {
+				e.preventDefault();
+				rawX = e.offsetX;
+				rawY = e.offsetY;
+				drawing = false;
+			},
+			{ passive: false }
+		);
+	});
+</script>
+
+<div id="canvas-container" style="width: {width * scale}px; height: {height * scale}px;">
+	<canvas
+		id="canvas"
+		style="width: {width}px; height: {height}px; transform: scale({scale}); image-rendering: pixelated;"
+		{width}
+		{height}
+	></canvas>
+</div>
+
+<button
+	onclick={() => {
+		anvil.fillAll([255, 255, 255, 255]);
+		updateCanvas();
+	}}>reset</button
+>
+
+<div id="info-container">
+	<!-- <p>raw: {rawX}, {rawY}</p> -->
+	<p>pixel: {pxX}, {pxY}</p>
+	<p>{drawing ? 'drawing' : 'not drawing'}</p>
+</div>
+
+<style>
+	#canvas-container {
+		border: 1px solid black;
+	}
+
+	#canvas {
+		transform-origin: 0 0;
+	}
+
+	#info-container {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+		margin-top: 1em;
+
+		font-size: 12px;
+	}
+</style>
+</file>
+
+<file path="web/src/routes/+page.svelte">
+<script lang="ts">
+	import DrawCanvas from '../components/DrawCanvas.svelte';
+	import { Mnist } from '$lib/model-wasm/lab_vision_burn_model';
+	import ResultChart from '../components/ResultChart.svelte';
+	import { onMount } from 'svelte';
+
+	let originalImageCanvas: HTMLCanvasElement;
+	let processedImageCanvas: HTMLCanvasElement;
+
+	let image: ImageData | undefined = $state();
+	let shouldInfer = $state(false);
+	let inferTimer: any = null; // debounce timer
+	let result: number[] = $state([]);
+	let guess: number | undefined = $state();
+	let ready = $state(false); // WASM 初期化 & モデルロード完了したか
+	let mnist: Mnist | null = $state(null);
+
+	// 画像 (RGBA) -> グレースケール(0..255) Float32Array(28*28) へ変換
+	function processImage(img: ImageData): ImageData {
+		const { data, width, height } = img;
+		const processed = data.slice();
+		for (let i = 0; i < width * height; i++) {
+			processed[i * 4] = 255 - data[i * 4];
+			processed[i * 4 + 1] = 255 - data[i * 4 + 1];
+			processed[i * 4 + 2] = 255 - data[i * 4 + 2];
+			processed[i * 4 + 3] = data[i * 4 + 3];
+		}
+		return new ImageData(processed, width, height);
+	}
+
+	// 画像 (RGBA) -> グレースケール(0..255) Float32Array(28*28) へ変換
+	function imageDataToFloat32(img: ImageData): Float32Array {
+		const { data, width, height } = img;
+		const out = new Float32Array(width * height);
+		for (let i = 0; i < width * height; i++) {
+			const r = data[i * 4];
+			const g = data[i * 4 + 1];
+			const b = data[i * 4 + 2];
+			const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+			out[i] = gray;
+		}
+		return out;
+	}
+
+	// WASM 初期化（wasm-bindgen が生成した default export を await）
+	$effect(() => {
+		if (ready) return; // 既に初期化済み
+		(async () => {
+			const init = (await import('$lib/model-wasm/lab_vision_burn_model.js')).default;
+			await init(); // wasm インスタンス化 -> 内部の `wasm` 変数がセット
+			mnist = new Mnist();
+			await mnist.load(); // 埋め込み model.bin 読み込み
+			ready = true;
+		})();
+	});
+
+	async function runInferenceOnce() {
+		if (!(ready && mnist && image)) return;
+		if (originalImageCanvas) {
+			originalImageCanvas.getContext('2d')?.putImageData(image, 0, 0);
+		}
+		const processedImage = processImage(image);
+		if (processedImageCanvas) {
+			processedImageCanvas.getContext('2d')?.putImageData(processedImage, 0, 0);
+		}
+		const input = imageDataToFloat32(processedImage);
+		result = await mnist.inference(input);
+		guess = result.indexOf(Math.max(...result));
+	}
+
+	function scheduleInference() {
+		shouldInfer = true;
+		if (inferTimer) clearTimeout(inferTimer);
+		inferTimer = setTimeout(async () => {
+			await runInferenceOnce();
+			shouldInfer = false;
+		}, 250); // 250ms デバウンス (調整可)
+	}
+
+	onMount(() => {
+		return () => {
+			mnist?.free();
+			mnist = null;
+		};
+	});
+</script>
+
+<div class="root">
+	<h1>LAB-VISION-BURN</h1>
+	<p>WASM: {ready ? 'ready' : 'loading...'}</p>
+	<div class="content">
+		<div class="left">
+			<DrawCanvas
+				width={28}
+				height={28}
+				onStart={() => {
+					// 途中で再描画開始 → 推論キャンセル
+					if (inferTimer) clearTimeout(inferTimer);
+				}}
+				onUpdate={(i) => {
+					// ライブで表示更新のみ
+					image = i;
+				}}
+				onCommit={(i) => {
+					image = i;
+					scheduleInference();
+				}}
+			/>
+		</div>
+		<div class="right">
+			<!-- <p>result: {JSON.stringify(result)}</p> -->
+
+			{#if guess !== undefined}
+				<p>I guess it's {guess}!</p>
+			{:else}
+				<p>Write your favorite number!</p>
+			{/if}
+
+			<ResultChart result={result?.length ? result : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]} />
+
+			<div>
+				<p style="font-size: 12px">process</p>
+				<div class="process_canvas_container">
+					<canvas bind:this={originalImageCanvas} class="process_canvas" width={28} height={28}
+					></canvas>
+
+					<p>→</p>
+
+					<canvas bind:this={processedImageCanvas} class="process_canvas" width={28} height={28}
+					></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	.root {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
+		margin: 36px 48px;
+	}
+	.content {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		gap: 12px;
+		margin-top: 36px;
+	}
+	.left {
+		display: flex;
+		flex-direction: column;
+		min-width: 400px;
+	}
+	.right {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.process_canvas_container {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 8px;
+		margin-top: 4px;
+	}
+	.process_canvas {
+		width: 48px;
+		height: 48px;
+		border: 1px solid black;
+		image-rendering: pixelated;
+	}
+</style>
 </file>
 
 </files>
