@@ -105,7 +105,8 @@ where
         let preds = logits.argmax(1).reshape([-1]); // argmax は [B,1] になるため 1D に整形
         let eq = preds.equal(batch.targets.to_device(device));
         let batch_size = eq.dims()[0];
-        let correct_batch = eq.int().sum().into_data().to_vec::<i64>().expect("sum")[0] as usize;
+        // Wgpu バックエンドの IntElem は I32 のため to_vec::<i32>() を使用
+        let correct_batch = eq.int().sum().into_data().to_vec::<i32>().expect("sum")[0] as usize;
         correct += correct_batch;
         total += batch_size;
     }
