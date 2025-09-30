@@ -4,12 +4,12 @@ mod data;
 mod model;
 mod train;
 
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use burn::{prelude::*, record::CompactRecorder};
 use burn_wgpu::{Wgpu, WgpuDevice};
-use std::{fs, path::Path};
 use clap::{Args, Parser, Subcommand};
 use image::{DynamicImage, ImageReader};
+use std::{fs, path::Path};
 
 #[derive(Subcommand)]
 enum Commands {
@@ -75,7 +75,11 @@ fn infer_paths(path: &str) -> Result<()> {
         let mut files: Vec<_> = fs::read_dir(path)?
             .filter_map(|e| e.ok())
             .map(|e| e.path())
-            .filter(|p| p.extension().map(|ext| ext.eq_ignore_ascii_case("png")).unwrap_or(false))
+            .filter(|p| {
+                p.extension()
+                    .map(|ext| ext.eq_ignore_ascii_case("png"))
+                    .unwrap_or(false)
+            })
             .collect();
         files.sort();
         if files.is_empty() {
@@ -93,7 +97,9 @@ fn infer_paths(path: &str) -> Result<()> {
         let pred = infer_single_path(&model, &device, Path::new(path))?;
         println!("Predicted: {pred}");
     } else {
-        return Err(anyhow!("指定パスがファイルでもディレクトリでもありません: {path}"));
+        return Err(anyhow!(
+            "指定パスがファイルでもディレクトリでもありません: {path}"
+        ));
     }
     Ok(())
 }

@@ -1,0 +1,47 @@
+[package]
+name = "lab-vision-burn-model"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+image = "0.25"
+
+# Base (shared) features for all targets (wasm-safe subset).
+burn = { version = "0.18", features = ["wgpu"] }
+burn-wgpu = "0.18"
+
+# Wasm-specific helper crates
+wasm-bindgen = "0.2.100"
+wasm-bindgen-futures = "0.4"
+serde-wasm-bindgen = "0.6"
+wasm-logger = "0.2"
+web-time = "1.1.0"
+js-sys = "0.3"
+console_error_panic_hook = { version = "0.1", optional = true }
+web-sys = { version = "0.3", features = [
+    "Window",
+    "Response",
+    "Request",
+    "RequestInit",
+    "Headers",
+    "ReadableStream",
+    "AbortController",
+] }
+
+getrandom = { version = "0.3", default-features = false, features = [
+    "wasm_js",
+] }
+uuid = { version = "1", default-features = false, features = ["v4", "js"] }
+
+# Add training feature only for non-wasm targets to avoid pulling in native deps like SQLite when building to wasm.
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+burn = { version = "0.18", features = ["wgpu", "vision", "train"] }
+burn-dataset = "0.18"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+console_error_panic_hook = { version = "0.1" }

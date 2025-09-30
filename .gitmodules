@@ -1,0 +1,3 @@
+[submodule "web/src/lib/anvil"]
+	path = web/src/lib/anvil
+	url = https://github.com/sledge-pdm/anvil.git
