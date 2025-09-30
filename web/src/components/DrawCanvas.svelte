@@ -56,9 +56,10 @@
 	let lastPxY = $state<number | undefined>(undefined);
 	let drawing = $state(false);
 
-	const updateCanvas = () => {
+	const updateCanvas = (commit?: boolean) => {
 		const imageData = new ImageData(anvil.getBufferData().slice(), width, height);
 		onUpdate(imageData);
+		if (commit) onCommit(imageData);
 		if (canvas) {
 			const ctx = canvas.getContext('2d');
 			if (ctx) {
@@ -120,7 +121,7 @@
 
 		// initial reset
 		anvil.fillAll([255, 255, 255, 255]);
-		updateCanvas();
+		updateCanvas(false);
 
 		canvas.addEventListener(
 			'pointerdown',
@@ -206,7 +207,7 @@
 	style="align-self: end;"
 	onclick={() => {
 		anvil.fillAll([255, 255, 255, 255]);
-		updateCanvas();
+		updateCanvas(true);
 	}}>reset</button
 >
 
