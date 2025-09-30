@@ -9,6 +9,7 @@
 
 	let image: ImageData | undefined = $state();
 	let shouldInfer = $state(false);
+	let inferTimer: any = null; // debounce timer
 	let result: number[] = $state([]);
 	let guess: number | undefined = $state();
 	let ready = $state(false); // WASM 初期化 & モデルロード完了したか
@@ -53,28 +54,28 @@
 		})();
 	});
 
-	// 周期的推論 (2秒間隔) - ready & shouldInfer & image が揃ったら 1 回推論してフラグを戻す
-	$effect(() => {
-		const interval = setInterval(async () => {
-			if (ready && mnist && shouldInfer && image) {
-				if (originalImageCanvas) {
-					originalImageCanvas.getContext('2d')?.putImageData(image, 0, 0);
-				}
+	async function runInferenceOnce() {
+		if (!(ready && mnist && image)) return;
+		if (originalImageCanvas) {
+			originalImageCanvas.getContext('2d')?.putImageData(image, 0, 0);
+		}
+		const processedImage = processImage(image);
+		if (processedImageCanvas) {
+			processedImageCanvas.getContext('2d')?.putImageData(processedImage, 0, 0);
+		}
+		const input = imageDataToFloat32(processedImage);
+		result = await mnist.inference(input);
+		guess = result.indexOf(Math.max(...result));
+	}
 
-				const processedImage = processImage(image);
-				if (processedImageCanvas) {
-					processedImageCanvas.getContext('2d')?.putImageData(processedImage, 0, 0);
-				}
-
-				const input = imageDataToFloat32(processedImage);
-				result = await mnist.inference(input);
-
-				guess = result.indexOf(Math.max(...result));
-				shouldInfer = false;
-			}
-		}, 1000);
-		return () => clearInterval(interval);
-	});
+	function scheduleInference() {
+		shouldInfer = true;
+		if (inferTimer) clearTimeout(inferTimer);
+		inferTimer = setTimeout(async () => {
+			await runInferenceOnce();
+			shouldInfer = false;
+		}, 250); // 250ms デバウンス (調整可)
+	}
 
 	onMount(() => {
 		return () => {
@@ -92,9 +93,17 @@
 			<DrawCanvas
 				width={28}
 				height={28}
+				onStart={() => {
+					// 途中で再描画開始 → 推論キャンセル
+					if (inferTimer) clearTimeout(inferTimer);
+				}}
 				onUpdate={(i) => {
+					// ライブで表示更新のみ
 					image = i;
-					shouldInfer = true;
+				}}
+				onCommit={(i) => {
+					image = i;
+					scheduleInference();
 				}}
 			/>
 		</div>

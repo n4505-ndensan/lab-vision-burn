@@ -5,10 +5,18 @@
 	interface Props {
 		width?: number;
 		height?: number;
-		onUpdate?: (image: ImageData) => void;
+		onUpdate?: (image: ImageData) => void; // 描画中の都度更新
+		onCommit?: (image: ImageData) => void; // pointerup で最終画像確定
+		onStart?: () => void; // pointerdown で描画開始
 	}
 
-	let { width = 28, height = 28, onUpdate = (i) => {} }: Props = $props();
+	let {
+		width = 28,
+		height = 28,
+		onUpdate = (i) => {},
+		onCommit = (i) => {},
+		onStart = () => {}
+	}: Props = $props();
 
 	const scale = 10;
 
@@ -73,6 +81,7 @@
 				rawX = e.offsetX;
 				rawY = e.offsetY;
 				drawing = true;
+				onStart();
 			},
 			{ passive: false }
 		);
@@ -94,6 +103,9 @@
 				lastPxX = undefined;
 				lastPxY = undefined;
 				drawing = false;
+				// 最終画像を callback
+				const imageData = new ImageData(anvil.getBufferData().slice(), width, height);
+				onCommit(imageData);
 			},
 			{ passive: false }
 		);
