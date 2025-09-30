@@ -129,7 +129,7 @@
 
 				{#if guess !== undefined}
 					<p>
-						<span style="text-transform: none;">x</span> I guess it's
+						<span style="text-transform: none;">x</span> it's
 						<span style="color: #FF00FF;">{guess}</span>!
 					</p>
 				{:else}
