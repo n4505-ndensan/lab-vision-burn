@@ -53,7 +53,9 @@
 		cursor: pointer;
 	}
 
-	:global(button:hover) {
-		background-color: #ff00ff;
+	@media (any-hover: hover) {
+		:global(button:hover) {
+			background-color: #ff00ff;
+		}
 	}
 </style>

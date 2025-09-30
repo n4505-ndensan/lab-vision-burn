@@ -18,7 +18,31 @@
 		onStart = () => {}
 	}: Props = $props();
 
-	const scale = 14;
+	// 基準スケール（十分な横幅がある場合）
+	const baseScale = 14;
+	// 実際に適用されるスケール（画面幅に応じて縮小）
+	let scale = $state(baseScale);
+
+	function recomputeScale() {
+		// 余白を考慮（左右合計で 100px くらい確保したい要求）
+		const margin = 100; // px
+		const targetWidth = width * baseScale;
+		const viewport = typeof window !== 'undefined' ? window.innerWidth : targetWidth + margin;
+		if (viewport < targetWidth + margin) {
+			// 入りきらないので縮小（整数スケールを優先しつつ最低1）
+			const candidate = (viewport - margin) / width;
+			// candidate が baseScale 以上なら縮小不要
+			if (candidate >= baseScale) {
+				scale = baseScale;
+			} else {
+				// ピクセルアートのにじみを避けるため整数へ（1未満は1）
+				const intCandidate = Math.max(1, Math.floor(candidate));
+				scale = intCandidate;
+			}
+		} else {
+			scale = baseScale;
+		}
+	}
 
 	let canvas: HTMLCanvasElement;
 
@@ -28,8 +52,8 @@
 	let rawY = $state(0);
 	let pxX = $derived(Math.floor(rawX));
 	let pxY = $derived(Math.floor(rawY));
-	let lastPxX = $state<number | undefined>(0);
-	let lastPxY = $state<number | undefined>(0);
+	let lastPxX = $state<number | undefined>(undefined);
+	let lastPxY = $state<number | undefined>(undefined);
 	let drawing = $state(false);
 
 	const updateCanvas = () => {
@@ -88,6 +112,11 @@
 	onMount(() => {
 		canvas = document.getElementById('canvas') as HTMLCanvasElement;
 		if (!canvas) return;
+
+		// 初期スケール計算
+		recomputeScale();
+		const resizeHandler = () => recomputeScale();
+		window.addEventListener('resize', resizeHandler);
 
 		// initial reset
 		anvil.fillAll([255, 255, 255, 255]);
@@ -157,6 +186,10 @@
 			},
 			{ passive: false }
 		);
+
+		return () => {
+			window.removeEventListener('resize', resizeHandler);
+		};
 	});
 </script>
 

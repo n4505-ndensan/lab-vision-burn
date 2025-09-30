@@ -4,8 +4,9 @@
 	import ResultChart from '../components/ResultChart.svelte';
 	import { onMount } from 'svelte';
 
-	let originalImageCanvas: HTMLCanvasElement;
-	let processedImageCanvas: HTMLCanvasElement;
+	// Svelte5 rune 環境で bind:this による更新を警告なく扱えるよう $state 化
+	let originalImageCanvas: HTMLCanvasElement | undefined = $state();
+	let processedImageCanvas: HTMLCanvasElement | undefined = $state();
 
 	let image: ImageData | undefined = $state();
 	let shouldInfer = $state(false);
@@ -205,5 +206,37 @@
 		image-rendering: pixelated;
 
 		background-color: white;
+	}
+
+	/* ========== Responsive (Smartphone) ========== */
+	@media (max-width: 680px) {
+		.root {
+			padding: 24px 24px 64px 24px;
+			width: 100%;
+			min-height: 100vh;
+			height: auto;
+			box-sizing: border-box;
+			border-left: none;
+			border-right: none;
+		}
+		.content {
+			flex-direction: column;
+			gap: 40px;
+		}
+		.left,
+		.right {
+			width: 100%;
+		}
+		.left {
+		}
+		.right {
+			gap: 20px;
+		}
+		.process_canvas_container {
+		}
+		.process_canvas {
+			width: 64px;
+			height: 64px;
+		}
 	}
 </style>
