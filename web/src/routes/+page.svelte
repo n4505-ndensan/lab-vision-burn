@@ -69,7 +69,6 @@
 		align-items: center;
 		justify-content: center;
 		min-height: 100vh;
-		padding: 36px 80px;
 		background-color: #101010;
 	}
 
