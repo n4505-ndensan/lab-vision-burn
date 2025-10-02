@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DrawCanvas from '../../components/DrawCanvas.svelte';
-	import { Mnist } from '$lib/model-wasm/mnist/lab_vision_burn_model';
+	import { MnistModel } from '$lib/mnist/lab_vision_burn_model';
 	import ResultChart from '../../components/ResultChart.svelte';
 	import { onMount } from 'svelte';
 
@@ -14,7 +14,7 @@
 	let result: number[] = $state([]);
 	let guess: number | undefined = $state();
 	let ready = $state(false); // WASM 初期化 & モデルロード完了したか
-	let mnist: Mnist | null = $state(null);
+	let mnist: MnistModel | null = $state(null);
 
 	// 画像 (RGBA) -> グレースケール(0..255) Float32Array(28*28) へ変換
 	function processImage(img: ImageData): ImageData {
@@ -49,7 +49,7 @@
 		(async () => {
 			const init = (await import('$lib/model-wasm/mnist/lab_vision_burn_model.js')).default;
 			await init(); // wasm インスタンス化 -> 内部の `wasm` 変数がセット
-			mnist = new Mnist();
+			mnist = new MnistModel();
 			await mnist.load(); // 埋め込み model.bin 読み込み
 			ready = true;
 		})();
@@ -92,7 +92,7 @@
 	</div>
 {:else}
 	<div class="root">
-		<h1>Lab-Vision-Burn</h1>
+		<a class="header" href="/">Lab-Vision-Burn</a>
 
 		<!-- <p>WASM: {ready ? 'ready' : 'loading...'}</p> -->
 
@@ -155,6 +155,18 @@
 {/if}
 
 <style>
+	.header {
+		font-size: 32px;
+		margin-top: 16px;
+		margin-bottom: 24px;
+		font-family: 'ZFB09', monospace;
+		text-decoration: none;
+	}
+
+	.header:hover {
+		color: #ff00ff;
+	}
+
 	.loading_root {
 		display: flex;
 		flex-direction: column;

@@ -48,3 +48,8 @@ burn-dataset = "0.18"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 console_error_panic_hook = { version = "0.1" }
+
+[features]
+default = []
+mnist-only = []
+cifar10-only = []

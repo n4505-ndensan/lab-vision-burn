@@ -131,6 +131,7 @@
 	.model-card h2 {
 		font-size: 24px;
 		margin: 0;
+		font-weight: normal;
 		font-family: 'ZFB09', monospace;
 	}
 
@@ -187,11 +188,16 @@
 	/* Responsive */
 	@media (max-width: 680px) {
 		.root {
+			box-sizing: border-box;
 			padding: 24px 24px 64px 24px;
 		}
 
 		h1 {
-			font-size: 36px;
+			font-size: 32px;
+		}
+		.subtitle {
+			font-size: 8px;
+			margin-bottom: 64px;
 		}
 
 		.models {

@@ -1,12 +1,26 @@
 {
-	"name": "lab-vision-burn",
-	"private": true,
-	"version": "0.0.1",
-	"type": "module",
-	"scripts": {
-		"model:train": "cd model && cargo run --release -- train",
-		"model:eval": "cd model && cargo run --release -- eval",
-		"model:wasm": "cd model && wasm-pack build --out-dir pkg --release --target web --no-default-features",
-		"web": "cd web && pnpm dev --open"
-	}
+  "name": "lab-vision-burn",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "mnist:train": "cd model && cargo run --release -- train --dataset mnist --epochs 10 --batch-size 64",
+    "mnist:eval": "cd model && cargo run --release -- eval --dataset mnist",
+    "mnist:wasm": "cd model && wasm-pack build --out-dir pkg/mnist --release --target web --no-default-features --features mnist-only",
+    "mnist:deploy": "pnpm mnist:wasm && powershell -Command \"Copy-Item -Path 'model/pkg/mnist' -Destination 'web/src/lib/' -Recurse -Force\"",
+    "mnist:all": "pnpm mnist:train && pnpm mnist:eval && pnpm mnist:deploy",
+    "cifar10:train": "cd model && cargo run --release -- train --dataset cifar10 --epochs 10 --batch-size 32",
+    "cifar10:eval": "cd model && cargo run --release -- eval --dataset cifar10",
+    "cifar10:wasm": "cd model && wasm-pack build --out-dir pkg/cifar10 --release --target web --no-default-features --features cifar10-only",
+    "cifar10:deploy": "pnpm cifar10:wasm && powershell -Command \"Copy-Item -Path 'model/pkg/cifar10' -Destination 'web/src/lib/' -Recurse -Force\"",
+    "cifar10:all": "pnpm cifar10:train && pnpm cifar10:eval && pnpm cifar10:deploy",
+    "model:clean": "cd model && cargo clean && rm -rf pkg",
+    "model:check": "cd model && cargo check",
+    "web": "cd web && pnpm dev --open",
+    "web:build": "cd web && pnpm build",
+    "setup": "pnpm install && cd web && pnpm install && pnpm cifar10:setup",
+    "test:infer:mnist": "cd model && cargo run --release -- infer --dataset mnist --path my_digits/",
+    "test:infer:cifar10": "cd model && cargo run --release -- infer --dataset cifar10 --path my_digits/",
+    "help": "echo 'Available commands:' && echo '  pnpm setup' && echo '  pnpm mnist:all' && echo '  pnpm cifar10:all' && echo '  pnpm demo:mnist' && echo '  pnpm demo:cifar10' && echo 'See SCRIPTS.md for more details'"
+  }
 }
