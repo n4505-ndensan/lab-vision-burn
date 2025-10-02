@@ -1,0 +1,29 @@
+{
+  "name": "mnist",
+  "input_channels": 1,
+  "input_size": [28, 28],
+  "num_classes": 10,
+  "class_names": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+  "model": {
+    "type": "lenet",
+    "conv1_out": 32,
+    "conv2_out": 64,
+    "fc1_out": 128
+  },
+  "training": {
+    "epochs": 5,
+    "batch_size": 64,
+    "learning_rate": 1e-3,
+    "normalization": {
+      "mean": 0.1307,
+      "std": 0.3081
+    }
+  },
+  "artifacts": {
+    "dir": "artifacts/mnist",
+    "model_file": "model.burn",
+    "model_bin": "model.bin",
+    "wasm_bg": "mnist_bg.wasm",
+    "wasm_js": "mnist.js"
+  }
+}

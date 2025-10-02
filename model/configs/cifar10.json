@@ -1,0 +1,42 @@
+{
+  "name": "cifar10",
+  "input_channels": 3,
+  "input_size": [32, 32],
+  "num_classes": 10,
+  "class_names": [
+    "airplane",
+    "automobile",
+    "bird",
+    "cat",
+    "deer",
+    "dog",
+    "frog",
+    "horse",
+    "ship",
+    "truck"
+  ],
+  "model": {
+    "type": "cifar_net",
+    "conv1_out": 64,
+    "conv2_out": 128,
+    "conv3_out": 256,
+    "fc1_out": 512,
+    "fc2_out": 256
+  },
+  "training": {
+    "epochs": 10,
+    "batch_size": 64,
+    "learning_rate": 1e-3,
+    "normalization": {
+      "mean": [0.4914, 0.4822, 0.4465],
+      "std": [0.247, 0.2435, 0.2616]
+    }
+  },
+  "artifacts": {
+    "dir": "artifacts/cifar10",
+    "model_file": "model.burn",
+    "model_bin": "model.bin",
+    "wasm_bg": "cifar10_bg.wasm",
+    "wasm_js": "cifar10.js"
+  }
+}

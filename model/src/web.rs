@@ -8,8 +8,8 @@ use js_sys::Array;
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::*;
 
-use crate::model::LeNet;
-use crate::state::build_and_load_model;
+use crate::model::{LeNet, ModelTrait};
+use crate::state::build_and_load_model_legacy;
 // (record loading temporarily disabled until proper deserialization path implemented)
 type Backend = burn_wgpu::Wgpu;
 
@@ -94,7 +94,7 @@ impl Mnist {
         if self.model.is_some() {
             return Ok(());
         }
-        self.model = Some(build_and_load_model().await);
+        self.model = Some(build_and_load_model_legacy().await);
         Ok(())
     }
 
