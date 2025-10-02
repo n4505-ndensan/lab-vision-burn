@@ -7,12 +7,20 @@ use js_sys::Array;
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::*;
 
-use crate::model::{CifarNet, ModelTrait};
 use crate::config::DatasetConfig;
+use crate::model::{CifarNet, ModelTrait};
 // CIFAR-10クラス名の定義（WASM用）
 const CIFAR10_CLASSES: [&str; 10] = [
-    "airplane", "automobile", "bird", "cat", "deer", 
-    "dog", "frog", "horse", "ship", "truck"
+    "airplane",
+    "automobile",
+    "bird",
+    "cat",
+    "deer",
+    "dog",
+    "frog",
+    "horse",
+    "ship",
+    "truck",
 ];
 use burn::{
     module::Module,
@@ -47,11 +55,11 @@ impl Cifar10Model {
     pub fn new() -> Self {
         #[cfg(target_arch = "wasm32")]
         console_error_panic_hook::set_once();
-        
-        let config: DatasetConfig = serde_json::from_str(CIFAR10_CONFIG)
-            .expect("CIFAR-10設定の解析に失敗");
-            
-        Self { 
+
+        let config: DatasetConfig =
+            serde_json::from_str(CIFAR10_CONFIG).expect("CIFAR-10設定の解析に失敗");
+
+        Self {
             model: None,
             config,
         }
@@ -65,10 +73,10 @@ impl Cifar10Model {
         }
 
         init_setup_async::<AutoGraphicsApi>(&WgpuDevice::default(), Default::default()).await;
-        
+
         let device = WgpuDevice::default();
         let model: CifarNet<Backend> = CifarNet::new(&device, &self.config);
-        
+
         let record = BinBytesRecorder::<FullPrecisionSettings, &'static [u8]>::default()
             .load(CIFAR10_STATE_ENCODED, &device)
             .map_err(|e| format!("CIFAR-10モデルのロードに失敗: {}", e))?;
@@ -86,7 +94,7 @@ impl Cifar10Model {
 
         let model = self.model.as_ref().unwrap();
         let device = WgpuDevice::default();
-        
+
         // 入力テンソルの準備（32x32x3のRGB画像）
         let input = Tensor::<Backend, 1>::from_floats(input, &device)
             .reshape([3, 32, 32])
@@ -114,18 +122,18 @@ impl Cifar10Model {
         if self.model.is_none() {
             self.load().await?;
         }
-        
+
         let model = self.model.as_ref().unwrap();
         let device = WgpuDevice::default();
-        
+
         let input = Tensor::<Backend, 1>::from_floats(input, &device)
             .reshape([3, 32, 32])
             .reshape([1usize, 3, 32, 32]);
         let input = input / 255.0;
-        
+
         let output: Tensor<Backend, 2> = model.forward(input);
         let pred = output.argmax(1).into_data_async().await;
-        
+
         let class_id = pred.iter::<i32>().next().unwrap_or(0) as u32;
         Ok(class_id)
     }
@@ -133,7 +141,8 @@ impl Cifar10Model {
     /// 予測クラス名を返す
     #[cfg_attr(target_family = "wasm", wasm_bindgen(js_name = "getClassName"))]
     pub fn get_class_name(&self, class_id: u32) -> String {
-        CIFAR10_CLASSES.get(class_id as usize)
+        CIFAR10_CLASSES
+            .get(class_id as usize)
             .unwrap_or(&"unknown")
             .to_string()
     }

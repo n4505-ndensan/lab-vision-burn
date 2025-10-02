@@ -21,11 +21,17 @@ pub mod web_cifar10;
 pub use web_cifar10::*;
 
 // デフォルト（既存の統合版）
-#[cfg(all(target_arch = "wasm32", not(any(feature = "mnist-only", feature = "cifar10-only"))))]
+#[cfg(all(
+    target_arch = "wasm32",
+    not(any(feature = "mnist-only", feature = "cifar10-only"))
+))]
 pub mod state;
-#[cfg(all(target_arch = "wasm32", not(any(feature = "mnist-only", feature = "cifar10-only"))))]
+#[cfg(all(
+    target_arch = "wasm32",
+    not(any(feature = "mnist-only", feature = "cifar10-only"))
+))]
 pub mod web; // wasm entry points (only compile for wasm)
 
 // Re-export commonly used types for web
-pub use model::{LeNet, CifarNet, ModelTrait};
 pub use config::DatasetConfig;
+pub use model::{CifarNet, LeNet, ModelTrait};
