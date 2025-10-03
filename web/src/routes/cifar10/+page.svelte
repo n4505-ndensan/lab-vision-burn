@@ -409,6 +409,9 @@
 		.content {
 			flex-direction: column;
 			gap: 24px;
+			width: 100%;
+			box-sizing: border-box;
+			overflow-x: hidden;
 		}
 
 		.left,
@@ -427,6 +430,12 @@
 		.instructions .big_arrow {
 			font-size: 56px;
 			transform: rotate(-90deg);
+		}
+		.result {
+			display: flex;
+			flex-direction: column;
+			align-items: start;
+			margin-right: 16px;
 		}
 	}
 </style>
