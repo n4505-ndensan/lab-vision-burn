@@ -93,6 +93,7 @@
 {:else}
 	<div class="root">
 		<a class="header" data-sveltekit-reload href="/">Lab-Vision-Burn</a>
+		<p class="subtitle">MNIST Digits Classification</p>
 
 		<!-- <p>WASM: {ready ? 'ready' : 'loading...'}</p> -->
 
@@ -158,13 +159,19 @@
 	.header {
 		font-size: 32px;
 		margin-top: 16px;
-		margin-bottom: 24px;
+		margin-bottom: 8px;
 		font-family: 'ZFB09', monospace;
 		text-decoration: none;
 	}
 
 	.header:hover {
 		color: #ff00ff;
+	}
+
+	.subtitle {
+		color: #00ffff;
+		font-size: 16px;
+		margin-bottom: 24px;
 	}
 
 	.loading_root {
@@ -223,7 +230,7 @@
 	/* ========== Responsive (Smartphone) ========== */
 	@media (max-width: 680px) {
 		.root {
-			padding: 24px 24px 64px 24px;
+			padding: 24px 24px 128px 24px;
 			width: 100%;
 			min-height: 100vh;
 			height: auto;

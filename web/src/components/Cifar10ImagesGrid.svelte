@@ -90,11 +90,11 @@
 		{/each}
 	</div>
 
-	{#if selectedImage}
+	<!-- {#if selectedImage}
 		<div class="selected-info">
 			<p>Selected: <span class="highlight">{selectedImage.className}</span></p>
 		</div>
-	{/if}
+	{/if} -->
 </div>
 
 <style>
@@ -202,13 +202,13 @@
 	/* Responsive */
 	@media (max-width: 680px) {
 		.images-grid {
-			grid-template-columns: repeat(3, 100px);
+			grid-template-columns: repeat(5, 50px);
 			gap: 12px;
 		}
 
 		.image-item {
-			min-height: 100px;
-			min-width: 100px;
+			min-height: 50px;
+			min-width: 50px;
 		}
 
 		.header {

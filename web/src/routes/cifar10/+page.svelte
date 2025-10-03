@@ -13,7 +13,8 @@
 	let isInferring = $state(false);
 
 	let isCorrect = $derived((): boolean | undefined => {
-		if (!cifar10 || guess === undefined || !selectedImage) return undefined;
+		if (isInferring || !ready || !cifar10 || guess === undefined || !selectedImage)
+			return undefined;
 		return cifar10.getClassName(guess) === selectedImage.className;
 	});
 
@@ -190,6 +191,7 @@
 					{/if}
 				{:else}
 					<div class="instructions">
+						<p class="big_arrow">x</p>
 						<p>Click an image to classify!</p>
 						<p class="note">
 							The model will predict one of 10 classes:<br />
@@ -299,6 +301,7 @@
 	}
 
 	.inferring {
+		margin-top: 8px;
 		color: #00ffff;
 		animation: pulse 1.5s infinite;
 	}
@@ -337,7 +340,19 @@
 	}
 
 	.instructions {
+		display: flex;
+		flex-direction: column;
+		box-sizing: border-box;
 		color: #cccccc;
+	}
+
+	.instructions .big_arrow {
+		font-size: 56px;
+		margin: 24px 0;
+		font-family: 'ZFB21', 'monospace';
+		text-transform: none;
+		transform: rotate(180deg);
+		width: fit-content;
 	}
 
 	.instructions p {
@@ -381,13 +396,14 @@
 	/* Responsive */
 	@media (max-width: 680px) {
 		.root {
-			padding: 24px 24px 64px 24px;
-			width: 100%;
+			padding: 24px 24px 128px 24px;
+			width: 100vw;
 			min-height: 100vh;
 			height: auto;
 			box-sizing: border-box;
 			border-left: none;
 			border-right: none;
+			overflow-x: hidden;
 		}
 
 		.content {
@@ -404,6 +420,13 @@
 		.image-preview img {
 			width: 96px;
 			height: 96px;
+		}
+
+		.instructions {
+		}
+		.instructions .big_arrow {
+			font-size: 56px;
+			transform: rotate(-90deg);
 		}
 	}
 </style>
