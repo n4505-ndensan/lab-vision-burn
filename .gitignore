@@ -1,2 +1,4 @@
 target
 node_modules
+model/datasets
+model/datasets/cifar-10
