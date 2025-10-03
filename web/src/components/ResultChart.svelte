@@ -1,15 +1,16 @@
 <script lang="ts">
 	interface Props {
 		result: number[];
+		labels?: string[];
 	}
 
-	let { result }: Props = $props();
+	let { result, labels }: Props = $props();
 </script>
 
 <div class="chart_container">
 	{#each result as item, index}
 		<div class="chart_item">
-			<p class="chart_item_label">{index}</p>
+			<p class="chart_item_label">{labels ? labels[index] : index}</p>
 			<div class="chart_item_bar_container">
 				<div
 					class="chart_item_bar"
@@ -39,14 +40,17 @@
 		justify-content: end;
 	}
 	.chart_item_label {
-		font-size: 16px;
+		font-size: 8px;
 		margin-bottom: 12px;
+		text-align: center;
+		word-break: break-all;
+		line-height: 1.2;
 	}
 	.chart_item_bar_container {
 		display: flex;
 		flex-direction: column;
 		justify-content: end;
-		width: 24px;
+		width: 20px;
 		flex-grow: 1;
 		background-color: #ffffff10;
 	}

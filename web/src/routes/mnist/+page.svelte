@@ -47,7 +47,7 @@
 	$effect(() => {
 		if (ready) return; // 既に初期化済み
 		(async () => {
-			const init = (await import('$lib/model-wasm/mnist/lab_vision_burn_model.js')).default;
+			const init = (await import('$lib/mnist/lab_vision_burn_model.js')).default;
 			await init(); // wasm インスタンス化 -> 内部の `wasm` 変数がセット
 			mnist = new MnistModel();
 			await mnist.load(); // 埋め込み model.bin 読み込み
@@ -92,7 +92,7 @@
 	</div>
 {:else}
 	<div class="root">
-		<a class="header" href="/">Lab-Vision-Burn</a>
+		<a class="header"  data-sveltekit-reload  href="/">Lab-Vision-Burn</a>
 
 		<!-- <p>WASM: {ready ? 'ready' : 'loading...'}</p> -->
 

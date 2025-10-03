@@ -12,13 +12,14 @@
 			name: 'CIFAR-10',
 			description: '画像分類（10クラス）',
 			path: '/cifar10',
-			status: 'coming_soon' // 実装後は 'ready' に変更
+			status: 'ready'
 		}
 	];
 
 	function navigateToModel(path: string, status: string) {
 		if (status === 'ready') {
-			goto(path);
+			window.location.href = path;
+			// goto(path);
 		}
 	}
 </script>
