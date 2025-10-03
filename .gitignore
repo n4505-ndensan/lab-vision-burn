@@ -2,9 +2,3 @@ target
 node_modules
 model/datasets
 model/datasets/cifar-10
-
-# Generated WASM files (built during CI/CD)
-web/src/lib/mnist/lab_vision_burn_model*
-web/src/lib/cifar10/lab_vision_burn_model*
-web/src/lib/mnist/package.json
-web/src/lib/cifar10/package.json
