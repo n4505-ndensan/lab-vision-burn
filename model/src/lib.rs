@@ -10,25 +10,25 @@ pub mod model;
 pub mod train; // training entry (non-wasm)
 
 // 条件付きでWASMモジュールをinclude
-#[cfg(all(target_arch = "wasm32", feature = "mnist-only"))]
+#[cfg(all(target_arch = "wasm32", feature = "mnist"))]
 pub mod web_mnist;
-#[cfg(all(target_arch = "wasm32", feature = "mnist-only"))]
+#[cfg(all(target_arch = "wasm32", feature = "mnist"))]
 pub use web_mnist::*;
 
-#[cfg(all(target_arch = "wasm32", feature = "cifar10-only"))]
+#[cfg(all(target_arch = "wasm32", feature = "cifar10"))]
 pub mod web_cifar10;
-#[cfg(all(target_arch = "wasm32", feature = "cifar10-only"))]
+#[cfg(all(target_arch = "wasm32", feature = "cifar10"))]
 pub use web_cifar10::*;
 
 // デフォルト（既存の統合版）
 #[cfg(all(
     target_arch = "wasm32",
-    not(any(feature = "mnist-only", feature = "cifar10-only"))
+    not(any(feature = "mnist", feature = "cifar10"))
 ))]
 pub mod state;
 #[cfg(all(
     target_arch = "wasm32",
-    not(any(feature = "mnist-only", feature = "cifar10-only"))
+    not(any(feature = "mnist", feature = "cifar10"))
 ))]
 pub mod web; // wasm entry points (only compile for wasm)
 

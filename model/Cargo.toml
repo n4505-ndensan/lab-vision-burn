@@ -51,5 +51,7 @@ console_error_panic_hook = { version = "0.1" }
 
 [features]
 default = []
+mnist = []
+cifar10 = []
 mnist-only = []
 cifar10-only = []

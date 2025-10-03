@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Cifar10ImagesGrid, { type ImageData } from '../../components/Cifar10ImagesGrid.svelte';
-	import { Cifar10Model } from '$lib/cifar10/lab_vision_burn_model';
+	import { Cifar10Model } from '$lib/cifar10/lab_vision_burn_model.js';
 	import ResultChart from '../../components/ResultChart.svelte';
 	import { onMount } from 'svelte';
 

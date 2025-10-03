@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DrawCanvas from '../../components/DrawCanvas.svelte';
-	import { MnistModel } from '$lib/mnist/lab_vision_burn_model';
+	import { MnistModel } from '$lib/mnist/lab_vision_burn_model.js';
 	import ResultChart from '../../components/ResultChart.svelte';
 	import { onMount } from 'svelte';
 
@@ -92,7 +92,7 @@
 	</div>
 {:else}
 	<div class="root">
-		<a class="header"  data-sveltekit-reload  href="/">Lab-Vision-Burn</a>
+		<a class="header" data-sveltekit-reload href="/">Lab-Vision-Burn</a>
 
 		<!-- <p>WASM: {ready ? 'ready' : 'loading...'}</p> -->
 
